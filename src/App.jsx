@@ -11,6 +11,7 @@ const supabase = createClient(
 const TMDB_IMG = "https://image.tmdb.org/t/p/w500";
 const TMDB_BASE = "https://api.themoviedb.org/3";
 const TMDB_KEY_LS = "rl_tmdb";
+const HARDCODED_KEY = "dfb570e7a09aa4e72df7064fc4a703f0";
 
 // ─── CONSTANTS ───────────────────────────────────────────────
 const STATUSES = ["Want to Watch", "Watching", "Watched"];
@@ -360,8 +361,8 @@ a{color:inherit;text-decoration:none;}
 
 // ─── MAIN APP ────────────────────────────────────────────────
 export default function App() {
-  const [tmdbKey, setTmdbKey]   = useState(() => localStorage.getItem(TMDB_KEY_LS) || "");
-  const [showSetup, setShowSetup] = useState(() => !localStorage.getItem(TMDB_KEY_LS));
+  const tmdbKey = HARDCODED_KEY;
+  const [showSetup] = useState(false);
   const [keyInput, setKeyInput] = useState("");
   const [keyErr, setKeyErr]     = useState("");
 
