@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { Analytics } from "@vercel/analytics/react";
 
 // ─── SUPABASE ────────────────────────────────────────────────
 const supabase = createClient(
@@ -426,7 +427,9 @@ export default function App() {
         const d = await r.json();
         const f = (d.results || []).filter(x => x.media_type === "movie" || x.media_type === "tv").slice(0, 8);
         setResults(f); setShowDrop(f.length > 0);
-      } catch {}
+      } catch {
+        // Ignore search errors - silent fail for better UX
+      }
       setSearching(false);
     }, 380);
   }, [search, tmdbKey]);
@@ -784,11 +787,14 @@ export default function App() {
 
       {/* ── TOAST ── */}
       {toast && <div className="toast"><div className="toast-dot"/>{toast}</div>}
+
+      {/* ── VERCEL ANALYTICS ── */}
+      <Analytics />
     </>
   );
 }
 
-// ─── AUTH MODAL COMPONENT ────────────────────────────────────
+// ─── AUTH MODAL COMPONENT ────────────────────────��───────────
 function AuthModal({ onClose }) {
   const [tab, setTab]       = useState("signin");
   const [email, setEmail]   = useState("");
