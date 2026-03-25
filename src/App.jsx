@@ -378,6 +378,11 @@ export default function App() {
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortBy, setSortBy]           = useState("added");
   const [search, setSearch]           = useState("");
+  const [trending, setTrending] =useState([]);
+  const [movies, setMovies] =useState([]);
+  const [shows, setShows] =useState([]);
+  const [anime, setAnime] =useState([]);
+  const [recent, setRecent] =useState([]);
   const [results, setResults]         = useState([]);
   const [searching, setSearching]     = useState(false);
   const [showDrop, setShowDrop]       = useState(false);
