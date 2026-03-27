@@ -106,7 +106,7 @@ const CSS = `
   --c3:#1d2b21;
 
   /* ── ACCENT: Pastel Green default ── */
-  --acc:#b2f0c5;
+  --acc:#b2f0c5; 
   --acc-d:#6dbe8c;
   --acc-glow:rgba(178,240,197,.22);
   --acc-dim:rgba(178,240,197,.08);
@@ -267,8 +267,9 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
     linear-gradient(to right,rgba(7,16,10,.78) 0%,rgba(7,16,10,.38) 52%,transparent 100%);
 }
 .hero-content{
-  position:absolute;bottom:14%;left:52px;max-width:580px;
+  position:absolute;bottom:10%;left:20px;max-width:580px;
   animation:heroUp .65s ease both;
+  padding-bottom:70px; /* leaves room for thumbnail strip */
 }
 @keyframes heroUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
 .hero-badge{
@@ -281,7 +282,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 .hero-title{
   font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(38px,7vw,92px);line-height:.95;
+  font-size:clamp(32px,6vw,72px);line-height:.9;
   letter-spacing:2px;margin-bottom:14px;
   max-width:min(92vw,640px);
   overflow-wrap:anywhere;
@@ -335,26 +336,48 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 }
 .hero-dot{width:28px;height:3px;border-radius:2px;background:rgba(255,255,255,.2);transition:all .35s;cursor:pointer;}
 .hero-dot.on{background:var(--acc);width:46px;box-shadow:0 0 10px var(--acc-glow);}
-.hero-strip{
-  position:absolute;bottom:14px;left:52px;right:52px;
-  display:flex;gap:8px;align-items:center;
-  overflow-x:auto;padding:4px 0;
-  scrollbar-width:none;z-index:4;
+.hero-thumbs-wrap{
+  position:absolute;left:40px;right:52px;bottom:28px;
+  display:flex;align-items:center;gap:10px;
+  z-index:4;
+  padding-top:10px;
 }
-.hero-strip::-webkit-scrollbar{display:none;}
+.hero-thumb-arrow{
+  width:40px;height:64px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(7,16,10,.5);
+  color:var(--tx);font-size:20px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(12px);
+  transition:all .2s;cursor:pointer;
+}
+.hero-thumb-arrow:hover{border-color:var(--acc-border);color:var(--acc);}
+.hero-thumbs{
+  display:flex;gap:10px;
+  overflow-x:auto;scroll-behavior:smooth;
+  padding:6px 4px;
+  scrollbar-width:none;flex:1;
+}
+.hero-thumbs::-webkit-scrollbar{display:none;}
 .hero-thumb{
-  width:86px;height:48px;flex:0 0 auto;
-  border:none;border-radius:8px;
-  background-size:cover;background-position:center;
-  cursor:pointer;transition:transform .25s ease, box-shadow .25s ease, outline .25s ease;
-  outline:2px solid transparent;
-  filter:brightness(.9);
+  width:132px;height:72px;flex:0 0 auto;
+  border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.14);
+  background:var(--c2);padding:0;
+  cursor:pointer;transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
 }
-.hero-thumb.on{
-  transform:scale(1.06);
-  outline-color:var(--acc);
-  box-shadow:0 8px 24px rgba(0,0,0,.45);
-  filter:brightness(1);
+.hero-thumb img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.05);transition:transform .22s ease;}
+.hero-thumb .hero-thumb-fallback{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--txm);padding:8px;text-align:center;
+}
+.hero-thumb:hover{
+  transform:translateY(-4px) scale(1.05);
+  box-shadow:0 12px 22px rgba(0,0,0,.36);
+}
+.hero-thumb.active{
+  transform:translateY(-4px) scale(1.05);
+  border-color:var(--acc);
+  box-shadow:0 14px 28px rgba(0,0,0,.42),0 0 0 6px rgba(178,240,197,.12),0 0 14px var(--acc-glow);
 }
 
 /* ─────────────────── ROW SECTIONS ─────────────────── */
@@ -838,6 +861,8 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
   const [idx, setIdx]             = useState(0);
   const [transitioning, setTrans] = useState(false);
   const intervalRef               = useRef(null);
+  const thumbStripRef             = useRef(null);
+  const thumbRefs                 = useRef([]);
 
   useEffect(() => {
     if (items?.length) return;
@@ -884,6 +909,10 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
     setTimeout(() => { setIdx(i); setTrans(false); }, 400);
   };
 
+  const scrollThumbs = (dir) => {
+    thumbStripRef.current?.scrollBy({ left: dir * 320, behavior:"smooth" });
+  };
+
   useEffect(() => {
     if (!autoplay || slides.length < 2) return;
     intervalRef.current = setInterval(() => {
@@ -892,6 +921,14 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
     }, 6500);
     return () => clearInterval(intervalRef.current);
   }, [autoplay, slides.length]);
+
+  // keep active thumb in view
+  useEffect(() => {
+    const el = thumbRefs.current[idx];
+    if (el?.scrollIntoView) {
+      el.scrollIntoView({ behavior:"smooth", inline:"center", block:"nearest" });
+    }
+  }, [idx, slides.length]);
 
   const item = slides[idx] || slides[0];
   if (!item) return null;
@@ -919,9 +956,6 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
           <button className="btn-hero-play" onClick={() => session ? onAdd(item) : setShowAuth(true)}>
             ▶ &nbsp;Add to List
           </button>
-          <button className="btn-hero-add" onClick={() => session ? onAdd({ ...item, status:"Want to Watch" }) : setShowAuth(true)}>
-            + &nbsp;Watchlist
-          </button>
           {primaryOtt && (
             <a className="btn-hero-stream" href={primaryOtt.url + encodeURIComponent(item.title)} target="_blank" rel="noopener noreferrer">
               <span className="stream-dot" style={{ background: primaryOtt.color }} />
@@ -930,10 +964,28 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
           )}
         </div>
       </div>
-      <div className="hero-dots" style={{ zIndex:3 }}>
-        {slides.map((_, i) => (
-          <div key={i} className={`hero-dot${i === idx ? " on" : ""}`} onClick={() => goTo(i)} />
-        ))}
+      <div className="hero-thumbs-wrap" style={{ zIndex:3 }}>
+        <button className="hero-thumb-arrow" onClick={() => scrollThumbs(-1)} aria-label="Previous thumbnails">‹</button>
+        <div className="hero-thumbs" ref={thumbStripRef}>
+          {slides.map((h, i) => {
+            const imgPath = h.backdrop || h.poster || h.backdrop_path || h.poster_path;
+            const src = imgPath ? `${TMDB_IMG}${imgPath}` : null;
+            return (
+              <button
+                key={i}
+                className={`hero-thumb${i === idx ? " active" : ""}`}
+                onClick={() => goTo(i)}
+                ref={el => { thumbRefs.current[i] = el; }}
+                aria-label={`Go to ${h.title || "slide"}`}
+              >
+                {src
+                  ? <img src={src} alt={h.title || "Hero thumbnail"} loading="lazy" />
+                  : <span className="hero-thumb-fallback">{h.title || "Untitled"}</span>}
+              </button>
+            );
+          })}
+        </div>
+        <button className="hero-thumb-arrow" onClick={() => scrollThumbs(1)} aria-label="Next thumbnails">›</button>
       </div>
     </div>
   );
@@ -1419,7 +1471,7 @@ export default function App() {
       try {
         const [trendAll, trendAllIN, trendMovies, trendTv, anime] = await Promise.all([
           fetch(`${TMDB_BASE}/trending/all/week?api_key=${TMDB_KEY}&language=${lang}&include_adult=${adult}`, { signal: abort.signal }).then(r => r.json()).catch(() => null),
-          fetch(`${TMDB_BASE}/trending/all/week?api_key=${TMDB_KEY}&language=en-IN&region=IN&include_adult=${adult}`, { signal: abort.signal }).then(r => r.json()).catch(() => null),
+          fetch(`${TMDB_BASE}/trending/all/week?api_key=${TMDB_KEY}&language=-IN&region=IN&include_adult=${adult}`, { signal: abort.signal }).then(r => r.json()).catch(() => null),
           fetch(`${TMDB_BASE}/trending/movie/week?api_key=${TMDB_KEY}&language=${lang}&include_adult=${adult}`, { signal: abort.signal }).then(r => r.json()).catch(() => null),
           fetch(`${TMDB_BASE}/trending/tv/week?api_key=${TMDB_KEY}&language=${lang}&include_adult=${adult}`, { signal: abort.signal }).then(r => r.json()).catch(() => null),
           fetch(`${TMDB_BASE}/discover/tv?api_key=${TMDB_KEY}&language=${lang}&with_genres=16&sort_by=popularity.desc&include_adult=${adult}`, { signal: abort.signal }).then(r => r.json()).catch(() => null),
