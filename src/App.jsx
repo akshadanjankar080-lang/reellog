@@ -20,12 +20,14 @@ const SICON    = { Watched: "✓", Watching: "▶", "Want to Watch": "◎" };
 
 // ─── OTT STREAMING PLATFORMS ─────────────────────────────────────────────────
 const OTT = {
-  cr:    { name:"Crunchyroll",  short:"CR",  color:"#F47521", url:"https://www.crunchyroll.com/search?q=" },
-  nf:    { name:"Netflix",      short:"NF",  color:"#E50914", url:"https://www.netflix.com/search?q=" },
-  prime: { name:"Prime Video",  short:"PV",  color:"#00A8E1", url:"https://www.primevideo.com/search?k=" },
-  hs:    { name:"Hotstar",      short:"HS",  color:"#1a56db", url:"https://www.hotstar.com/in/search?q=" },
-  hbo:   { name:"Max",          short:"MAX", color:"#7B2FBE", url:"https://www.max.com/search?q=" },
-  atv:   { name:"Apple TV+",    short:"ATV", color:"#555",    url:"https://tv.apple.com/search?term=" },
+  cr:    { name:"Crunchyroll",  short:"CR",   color:"#F47521", url:"https://www.crunchyroll.com/search?q=" },
+  nf:    { name:"Netflix",      short:"NF",   color:"#E50914", url:"https://www.netflix.com/search?q=" },
+  prime: { name:"Prime Video",  short:"PV",   color:"#00A8E1", url:"https://www.primevideo.com/search?k=" },
+  hs:    { name:"JioHotstar",   short:"HS",   color:"#1a56db", url:"https://www.hotstar.com/in/search?q=" },
+  hbo:   { name:"Max",          short:"MAX",  color:"#7B2FBE", url:"https://www.max.com/search?q=" },
+  atv:   { name:"Apple TV+",    short:"ATV",  color:"#555",    url:"https://tv.apple.com/search?term=" },
+  sony:  { name:"SonyLIV",      short:"SONY", color:"#003087", url:"https://www.sonyliv.com/search?keyword=" },
+  zee5:  { name:"ZEE5",         short:"ZEE5", color:"#7B2D8B", url:"https://www.zee5.com/search?q=" },
 };
 
 // ─── STATIC CATALOG ──────────────────────────────────────────────────────────
@@ -321,15 +323,16 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 }
 .btn-hero-add:hover{background:rgba(255,255,255,.18);transform:translateY(-2px);}
 .btn-hero-stream{
-  display:flex;align-items:center;gap:7px;
-  background:transparent;color:var(--txm);
-  padding:12px 20px;font-size:12px;font-weight:500;
-  border:1px solid rgba(255,255,255,.15);border-radius:9px;
-  transition:all .2s;text-decoration:none;letter-spacing:.3px;
-  backdrop-filter:blur(10px);
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.08);color:var(--tx);
+  padding:12px 22px;font-size:12px;font-weight:600;
+  border:1px solid rgba(255,255,255,.18);border-radius:9px;
+  transition:all .22s;text-decoration:none;letter-spacing:.4px;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
 }
-.btn-hero-stream:hover{background:rgba(255,255,255,.1);color:var(--tx);transform:translateY(-2px);}
-.btn-hero-stream .stream-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.btn-hero-stream:hover{background:rgba(255,255,255,.15);color:#fff;transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.3);}
+.btn-hero-stream .stream-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px currentColor;}
 .hero-dots{
   position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
   display:flex;gap:8px;
@@ -421,15 +424,21 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 
 .row-card{
   flex-shrink:0;width:154px;
-  border-radius:12px;overflow:hidden;cursor:pointer;position:relative;
+  border-radius:14px;overflow:hidden;cursor:pointer;position:relative;
   background:var(--c2);
-  border:1px solid rgba(178,240,197,.07);
-  transition:all .28s cubic-bezier(.34,1.56,.64,1);
+  border:1px solid rgba(255,255,255,.06);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  will-change:transform;
+}
+.row-card::before{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 60%);
+  border-radius:14px;
 }
 .row-card:hover{
-  transform:scale(1.07) translateY(-6px);
+  transform:scale(1.08) translateY(-8px);
   border-color:var(--acc-border);
-  box-shadow:0 18px 44px rgba(0, 0, 0, 0.48),0 0 0 1px var(--acc-border),0 0 24px var(--acc-glow);
+  box-shadow:0 24px 52px rgba(0,0,0,.55),0 0 0 1px var(--acc-border),0 0 32px var(--acc-glow);
 }
 .row-card-img-box{position:relative;aspect-ratio:2/3;overflow:hidden;}
 .row-card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;}
@@ -456,11 +465,12 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 /* Hover overlay on cards */
 .row-card-hover{
   position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(7,16,10,.78) 0%,rgba(7,16,10,.62) 100%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
-  opacity:0;transition:opacity .2s;
+  background:linear-gradient(180deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.55) 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  opacity:0;transition:opacity .22s;
   padding:12px;
-  color:var(--tx);backdrop-filter:blur(6px);
+  color:var(--tx);backdrop-filter:blur(10px);
+  z-index:2;
 }
 .row-card:hover .row-card-hover{opacity:1;}
 .row-card-hover-title{font-size:11px;font-weight:600;text-align:center;color:var(--tx);line-height:1.3;margin-bottom:2px;text-shadow:0 2px 10px rgba(0,0,0,.45);}
@@ -471,13 +481,15 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
   transition:all .15s;cursor:pointer;width:100%;justify-content:center;
 }
 .row-card-hover-btn:hover{filter:brightness(1.1);}
-.stream-badges-mini{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:2px;}
+.stream-badges-mini{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-top:4px;}
 .stream-badge-mini{
-  font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;
-  text-decoration:none;letter-spacing:.5px;transition:all .15s;
-  opacity:.9;
+  font-size:8px;font-weight:800;padding:3px 7px;border-radius:20px;
+  text-decoration:none;letter-spacing:.8px;transition:all .18s;
+  opacity:.92;box-shadow:0 2px 8px rgba(0,0,0,.35);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.14);
 }
-.stream-badge-mini:hover{opacity:1;transform:scale(1.08);}
+.stream-badge-mini:hover{opacity:1;transform:scale(1.1) translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.5);}
 
 .no-img-box{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--txd);gap:5px;font-size:10px;background:var(--c3);}
 .no-img-icon{font-size:28px;opacity:.25;}
@@ -591,16 +603,21 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .grid.large{grid-template-columns:repeat(auto-fill,minmax(214px,1fr));gap:22px;}
 
 .card{
-  background:var(--c1);border:1px solid rgba(178,240,197,.07);border-radius:14px;
+  background:var(--c1);border:1px solid rgba(255,255,255,.06);border-radius:16px;
   overflow:hidden;cursor:pointer;position:relative;
-  transition:all .28s cubic-bezier(.34,1.56,.64,1);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
   animation:cardIn .4s ease both;
 }
 @keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card::before{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 55%);
+  border-radius:16px;
+}
 .card:hover{
-  transform:translateY(-7px) scale(1.022);
+  transform:translateY(-8px) scale(1.023);
   border-color:var(--acc-border);
-  box-shadow:0 22px 48px rgba(0,0,0,.65),0 0 0 1px var(--acc-border),0 0 20px var(--acc-glow);
+  box-shadow:0 28px 56px rgba(0,0,0,.68),0 0 0 1px var(--acc-border),0 0 28px var(--acc-glow);
 }
 .card-img-box{position:relative;aspect-ratio:2/3;overflow:hidden;background:var(--c2);}
 .card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease;}
@@ -630,6 +647,17 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .s{font-size:11px;color:var(--grey3);}
 .s.on{color:var(--gold);}
 .card-overview{font-size:11px;color:var(--txm);margin-top:6px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.card-ott-strip{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px;}
+.card-ott-dot{
+  width:7px;height:7px;border-radius:50%;flex-shrink:0;
+  box-shadow:0 0 6px currentColor;
+}
+.card-ott-label{
+  font-size:8px;font-weight:800;padding:2px 7px;border-radius:20px;
+  letter-spacing:.6px;color:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.3);
+  border:1px solid rgba(255,255,255,.12);
+}
 
 /* ─────────────────── EMPTY STATE ─────────────────── */
 .empty-state{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;padding:80px 20px;gap:14px;}
@@ -638,11 +666,11 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .empty-sub{font-size:13px;color:var(--txd);}
 
 /* ─────────────────── LOADER ─────────────────── */
-.loader{display:flex;align-items:center;justify-content:center;padding:80px;gap:8px;}
-.ldot{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:ld 1.2s ease infinite;}
-.ldot:nth-child(2){animation-delay:.2s;}
-.ldot:nth-child(3){animation-delay:.4s;}
-@keyframes ld{0%,80%,100%{transform:scale(.6);opacity:.3}40%{transform:scale(1);opacity:1}}
+.loader{display:flex;align-items:center;justify-content:center;padding:80px;gap:10px;}
+.ldot{width:9px;height:9px;border-radius:50%;background:var(--acc);animation:ld 1.3s ease infinite;box-shadow:0 0 12px var(--acc-glow);}
+.ldot:nth-child(2){animation-delay:.18s;}
+.ldot:nth-child(3){animation-delay:.36s;}
+@keyframes ld{0%,80%,100%{transform:scale(.55);opacity:.25}40%{transform:scale(1);opacity:1}}
 
 /* ─────────────────── MODAL ─────────────────── */
 .backdrop{
@@ -778,14 +806,15 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 /* ─────────────────── TOAST ─────────────────── */
 .toast{
   position:fixed;bottom:28px;right:28px;z-index:999;
-  background:var(--c2);border:1px solid var(--grey3);border-radius:12px;
-  padding:13px 18px;font-size:13px;font-weight:500;
-  box-shadow:0 18px 52px rgba(0,0,0,.65);
+  background:var(--c2);border:1px solid var(--grey3);border-radius:14px;
+  padding:14px 20px;font-size:13px;font-weight:500;
+  box-shadow:0 24px 60px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.04);
   display:flex;align-items:center;gap:10px;
-  animation:toastIn .3s cubic-bezier(.34,1.56,.64,1);
+  animation:toastIn .32s cubic-bezier(.34,1.56,.64,1);
+  backdrop-filter:blur(20px);
 }
-@keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:none}}
-.toast-dot{width:8px;height:8px;border-radius:50%;background:var(--acc);flex-shrink:0;box-shadow:0 0 8px var(--acc);}
+@keyframes toastIn{from{opacity:0;transform:translateY(24px) scale(.93)}to{opacity:1;transform:none}}
+.toast-dot{width:8px;height:8px;border-radius:50%;background:var(--acc);flex-shrink:0;box-shadow:0 0 10px var(--acc);}
 
 /* ─────────────────── SECTION DIVIDER ─────────────────── */
 .divider{height:1px;background:linear-gradient(to right,transparent,var(--grey3),transparent);margin:4px 52px;}
@@ -950,6 +979,19 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
           <div className="hero-rating">★ {item.rating}</div>
           <div className="hero-type-tag">{item.type}</div>
           <div className="hero-year">{item.year}</div>
+          {item.streaming?.length > 0 && (
+            <div style={{ display:"flex", gap:5, alignItems:"center", marginLeft:4 }}>
+              {item.streaming.slice(0,3).map(k => OTT[k] && (
+                <span key={k} style={{
+                  fontSize:"9px", fontWeight:800, padding:"3px 8px",
+                  borderRadius:20, background: OTT[k].color,
+                  color:"#fff", letterSpacing:".6px",
+                  boxShadow:`0 2px 10px ${OTT[k].color}55`,
+                  border:"1px solid rgba(255,255,255,.15)"
+                }}>{OTT[k].short}</span>
+              ))}
+            </div>
+          )}
         </div>
         <p className="hero-overview">{item.overview}</p>
         <div className="hero-actions">
@@ -957,8 +999,11 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
             ▶ &nbsp;Add to List
           </button>
           {primaryOtt && (
-            <a className="btn-hero-stream" href={primaryOtt.url + encodeURIComponent(item.title)} target="_blank" rel="noopener noreferrer">
-              <span className="stream-dot" style={{ background: primaryOtt.color }} />
+            <a className="btn-hero-stream"
+              href={primaryOtt.url + encodeURIComponent(item.title)}
+              target="_blank" rel="noopener noreferrer"
+              style={{ borderColor: primaryOtt.color + "55" }}>
+              <span className="stream-dot" style={{ background: primaryOtt.color, boxShadow:`0 0 10px ${primaryOtt.color}` }} />
               Watch on {primaryOtt.name}
             </a>
           )}
@@ -1445,27 +1490,141 @@ export default function App() {
     const abort = new AbortController();
     const lang  = settings.language || "en";
     const adult = settings.adultContent ? "true" : "false";
+  // ── Layer 1: TMDB provider name → OTT key ──────────────────────────────────
+  const PROVIDER_MAP = {
+    "Netflix":                  "nf",
+    "Amazon Prime Video":       "prime",
+    "Disney Plus Hotstar":      "hs",
+    "Hotstar":                  "hs",
+    "JioHotstar":               "hs",
+    "Disney+ Hotstar":          "hs",
+    "SonyLIV":                  "sony",
+    "SonyLiv":                  "sony",
+    "ZEE5":                     "zee5",
+    "Zee5":                     "zee5",
+    "Apple TV+":                "atv",
+    "Apple TV Plus":            "atv",
+    "Crunchyroll":              "cr",
+    "Max":                      "hbo",
+    "HBO Max":                  "hbo",
+  };
 
+  // ── Layer 2a: Manual overrides by TMDB ID ───────────────────────────────────
+  const MANUAL_BY_ID = {
+    // Format: tmdbId: ["ott_key", ...]
+    // Example: 1396: ["nf"]  (Breaking Bad)
+  };
+
+  // ── Layer 2b: Manual overrides by title ─────────────────────────────────────
+  const MANUAL_BY_TITLE = {
+    "Daredevil: Born Again":        ["hs"],
+    "Loki":                         ["hs"],
+    "Moon Knight":                  ["hs"],
+    "WandaVision":                  ["hs"],
+    "The Falcon and the Winter Soldier": ["hs"],
+    "Hawkeye":                      ["hs"],
+    "Ms. Marvel":                   ["hs"],
+    "She-Hulk: Attorney at Law":    ["hs"],
+    "Secret Invasion":              ["hs"],
+    "Echo":                         ["hs"],
+    "Agatha All Along":             ["hs"],
+    "Andor":                        ["hs"],
+    "The Mandalorian":              ["hs"],
+    "Obi-Wan Kenobi":               ["hs"],
+    "The Last of Us":               ["hs"],
+    "House of the Dragon":          ["hs"],
+    "Succession":                   ["hs"],
+    "The Wire":                     ["hs"],
+    "Peaky Blinders":               ["nf"],
+    "Squid Game":                   ["nf"],
+    "Wednesday":                    ["nf"],
+    "Stranger Things":              ["nf"],
+    "Arcane":                       ["nf"],
+    "Dark":                         ["nf"],
+    "Invincible":                   ["prime"],
+    "The Boys":                     ["prime"],
+    "Reacher":                      ["prime"],
+    "Fallout":                      ["prime"],
+  };
+
+  // ── Layer 3: Keyword-based smart fallback ───────────────────────────────────
+  const KEYWORD_MAP = [
+    { match: ["Marvel", "Disney", "Star Wars", "Pixar", "National Geographic"], ott: ["hs"] },
+    { match: ["HBO", "Warner", "Max Original", "DC"],                           ott: ["hs"] },
+    { match: ["Amazon", "Prime Original", "Amazon Studios"],                    ott: ["prime"] },
+    { match: ["Netflix", "Netflix Original"],                                   ott: ["nf"] },
+    { match: ["Sony", "Sony Pictures"],                                         ott: ["sony"] },
+    { match: ["ZEE", "Zee Studios"],                                            ott: ["zee5"] },
+    { match: ["Apple", "A24"],                                                  ott: ["atv"] },
+  ];
+
+  async function getOTT(id, type, title = "") {
+    // Layer 2a — manual override by TMDB ID
+    if (MANUAL_BY_ID[id]) return MANUAL_BY_ID[id];
+
+    // Layer 2b — manual override by title
+    if (title && MANUAL_BY_TITLE[title]) return MANUAL_BY_TITLE[title];
+
+    // Layer 1 — TMDB providers API (IN region)
+    try {
+      const res  = await fetch(`${TMDB_BASE}/${type}/${id}/watch/providers?api_key=${TMDB_KEY}`);
+      const data = await res.json();
+      const flatrate = data.results?.IN?.flatrate || [];
+      const mapped = [...new Set(
+        flatrate.map(p => PROVIDER_MAP[p.provider_name]).filter(Boolean)
+      )];
+      if (mapped.length) return mapped;
+    } catch { /* fall through */ }
+
+    // Layer 3 — keyword fallback on title
+    if (title) {
+      for (const { match, ott } of KEYWORD_MAP) {
+        if (match.some(kw => title.includes(kw))) return ott;
+      }
+    }
+
+    return [];
+  }
     const mapItem = (r, typeLabel) => {
-      const isMovie = typeLabel === "Movie" || r.media_type === "movie";
-      const isTv    = typeLabel === "TV Show" || r.media_type === "tv";
-      const isAnime = typeLabel === "Anime" || (!isMovie && isTv && (r.genre_ids || []).includes(16));
+      const title     = r.title || r.name || "";
+      const year      = (r.release_date || r.first_air_date || "").slice(0, 4);
+      const mediaType = r.media_type || (typeLabel === "Movie" ? "movie" : "tv");
+      const resolvedType = typeLabel || (mediaType === "movie" ? "Movie" : "TV Show");
+
       return {
-        id: `${typeLabel || r.media_type || "item"}-${r.id}`,
+        
+        id: r.id,
         tmdbId: r.id,
-        tmdbType: isMovie ? "movie" : "tv",
-        title: r.title || r.name || "Untitled",
-        year: (r.release_date || r.first_air_date || "").split("-")[0],
-        rating: r.vote_average ? r.vote_average.toFixed(1) : "N/A",
-        type: isAnime ? "Anime" : isMovie ? "Movie" : "TV Show",
-        poster: r.poster_path || r.backdrop_path,
-        backdrop: r.backdrop_path || r.poster_path,
-        poster_path: r.poster_path,
-        backdrop_path: r.backdrop_path,
+        tmdbType: mediaType,
+        title,
+        year,
+        rating: r.vote_average,
+        type: resolvedType,
+        poster: r.poster_path,
+        backdrop: r.backdrop_path,
+        overview: r.overview,   
+
+        ott: null,
         streaming: [],
-        overview: r.overview,
+
+        _rawId: r.id,
+        _type: mediaType,
       };
     };
+
+    async function attachOTT(list, setter) {
+      const updated = await Promise.all(
+        list.map(async (item) => {
+          const streaming = await getOTT(item._rawId, item._type, item.title || "");
+          return {
+            ...item,
+            streaming,
+            ott: streaming[0] || null,
+          };
+        })
+      );
+      setter(updated);
+    }
 
     async function loadHome() {
       try {
@@ -1500,10 +1659,26 @@ export default function App() {
         pushList(globalList);
         pushList(indiaList.slice(6));
 
-        if (heroCombined.length) setHeroItems(heroCombined.slice(0, 20).map(r => mapItem(r)));
-        if (trendMovies?.results?.length) setHomeMovies(trendMovies.results.slice(0, 20).map(r => mapItem(r, "Movie")));
-        if (trendTv?.results?.length)     setHomeSeries(trendTv.results.slice(0, 20).map(r => mapItem(r, "TV Show")));
-        if (anime?.results?.length)       setHomeAnime(anime.results.slice(0, 20).map(r => mapItem(r, "Anime")));
+        if (heroCombined.length) {
+          const mapped = heroCombined.slice(0, 20).map(r => mapItem(r));
+          setHeroItems(mapped);
+          attachOTT(mapped, setHeroItems);
+        }
+        if (trendMovies?.results?.length) {
+          const mapped = trendMovies.results.slice(0, 20).map(r => mapItem(r, "Movie"));
+          setHomeMovies(mapped);
+          attachOTT(mapped, setHomeMovies);
+        }
+        if (trendTv?.results?.length) {
+          const mapped = trendTv.results.slice(0, 20).map(r => mapItem(r, "TV Show"));
+          setHomeSeries(mapped);
+          attachOTT(mapped, setHomeSeries);
+        }
+        if (anime?.results?.length) {
+          const mapped = anime.results.slice(0, 20).map(r => mapItem(r, "Anime"));
+          setHomeAnime(mapped);
+          attachOTT(mapped, setHomeAnime);
+        }
       } catch {}
     }
 
@@ -1889,6 +2064,16 @@ export default function App() {
                         {settings.showRatings && entry.rating > 0 && (
                           <div className="card-stars">
                             {[1,2,3,4,5].map(s => <span key={s} className={`s${entry.rating>=s?" on":""}`}>★</span>)}
+                          </div>
+                        )}
+                        {settings.showStreaming && entry.streaming?.length > 0 && (
+                          <div className="card-ott-strip">
+                            {entry.streaming.slice(0,3).map(k => OTT[k] && (
+                              <span key={k} className="card-ott-label"
+                                style={{ background: OTT[k].color }}>
+                                {OTT[k].short}
+                              </span>
+                            ))}
                           </div>
                         )}
                         {settings.showOverviews && entry.notes && (
