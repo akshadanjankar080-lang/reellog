@@ -1,60 +1,26 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+﻿import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
-import {
-  FaArrowLeft,
-  FaBolt,
-  FaBookOpen,
-  FaBrain,
-  FaCheck,
-  FaChevronLeft,
-  FaChevronRight,
-  FaCog,
-  FaCompass,
-  FaDragon,
-  FaEye,
-  FaFire,
-  FaFilm,
-  FaGhost,
-  FaGift,
-  FaHatCowboy,
-  FaHeart,
-  FaLandmark,
-  FaLaugh,
-  FaMagic,
-  FaMusic,
-  FaPlay,
-  FaPlus,
-  FaQuestionCircle,
-  FaRobot,
-  FaSearch,
-  FaShieldAlt,
-  FaStar,
-  FaTheaterMasks,
-  FaTimes,
-  FaUserCircle,
-  FaUserSecret,
-  FaUserShield,
-} from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaUserCircle, FaCog, FaPlus } from "react-icons/fa";
 
-// ─── SUPABASE ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ SUPABASE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const supabase = createClient(
   "https://maoiguhrcvpxvmgztmqq.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hb2lndWhyY3ZweHZtZ3p0bXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMzE0NTcsImV4cCI6MjA4OTkwNzQ1N30.Jz1JhnSaTo1z0XYnb4rzbpmG90ceawHx6APkT0gNGI8"
 );
 
-// ─── TMDB ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ TMDB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const TMDB_IMG  = "https://image.tmdb.org/t/p/w500";
 const TMDB_W    = "https://image.tmdb.org/t/p/w1280";
 const TMDB_BASE = "https://api.themoviedb.org/3";
 const TMDB_KEY  = "dfb570e7a09aa4e72df7064fc4a703f0";
 
-// ─── CONSTANTS ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ CONSTANTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const STATUSES = ["Want to Watch", "Watching", "Watched"];
 const SCOLOR   = { Watched: "#b2f0c5", Watching: "#f4e08a", "Want to Watch": "#8ebbf5" };
-const SICON    = { Watched: "✓", Watching: "▶", "Want to Watch": "◎" };
+const SICON    = { Watched: "âœ“", Watching: "â–¶", "Want to Watch": "â—Ž" };
 
-// ─── OTT STREAMING PLATFORMS ─────────────────────────────────────────────────
+// â”€â”€â”€ OTT STREAMING PLATFORMS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const OTT = {
   nf:    { name:"Netflix",      short:"NF",   color:"#E50914", bg:"#141414", logo:"https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",                                            url:"https://www.netflix.com/search?q=" },
   prime: { name:"Prime Video",  short:"PV",   color:"#00A8E1", bg:"#0F171E", logo:"https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png",                                                  url:"https://www.primevideo.com/search?phrase=" },
@@ -66,7 +32,7 @@ const OTT = {
   cr:    { name:"Crunchyroll",  short:"CR",   color:"#F47521", bg:"#1A0800", logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Crunchyroll_icon_2024.svg/512px-Crunchyroll_icon_2024.svg.png", url:"https://www.crunchyroll.com/search?q=" },
 };
 
-// ─── STATIC CATALOG ──────────────────────────────────────────────────────────
+// â”€â”€â”€ STATIC CATALOG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const STATIC_ANIME = [
   { id:"a1",  tmdbId:1429,   tmdbType:"tv",    title:"Attack on Titan",                   year:2013, rating:9.1, type:"Anime",   poster:"/hTP1DtLGFAmna71pe5kzkm7zBCc.jpg",  streaming:["cr","nf"],    categories:["Action","Adventure","Animated"], overview:"Humanity battles giant humanoid Titans behind massive walls. When the walls are breached, young Eren Yeager vows revenge and changes the world." },
   { id:"a2",  tmdbId:85937,  tmdbType:"tv",    title:"Demon Slayer",                       year:2019, rating:8.7, type:"Anime",   poster:"/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg",  streaming:["cr","nf"],    categories:["Action","Adventure","Anime"], overview:"A boy trains as a demon slayer to avenge his family and cure his sister who was turned into a demon." },
@@ -74,7 +40,7 @@ const STATIC_ANIME = [
   { id:"a4",  tmdbId:31911,  tmdbType:"tv",    title:"Fullmetal Alchemist: Brotherhood",   year:2009, rating:9.1, type:"Anime",   poster:"/9Yjx4OutGMrJNgLdmLLNLJaQBMX.jpg",  streaming:["cr","nf"],    categories:["Anime","Adventure","Anthology"], overview:"Two brothers search for the Philosopher's Stone after a failed alchemical ritual leaves them broken." },
   { id:"a5",  tmdbId:46298,  tmdbType:"tv",    title:"Hunter x Hunter",                    year:2011, rating:9.0, type:"Anime",   poster:"/gHuCPlS2bMbcuONEqRDvMV0AVgO.jpg",  streaming:["cr"],         categories:["Anime","Adventure","Action"], overview:"A boy follows his father's footsteps to become a legendary Hunter in a world of wonder and danger." },
   { id:"a6",  tmdbId:80777,  tmdbType:"tv",    title:"Vinland Saga",                       year:2019, rating:8.8, type:"Anime",   poster:"/4mFJHHlMoOWhEEqtFjVKv3CRbQr.jpg",  streaming:["cr","prime"], categories:["Anime","Adventure","Action","Animated"], overview:"A young Viking warrior seeks revenge in a brutal medieval world, eventually questioning the meaning of true strength." },
-  { id:"a7",  tmdbId:64927,  tmdbType:"tv",    title:"Re:Zero",                            year:2016, rating:8.3, type:"Anime",   poster:"/aGrqIBHi09G2RPQHH79RGkJFYvB.jpg",  streaming:["cr"],         categories:["Anime","Adventure"], overview:"A boy transported to a fantasy world discovers he can reset time upon death — a power that becomes a curse." },
+  { id:"a7",  tmdbId:64927,  tmdbType:"tv",    title:"Re:Zero",                            year:2016, rating:8.3, type:"Anime",   poster:"/aGrqIBHi09G2RPQHH79RGkJFYvB.jpg",  streaming:["cr"],         categories:["Anime","Adventure"], overview:"A boy transported to a fantasy world discovers he can reset time upon death â€” a power that becomes a curse." },
   { id:"a8",  tmdbId:120089, tmdbType:"tv",    title:"Spy x Family",                       year:2022, rating:8.5, type:"Anime",   poster:"/4SRTuMnT3XbMRAfAtBKlXKHoqkT.jpg",  streaming:["cr","nf"],    categories:["Anime","Action","Animated"], overview:"A spy assembles a fake family for a mission, unaware each member harbours a secret of their own." },
   { id:"a9",  tmdbId:114410, tmdbType:"tv",    title:"Chainsaw Man",                       year:2022, rating:8.5, type:"Anime",   poster:"/npdB6oBX4SHkH9LhEVrSYOHhDpd.jpg",  streaming:["cr"],         categories:["Anime","Action","Animated"], overview:"A destitute boy merges with his devil dog and becomes a Devil Hunter, craving the simplest things in life." },
   { id:"a10", tmdbId:65806,  tmdbType:"tv",    title:"Mob Psycho 100",                     year:2016, rating:8.5, type:"Anime",   poster:null,                                  streaming:["cr","nf"],    categories:["Anime","Animated"], overview:"A powerful esper boy tries to live a normal life, suppressing emotions that could level a city." },
@@ -88,7 +54,7 @@ const STATIC_MOVIES = [
   { id:"m3",  tmdbId:157336, tmdbType:"movie", title:"Interstellar",                        year:2014, rating:8.7, type:"Movie",   poster:"/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",  streaming:["nf","prime"], categories:["Adventure","Sci-Fi"], overview:"Explorers travel through a wormhole in space to ensure humanity's survival across galaxies." },
   { id:"m4",  tmdbId:27205,  tmdbType:"movie", title:"Inception",                           year:2010, rating:8.8, type:"Movie",   poster:"/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",  streaming:["nf","prime"], categories:["Action","Adventure","Adult Comedy"], overview:"A thief who steals corporate secrets through the art of dream-sharing is given one last impossible mission." },
   { id:"m5",  tmdbId:155,    tmdbType:"movie", title:"The Dark Knight",                     year:2008, rating:9.0, type:"Movie",   poster:"/qJ2tW6WMUDux911r6m7haRef0WH.jpg",  streaming:["hs","prime"], categories:["Action","Drama"], overview:"Batman faces the Joker, a criminal mastermind who wants to plunge Gotham into anarchy." },
-  { id:"m6",  tmdbId:129,    tmdbType:"movie", title:"Spirited Away",                       year:2001, rating:8.6, type:"Movie",   poster:"/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",  streaming:["nf"],         categories:["Animation","Adventure","Anime","Art House"], overview:"A girl enters the spirit world to rescue her parents turned into pigs — a breathtaking journey of growth." },
+  { id:"m6",  tmdbId:129,    tmdbType:"movie", title:"Spirited Away",                       year:2001, rating:8.6, type:"Movie",   poster:"/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",  streaming:["nf"],         categories:["Animation","Adventure","Anime","Art House"], overview:"A girl enters the spirit world to rescue her parents turned into pigs â€” a breathtaking journey of growth." },
   { id:"m7",  tmdbId:372058, tmdbType:"movie", title:"Your Name",                           year:2016, rating:8.4, type:"Movie",   poster:"/q719jXXEzOoYaps6babgKnONONX.jpg",  streaming:["nf","prime"], categories:["Anime","Adventure","Anthology"], overview:"Two strangers find themselves inexplicably linked through body-swapping dreams that transcend time." },
   { id:"m8",  tmdbId:496243, tmdbType:"movie", title:"Parasite",                            year:2019, rating:8.5, type:"Movie",   poster:"/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",  streaming:["prime","hs"], categories:["Drama"], overview:"Greed and class discrimination threaten a symbiotic relationship between two families in modern Seoul." },
   { id:"m9",  tmdbId:545611, tmdbType:"movie", title:"Everything Everywhere All at Once",   year:2022, rating:7.8, type:"Movie",   poster:"/w3LxiVYdWWRvEVdn5RYq6jIqkb1.jpg",  streaming:["prime","hs"], categories:["Adventure","Comedy","Drama","Anthology"], overview:"A Chinese immigrant is swept up in an adventure across the multiverse to save the world." },
@@ -102,9 +68,9 @@ const STATIC_SERIES = [
   { id:"s4",  tmdbId:95396,  tmdbType:"tv",    title:"Severance",                           year:2022, rating:8.7, type:"TV Show", poster:"/tE3zEVeNaxD2aJMXnFfPHpQxOhJ.jpg",   streaming:["atv"],        categories:["Drama","Sci-Fi"], overview:"Workers have their work and personal memories surgically separated, creating a haunting corporate dystopia." },
   { id:"s5",  tmdbId:100088, tmdbType:"tv",    title:"The Last of Us",                      year:2023, rating:8.8, type:"TV Show", poster:"/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg",   streaming:["hbo","hs"],   categories:["Action","Adventure"], overview:"A hardened smuggler and a teenage girl traverse a post-apocalyptic United States filled with infected and factions." },
   { id:"s6",  tmdbId:94997,  tmdbType:"tv",    title:"House of the Dragon",                 year:2022, rating:8.5, type:"TV Show", poster:"/z2yahl2uefxDCl0nogcRBstwruJ.jpg",   streaming:["hbo","hs"],   categories:["Action","Adventure","Drama"], overview:"The internal succession war of House Targaryen, set 200 years before the events of Game of Thrones." },
-  { id:"s7",  tmdbId:63351,  tmdbType:"tv",    title:"Succession",                          year:2018, rating:8.9, type:"TV Show", poster:"/e2X8fBflR3zqzWNBlHFzSAE5Jah.jpg",   streaming:["hbo"],        categories:["Drama"], overview:"The Roy family controls one of the biggest media empires in the world — and tears itself apart fighting for it." },
+  { id:"s7",  tmdbId:63351,  tmdbType:"tv",    title:"Succession",                          year:2018, rating:8.9, type:"TV Show", poster:"/e2X8fBflR3zqzWNBlHFzSAE5Jah.jpg",   streaming:["hbo"],        categories:["Drama"], overview:"The Roy family controls one of the biggest media empires in the world â€” and tears itself apart fighting for it." },
   { id:"s8",  tmdbId:70523,  tmdbType:"tv",    title:"Dark",                                year:2017, rating:8.8, type:"TV Show", poster:"/apbrbWs5M0SUFOSnPKzFm8Jj3jv.jpg",   streaming:["nf"],         categories:["Drama","Sci-Fi"], overview:"A mind-bending family saga involving four interdependent families in a German town across different time periods." },
-  { id:"s9",  tmdbId:95557,  tmdbType:"tv",    title:"Invincible",                          year:2021, rating:8.7, type:"TV Show", poster:"/yDWJYRAwMNKa767NIf0q8jk6r7i.jpg",   streaming:["prime"],      categories:["Action","Adventure","Animation"], overview:"A teenage boy discovers his father is the most powerful superhero on the planet — and something far darker." },
+  { id:"s9",  tmdbId:95557,  tmdbType:"tv",    title:"Invincible",                          year:2021, rating:8.7, type:"TV Show", poster:"/yDWJYRAwMNKa767NIf0q8jk6r7i.jpg",   streaming:["prime"],      categories:["Action","Adventure","Animation"], overview:"A teenage boy discovers his father is the most powerful superhero on the planet â€” and something far darker." },
   { id:"s10", tmdbId:136315, tmdbType:"tv",    title:"The Bear",                            year:2022, rating:8.8, type:"TV Show", poster:null,                                   streaming:["hs","atv"],   categories:["Comedy","Drama"], overview:"A James Beard-nominated chef returns to Chicago to run his family's chaotic sandwich shop after a family tragedy." },
 ];
 
@@ -139,33 +105,33 @@ const EXPLORE_CATEGORY_GROUPS = {
 };
 
 const EXPLORE_GENRE_CARDS = [
-  { name:"Action",          gradient:"linear-gradient(135deg, #1a0a0a, #8B0000)", icon:<FaFire />,           tmdbGenreId:28 },
-  { name:"Adventure",       gradient:"linear-gradient(135deg, #0a1628, #1a4a2e)", icon:<FaCompass />,        tmdbGenreId:12 },
-  { name:"Animation",       gradient:"linear-gradient(135deg, #1a0a2e, #4a1a6e)", icon:<FaFilm />,           tmdbGenreId:16 },
-  { name:"Comedy",          gradient:"linear-gradient(135deg, #1a1200, #5a4a00)", icon:<FaLaugh />,          tmdbGenreId:35 },
-  { name:"Crime",           gradient:"linear-gradient(135deg, #0a0a0a, #2a1a00)", icon:<FaUserSecret />,     tmdbGenreId:80 },
-  { name:"Documentary",     gradient:"linear-gradient(135deg, #0a1a1a, #003333)", icon:<FaBookOpen />,       tmdbGenreId:99 },
-  { name:"Drama",           gradient:"linear-gradient(135deg, #1a0a1a, #3a003a)", icon:<FaTheaterMasks />,   tmdbGenreId:18 },
-  { name:"Fantasy",         gradient:"linear-gradient(135deg, #0a0a2a, #1a003a)", icon:<FaMagic />,          tmdbGenreId:14 },
-  { name:"History",         gradient:"linear-gradient(135deg, #1a1000, #3a2800)", icon:<FaLandmark />,       tmdbGenreId:36 },
-  { name:"Horror",          gradient:"linear-gradient(135deg, #0a0000, #3a0000)", icon:<FaGhost />,          tmdbGenreId:27 },
-  { name:"Music",           gradient:"linear-gradient(135deg, #001a1a, #003a3a)", icon:<FaMusic />,          tmdbGenreId:10402 },
-  { name:"Mystery",         gradient:"linear-gradient(135deg, #080818, #18083a)", icon:<FaQuestionCircle />, tmdbGenreId:9648 },
-  { name:"Romance",         gradient:"linear-gradient(135deg, #1a0010, #4a0028)", icon:<FaHeart />,          tmdbGenreId:10749 },
-  { name:"Science Fiction", gradient:"linear-gradient(135deg, #000a1a, #001a3a)", icon:<FaRobot />,          tmdbGenreId:878 },
-  { name:"Thriller",        gradient:"linear-gradient(135deg, #050510, #100520)", icon:<FaBolt />,           tmdbGenreId:53 },
-  { name:"War",             gradient:"linear-gradient(135deg, #0a0a00, #1a1a00)", icon:<FaShieldAlt />,      tmdbGenreId:10752 },
-  { name:"Western",         gradient:"linear-gradient(135deg, #1a0800, #3a1800)", icon:<FaHatCowboy />,      tmdbGenreId:37 },
-  { name:"Anime",           gradient:"linear-gradient(135deg, #1a0010, #00103a)", icon:<FaDragon />,         keywordQuery:"anime" },
-  { name:"Superhero",       gradient:"linear-gradient(135deg, #0a001a, #1a0000)", icon:<FaUserShield />,     keywordQuery:"superhero" },
-  { name:"Psychological",   gradient:"linear-gradient(135deg, #050510, #200520)", icon:<FaBrain />,          keywordQuery:"psychological" },
+  { name:"Action",          gradient:"linear-gradient(135deg, #1a0a0a, #8B0000)", emoji:"💥", tmdbGenreId:28 },
+  { name:"Adventure",       gradient:"linear-gradient(135deg, #0a1628, #1a4a2e)", emoji:"🗺", tmdbGenreId:12 },
+  { name:"Animation",       gradient:"linear-gradient(135deg, #1a0a2e, #4a1a6e)", emoji:"✨", tmdbGenreId:16 },
+  { name:"Comedy",          gradient:"linear-gradient(135deg, #1a1200, #5a4a00)", emoji:"😂", tmdbGenreId:35 },
+  { name:"Crime",           gradient:"linear-gradient(135deg, #0a0a0a, #2a1a00)", emoji:"🔪", tmdbGenreId:80 },
+  { name:"Documentary",     gradient:"linear-gradient(135deg, #0a1a1a, #003333)", emoji:"🎥", tmdbGenreId:99 },
+  { name:"Drama",           gradient:"linear-gradient(135deg, #1a0a1a, #3a003a)", emoji:"🎭", tmdbGenreId:18 },
+  { name:"Fantasy",         gradient:"linear-gradient(135deg, #0a0a2a, #1a003a)", emoji:"🧙", tmdbGenreId:14 },
+  { name:"History",         gradient:"linear-gradient(135deg, #1a1000, #3a2800)", emoji:"📜", tmdbGenreId:36 },
+  { name:"Horror",          gradient:"linear-gradient(135deg, #0a0000, #3a0000)", emoji:"👁", tmdbGenreId:27 },
+  { name:"Music",           gradient:"linear-gradient(135deg, #001a1a, #003a3a)", emoji:"🎵", tmdbGenreId:10402 },
+  { name:"Mystery",         gradient:"linear-gradient(135deg, #080818, #18083a)", emoji:"🔍", tmdbGenreId:9648 },
+  { name:"Romance",         gradient:"linear-gradient(135deg, #1a0010, #4a0028)", emoji:"💋", tmdbGenreId:10749 },
+  { name:"Science Fiction", gradient:"linear-gradient(135deg, #000a1a, #001a3a)", emoji:"🚀", tmdbGenreId:878 },
+  { name:"Thriller",        gradient:"linear-gradient(135deg, #050510, #100520)", emoji:"⚡", tmdbGenreId:53 },
+  { name:"War",             gradient:"linear-gradient(135deg, #0a0a00, #1a1a00)", emoji:"🎖", tmdbGenreId:10752 },
+  { name:"Western",         gradient:"linear-gradient(135deg, #1a0800, #3a1800)", emoji:"🤠", tmdbGenreId:37 },
+  { name:"Anime",           gradient:"linear-gradient(135deg, #1a0010, #00103a)", emoji:"⛩", keywordQuery:"anime" },
+  { name:"Superhero",       gradient:"linear-gradient(135deg, #0a001a, #1a0000)", emoji:"🦸", keywordQuery:"superhero" },
+  { name:"Psychological",   gradient:"linear-gradient(135deg, #050510, #200520)", emoji:"🧠", keywordQuery:"psychological" },
 ];
 
 function toGenreSlug(str) {
   return (str || "").toLowerCase().replace(/\s+/g, "-");
 }
 
-// ─── SETTINGS DEFAULTS ───────────────────────────────────────────────────────
+// â”€â”€â”€ SETTINGS DEFAULTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const DEFAULT_SETTINGS = {
   theme:       "black", // ui theme: black, light, or neo (original)
   accentColor: "green",
@@ -180,41 +146,36 @@ const DEFAULT_SETTINGS = {
   cinematicBg:  true,
 };
 
-// ─── GLOBAL CSS ──────────────────────────────────────────────────────────────
+// â”€â”€â”€ GLOBAL CSS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
 :root{
-  /* ── CORE PALETTE (dark with green tint) ── */
-  --bk:#07100a;
+  /* â”€â”€ CORE PALETTE (dark with green tint) -bk:#07100a;
   --c1:#0e1812;
   --c2:#162019;
   --c3:#1d2b21;
 
-  /* ── ACCENT: Pastel Green default ── */
-  --acc:#b2f0c5; 
+  /* â”€â”€ ACCENT: Pastel Green default -acc:#b2f0c5; 
   --acc-d:#6dbe8c;
   --acc-glow:rgba(178,240,197,.22);
   --acc-dim:rgba(178,240,197,.08);
   --acc-border:rgba(178,240,197,.22);
 
-  /* ── YELLOWS & GREYS ── */
-  --gold:#f0d878;
+  /* â”€â”€ YELLOWS & GREYS -gold:#f0d878;
   --gold-dim:rgba(240,216,120,.12);
   --grey1:#899e8d;
   --grey2:#4a5e50;
   --grey3:#253028;
   --grey4:#192218;
 
-  /* ── TEXT ── */
-  --tx:#e8f2ea;
+  /* â”€â”€ TEXT -tx:#e8f2ea;
   --txm:#899e8d;
   --txd:#4a5e50;
 
-  /* ── DANGER ── */
-  --red:#f47070;
+  /* â”€â”€ DANGER -red:#f47070;
   --red-dim:rgba(244,112,112,.1);
 }
 
@@ -283,42 +244,36 @@ body{
 button{cursor:pointer;font-family:'DM Sans',sans-serif;}
 input,select,textarea{font-family:'DM Sans',sans-serif;}
 
-/* ─────── GRAIN OVERLAY ─────── */
+/* â”€â”€â”€â”€â”€â”€â”€ GRAIN OVERLAY â”€â”€â”€â”€â”€â”€â”€ */
 .grain-svg{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9998;opacity:.038;}
 
-/* ─────────────────── NAV ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ NAV â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   height:66px;display:flex;align-items:center;gap:24px;
   padding:0 48px;
-  background:linear-gradient(to bottom,rgba(7,16,10,.92),rgba(7,16,10,.78),rgba(7,16,10,.65));
-  backdrop-filter:blur(30px);
-  border-bottom:1px solid rgba(178,240,197,.12);
-  box-shadow:0 8px 32px rgba(0,0,0,.3), 0 0 20px rgba(178,240,197,.08);
-  transition:all .3s ease;
+  background:linear-gradient(to bottom,rgba(7,16,10,.97),rgba(7,16,10,.82));
+  backdrop-filter:blur(28px);
+  border-bottom:1px solid rgba(178,240,197,.07);
+  transition:background .3s;
 }
-.nav-scrolled{background:rgba(7,16,10,.95)!important;box-shadow:0 12px 40px rgba(0,0,0,.4), 0 0 25px rgba(178,240,197,.1)!important;}
+.nav-scrolled{background:rgba(7,16,10,.98)!important;box-shadow:0 1px 0 rgba(178,240,197,.06);}
 .nav-logo{
-  font-family:'Bebas Neue',sans-serif;font-size:29px;letter-spacing:4px;
+  font-family:'Bebas Neue',sans-serif;font-size:29px;letter-spacing:3px;
   color:var(--acc);display:flex;align-items:center;gap:8px;cursor:pointer;
-  text-shadow:0 0 0px rgba(178,240,197,0.5), 0 0 2px var(--acc-glow), 0 0 5px rgba(178,240,197,0.2);
-  transition:all 0.3s ease;
-}
-.nav-logo:hover{
-  transform:scale(1.05);
-  text-shadow:0 0 10px rgba(178,240,197,0.7), 0 0 10px var(--acc-glow), 0 0 30px rgba(178,240,197,0.3);
+  text-shadow:0 0 40px var(--acc-glow);
 }
 .nav-logo span{color:var(--tx);}
 .nav-dot{width:7px;height:7px;border-radius:50%;background:var(--acc);flex-shrink:0;box-shadow:0 0 10px var(--acc-glow);}
 .nav-links{display:flex;align-items:center;gap:2px;}
 .nav-link{
-  padding:8px 16px;font-size:13px;font-weight:600;color:var(--txm);
+  padding:8px 16px;font-size:13px;font-weight:500;color:var(--txm);
   background:none;border:none;border-radius:8px;
-  transition:all 0.25s ease;letter-spacing:.3px;position:relative;
+  transition:all .15s;letter-spacing:.3px;position:relative;
 }
-.nav-link::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%) scaleX(0);width:16px;height:3px;background:var(--acc);border-radius:2px;transition:transform 0.25s ease;box-shadow:0 0 12px rgba(178,240,197,0.4);}
-.nav-link:hover{color:var(--acc);transform:translateY(-2px);}
-.nav-link.active{color:var(--acc);text-shadow:0 0 16px rgba(178,240,197,0.4);}
+.nav-link::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%) scaleX(0);width:16px;height:2px;background:var(--acc);border-radius:2px;transition:transform .2s;}
+.nav-link:hover{color:var(--tx);}
+.nav-link.active{color:var(--acc);}
 .nav-link.active::after{transform:translateX(-50%) scaleX(1);}
 .nav-right{display:flex;align-items:center;gap:10px;margin-left:auto;}
 .nav-user{font-size:12px;color:var(--txm);letter-spacing:.5px;padding:0 4px;}
@@ -329,29 +284,23 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .btn-acc:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 6px 20px var(--acc-glow);}
 .btn-icon{
   width:38px;height:38px;display:flex;align-items:center;justify-content:center;
-  background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid var(--grey3);
-  border-radius:9px;color:var(--txm);font-size:16px;transition:all 0.25s ease;
-  position:relative;box-shadow:0 0 10px rgba(178,240,197,0.15);
-  padding:0;line-height:1;
+  background:rgba(178,240,197,.06);border:1px solid var(--grey3);
+  border-radius:9px;color:var(--txm);font-size:16px;transition:all .2s;
+  position:relative;
 }
-.btn-icon svg, .btn-icon > * {
-  display:flex;align-items:center;justify-content:center;
-  width:18px;height:18px;flex-shrink:0;
-}
-.theme-black .nav{background:linear-gradient(to bottom,rgba(0,0,0,.92),rgba(0,0,0,.78),rgba(0,0,0,.65));border-bottom:1px solid rgba(255,255,255,.12);box-shadow:0 8px 32px rgba(0,0,0,.4), 0 0 20px rgba(255,255,255,.08);}
-.theme-black .nav-scrolled{background:rgba(0,0,0,.95)!important;box-shadow:0 12px 40px rgba(0,0,0,.5), 0 0 25px rgba(255,255,255,.1)!important;}
-.theme-light .nav{background:linear-gradient(to bottom,rgba(248,250,252,.94),rgba(248,250,252,.88),rgba(248,250,252,.80));border-bottom:1px solid rgba(30,41,59,.15);box-shadow:0 8px 32px rgba(0,0,0,.12), 0 0 20px rgba(30,41,59,.08);}
-.theme-light .nav-scrolled{background:rgba(248,250,252,.96)!important;box-shadow:0 12px 40px rgba(0,0,0,.15), 0 0 25px rgba(30,41,59,.1)!important;}
+.theme-black .nav{background:linear-gradient(to bottom,rgba(0,0,0,.96),rgba(0,0,0,.88));border-bottom:1px solid #111;}
+.theme-black .nav-scrolled{background:rgba(0,0,0,.96)!important;box-shadow:0 1px 0 #111;}
+.theme-light .nav{background:linear-gradient(to bottom,rgba(248,250,252,.96),rgba(248,250,252,.9));border-bottom:1px solid #e2e8f0;}
+.theme-light .nav-scrolled{background:rgba(248,250,252,.96)!important;box-shadow:0 1px 0 #e2e8f0;}
 .theme-light .nav-link{color:#475569;}
-.theme-light .nav-link:hover{color:#0f172a;transform:translateY(-2px);}
+.theme-light .nav-link:hover{color:#0f172a;}
 .theme-light .nav-logo span{color:#0f172a;}
 .theme-light .btn-outline{border-color:#e2e8f0;color:#475569;}
 .theme-light .btn-icon{background:rgba(15,23,42,.04);border-color:#e2e8f0;color:#475569;}
-.btn-icon:hover{border-color:var(--acc-border);color:var(--acc);background:rgba(178,240,197,0.12);transform:scale(1.08);box-shadow:0 0 20px rgba(178,240,197,0.3);}
-.btn-icon:active{transform:scale(0.95);box-shadow:0 0 8px rgba(178,240,197,0.2);}
+.btn-icon:hover{border-color:var(--acc-border);color:var(--acc);background:var(--acc-dim);transform:rotate(30deg);}
 .settings-gear{font-size:17px;line-height:1;}
 
-/* ─────────────────── NAV DROPDOWN ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ NAV DROPDOWN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .nav-dropdown-wrapper{position:relative;display:inline-block;}
 .nav-dropdown-menu{
   position:absolute;top:66px;left:0;z-index:199;
@@ -436,7 +385,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
   color:#0f172a;
 }
 
-/* ─────────────────── HERO CAROUSEL ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HERO CAROUSEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hero-wrap{position:relative;height:100vh;min-height:600px;max-height:840px;overflow:hidden;margin-top:-66px;}
 .hero-bg-img{
   position:absolute;inset:0;
@@ -560,7 +509,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
   box-shadow:0 14px 28px rgba(0,0,0,.42), inset 0 0 12px rgba(178,240,197,.08);
 }
 
-/* ─────────────────── ROW SECTIONS ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ROW SECTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .catalog-section{padding:0;}
 .row-section{
   position:relative;
@@ -684,7 +633,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .no-img-box{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--txd);gap:5px;font-size:10px;background:var(--c3);}
 .no-img-icon{font-size:28px;opacity:.25;}
 
-/* ─────────────────── SEE-ALL MODAL ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ SEE-ALL MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .see-all-backdrop{
   position:fixed;inset:0;z-index:600;
   background:rgba(0,0,0,.88);backdrop-filter:blur(16px);
@@ -723,14 +672,14 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
   padding:20px 32px 32px;
 }
 
-/* ─────────────────── MAIN GRID (watchlist) ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ MAIN GRID (watchlist) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .page-header{padding:104px 52px 32px;}
 .page-eyebrow{font-size:11px;letter-spacing:3.5px;color:var(--txd);text-transform:uppercase;margin-bottom:8px;}
 .page-h1{font-family:'DM Serif Display',serif;font-size:clamp(32px,4vw,56px);line-height:1.1;}
 .page-h1 em{color:var(--acc);font-style:italic;}
 .page-count{font-size:13px;color:var(--txm);margin-top:8px;}
 
-/* ─────────────────── CATEGORIES A-Z ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CATEGORIES A-Z â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .category-letter{
   font-family:'Bebas Neue',sans-serif;
   font-size:48px;
@@ -766,7 +715,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
   padding:0 52px 80px;
 }
 .genre-card{
-  height:10px;
+  height:140px;
   border-radius:14px;
   overflow:hidden;
   cursor:pointer;
@@ -776,18 +725,12 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 }
 .genre-card-emoji{
   font-size:100px;
-  opacity:.18;
+  opacity:.09;
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
   pointer-events:none;
-  text-shadow:0 0 30px rgba(178,240,197,0.3), 0 0 60px rgba(178,240,197,0.15);
-  transition:transform 0.35s cubic-bezier(.34,1.56,.64,1);
-  filter:drop-shadow(0 0 8px rgba(178,240,197,0.2));
-}
-.genre-card:hover .genre-card-emoji{
-  transform:translate(-50%,-50%) scale(1.12) translateY(-8px);
 }
 .genre-card-overlay{
   position:absolute;
@@ -873,7 +816,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .sort-sel{background:var(--c1);border:1px solid var(--grey3);color:var(--txm);padding:9px 12px;font-size:12px;outline:none;border-radius:8px;margin-left:auto;cursor:pointer;}
 .sort-sel:focus{border-color:var(--acc-border);}
 
-/* ─────────────────── GRID CARDS ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ GRID CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .grid-wrap{padding:22px 52px 100px;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:18px;}
 .grid.small{grid-template-columns:repeat(auto-fill,minmax(142px,1fr));gap:14px;}
@@ -936,20 +879,20 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
   border:1px solid rgba(255,255,255,.12);
 }
 
-/* ─────────────────── EMPTY STATE ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ EMPTY STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .empty-state{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;padding:80px 20px;gap:14px;}
 .empty-icon{font-size:52px;opacity:.15;}
 .empty-title{font-size:16px;color:var(--txm);font-weight:500;}
 .empty-sub{font-size:13px;color:var(--txd);}
 
-/* ─────────────────── LOADER ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ LOADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .loader{display:flex;align-items:center;justify-content:center;padding:80px;gap:10px;}
 .ldot{width:9px;height:9px;border-radius:50%;background:var(--acc);animation:ld 1.3s ease infinite;box-shadow:0 0 12px var(--acc-glow);}
 .ldot:nth-child(2){animation-delay:.18s;}
 .ldot:nth-child(3){animation-delay:.36s;}
 @keyframes ld{0%,80%,100%{transform:scale(.55);opacity:.25}40%{transform:scale(1);opacity:1}}
 
-/* ─────────────────── MODAL ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .backdrop{
   position:fixed;inset:0;z-index:400;
   background:rgba(0,0,0,.88);backdrop-filter:blur(16px);
@@ -994,7 +937,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .btn-cxl{background:none;color:var(--txm);border:1px solid var(--grey3);padding:13px 18px;font-size:13px;border-radius:9px;transition:all .15s;}
 .btn-cxl:hover{border-color:var(--grey2);color:var(--tx);}
 
-/* ─────────────────── AUTH MODAL ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ AUTH MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .auth-modal{
   background:var(--c1);border:1px solid var(--grey3);border-radius:22px;
   width:100%;max-width:420px;padding:42px;
@@ -1016,7 +959,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .auth-err{font-size:12px;color:var(--red);margin-bottom:10px;padding:10px 14px;background:var(--red-dim);border:1px solid rgba(244,112,112,.2);border-radius:7px;}
 .auth-msg{font-size:12px;color:var(--acc);margin-bottom:10px;padding:10px 14px;background:var(--acc-dim);border:1px solid var(--acc-border);border-radius:7px;text-align:center;}
 
-/* ─────────────────── SETTINGS PANEL ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ SETTINGS PANEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .settings-panel{
   position:fixed;top:0;right:0;bottom:0;width:360px;z-index:500;
   background:var(--c1);border-left:1px solid var(--grey3);
@@ -1080,7 +1023,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 }
 .sett-danger-btn:hover{background:var(--red-dim);}
 
-/* ─────────────────── TOAST ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ TOAST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .toast{
   position:fixed;bottom:28px;right:28px;z-index:999;
   background:var(--c2);border:1px solid var(--grey3);border-radius:14px;
@@ -1093,10 +1036,10 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 @keyframes toastIn{from{opacity:0;transform:translateY(24px) scale(.93)}to{opacity:1;transform:none}}
 .toast-dot{width:8px;height:8px;border-radius:50%;background:var(--acc);flex-shrink:0;box-shadow:0 0 10px var(--acc);}
 
-/* ─────────────────── SECTION DIVIDER ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ SECTION DIVIDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .divider{height:1px;background:linear-gradient(to right,transparent,var(--grey3),transparent);margin:4px 52px;}
 
-/* ─────────────────── TMDB-STYLE SECTIONS ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ TMDB-STYLE SECTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .tmdb-section{padding:0;}
 .main-content{
   margin-top:-40px;
@@ -1155,7 +1098,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .tmdb-card-date{font-size:10px;color:var(--txd);margin-bottom:3px;}
 .tmdb-card-name{font-size:12px;font-weight:600;line-height:1.35;color:var(--tx);}
 
-/* ─────────────────── OTT IN MODAL ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ OTT IN MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .ott-section{margin-top:4px;padding-top:16px;border-top:1px solid var(--grey3);}
 .ott-section-label{
   font-size:10px;letter-spacing:2.5px;color:var(--txd);text-transform:uppercase;margin-bottom:12px;display:block;
@@ -1178,7 +1121,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
   .tmdb-tabs{flex-wrap:wrap;}
 }
 
-/* ─────────────────── RESPONSIVE ─────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ RESPONSIVE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media(max-width:768px){
   .nav{padding:0 18px;}
   .hero-content{left:18px;right:18px;max-width:none;}
@@ -1194,38 +1137,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 }
 `;
 
-// ─── ICON COMPONENT ───────────────────────────────────────────────────────────
-const Icon = ({ name, size = 16 }) => {
-  const icons = {
-    left: <FaChevronLeft size={size} />,
-    right: <FaChevronRight size={size} />,
-    user: <FaUserCircle size={size} />,
-    settings: <FaCog size={size} />,
-    add: <FaPlus size={size} />,
-    search: <FaSearch size={size} />,
-    back: <FaArrowLeft size={size} />,
-    close: <FaTimes size={size} />,
-    star: <FaStar size={size} />,
-    check: <FaCheck size={size} />,
-    play: <FaPlay size={size} />,
-    fire: <FaFire size={size} />,
-    eye: <FaEye size={size} />,
-    gift: <FaGift size={size} />,
-  };
-  return icons[name] || null;
-};
-
-// ─── STATUS ICON HELPER ──────────────────────────────────────────────────────
-const getStatusIcon = (status) => {
-  const iconMap = {
-    "Watched": "✓",
-    "Watching": "▶",
-    "Want to Watch": "○",
-  };
-  return iconMap[status] || status;
-};
-
-// ─── POSTER IMAGE (fetches from TMDB by ID if hardcoded path fails or is null) ─
+// â”€â”€â”€ POSTER IMAGE (fetches from TMDB by ID if hardcoded path fails or is null) â”€
 function PosterImage({ item, className, style, alt }) {
   const [src, setSrc] = useState(
     item.poster
@@ -1263,7 +1175,7 @@ function PosterImage({ item, className, style, alt }) {
     return (
       <div className={className || "no-img-box"} style={{ width:"100%", height:"100%", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", color:"var(--txd)", gap:5, fontSize:10, background:"var(--c3)", ...style }}>
         <div style={{ fontSize:28, opacity:.22 }}>
-          {item.type === "Anime" ? "⛩" : item.type === "Movie" ? "🎬" : "📺"}
+          {item.type === "Anime" ? "â›©" : item.type === "Movie" ? "ðŸŽ¬" : "ðŸ“º"}
         </div>
         <span style={{ fontSize:9, letterSpacing:1 }}>{item.type}</span>
       </div>
@@ -1298,11 +1210,11 @@ function TmdbSection({ title, tabs = [], activeTab, onTabChange, items, onSelect
         </div>
         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
           {onSeeAll && (
-            <button className="sec-see-all" onClick={onSeeAll}>See all →</button>
+            <button className="sec-see-all" onClick={onSeeAll}>See all â†’</button>
           )}
           <div style={{ display:"flex", gap:6 }}>
-            <button className="row-arrow-btn" onClick={() => scroll(-1)} style={{ width:32, height:32, borderRadius:50, border:"1px solid var(--grey3)", background:"none", color:"var(--txm)", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"all .15s" }} onMouseOver={e=>e.currentTarget.style.borderColor="var(--acc-border)"} onMouseOut={e=>e.currentTarget.style.borderColor="var(--grey3)"}><FaChevronLeft /></button>
-            <button className="row-arrow-btn" onClick={() => scroll(1)}  style={{ width:32, height:32, borderRadius:50, border:"1px solid var(--grey3)", background:"none", color:"var(--txm)", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"all .15s" }} onMouseOver={e=>e.currentTarget.style.borderColor="var(--acc-border)"} onMouseOut={e=>e.currentTarget.style.borderColor="var(--grey3)"}><FaChevronRight /></button>
+            <button className="row-arrow-btn" onClick={() => scroll(-1)} style={{ width:32, height:32, borderRadius:50, border:"1px solid var(--grey3)", background:"none", color:"var(--txm)", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"all .15s" }} onMouseOver={e=>e.currentTarget.style.borderColor="var(--acc-border)"} onMouseOut={e=>e.currentTarget.style.borderColor="var(--grey3)"}>â€¹</button>
+            <button className="row-arrow-btn" onClick={() => scroll(1)}  style={{ width:32, height:32, borderRadius:50, border:"1px solid var(--grey3)", background:"none", color:"var(--txm)", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"all .15s" }} onMouseOver={e=>e.currentTarget.style.borderColor="var(--acc-border)"} onMouseOut={e=>e.currentTarget.style.borderColor="var(--grey3)"}>â€º</button>
           </div>
         </div>
       </div>
@@ -1424,7 +1336,7 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
       ))}
       <div className="hero-overlay" style={{ zIndex:2 }} />
       <div className="hero-content" style={{ zIndex:3 }}>
-        <div className="hero-badge"><Icon name="fire" size={14} /> TRENDING NOW</div>
+        <div className="hero-badge">â­ TRENDING NOW</div>
         <div className="hero-title">{item.title}</div>
         <div className="hero-meta">
           <div className="hero-type-tag">{item.type}</div>
@@ -1433,7 +1345,7 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
         <p className="hero-overview">{item.overview}</p>
         <div className="hero-actions">
           <button className="btn-hero-play" onClick={() => session ? onAdd(item) : setShowAuth(true)}>
-            ▶ &nbsp;Add to List
+            â–¶ &nbsp;Add to List
           </button>
           {item.streaming?.length > 0 && (
             <button className="btn-hero-add" onClick={() => {
@@ -1443,16 +1355,16 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
                 window.open(ottData.url + encodeURIComponent(item.title), '_blank');
               }
             }} title="Open in streaming app">
-              ▶ &nbsp;Watch Now
+              â–¶ &nbsp;Watch Now
             </button>
           )}
           <button className="btn-hero-add" onClick={() => session ? onAdd(item) : setShowAuth(true)}>
-            ℹ &nbsp;More Info
+            â„¹ &nbsp;More Info
           </button>
         </div>
       </div>
       <div className="hero-thumbs-wrap" style={{ zIndex:3 }}>
-        <button className="hero-thumb-arrow" onClick={() => scrollThumbs(-1)} aria-label="Previous thumbnails"><FaChevronLeft /></button>
+        <button className="hero-thumb-arrow" onClick={() => scrollThumbs(-1)} aria-label="Previous thumbnails">â€¹</button>
         <div className="hero-thumbs" ref={thumbStripRef}>
           {slides.map((h, i) => {
             const imgPath = h.backdrop || h.poster || h.backdrop_path || h.poster_path;
@@ -1472,13 +1384,13 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
             );
           })}
         </div>
-        <button className="hero-thumb-arrow" onClick={() => scrollThumbs(1)} aria-label="Next thumbnails"><FaChevronRight /></button>
+        <button className="hero-thumb-arrow" onClick={() => scrollThumbs(1)} aria-label="Next thumbnails">â€º</button>
       </div>
     </div>
   );
 }
 
-// ─── SEE ALL MODAL ────────────────────────────────────────────────────────────
+// â”€â”€â”€ SEE ALL MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function SeeAllModal({ title, emoji, items, onClose, onSelect, onTypeNav }) {
   const [q, setQ] = useState("");
   const [headOpacity, setHeadOpacity] = useState(1);
@@ -1503,15 +1415,14 @@ function SeeAllModal({ title, emoji, items, onClose, onSelect, onTypeNav }) {
       <div className="see-all-panel">
         <div className="see-all-head" style={{ opacity: headOpacity, transition: "opacity 0.1s ease" }}>
           <div className="see-all-title">
-            {emoji && <span style={{ marginRight: 8, display: "inline-block", verticalAlign: "middle" }}><Icon name={emoji} size={20} /></span>}
-            {title}
+            <span>{emoji}</span> {title}
             <span style={{ fontSize:12, color:"var(--txm)", fontFamily:"'DM Sans',sans-serif", fontWeight:400, marginLeft:4 }}>{items.length} titles</span>
           </div>
-          <button className="settings-close" onClick={onClose}><FaTimes /></button>
+          <button className="settings-close" onClick={onClose}>âœ•</button>
         </div>
         <div className="see-all-search">
           <input className="see-all-inp"
-            placeholder={`Search in ${title.toLowerCase()}…`}
+            placeholder={`Search in ${title.toLowerCase()}â€¦`}
             value={q} onChange={e => setQ(e.target.value)} autoFocus />
         </div>
         <div className="see-all-grid">
@@ -1551,7 +1462,7 @@ function SeeAllModal({ title, emoji, items, onClose, onSelect, onTypeNav }) {
   );
 }
 
-// ─── ROW SECTION ──────────────────────────────────────────────────────────────
+// â”€â”€â”€ ROW SECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function RowSection({ title, emoji, items, showRank, showOverview, onSelect, onSeeAll, showStreaming, onTypeNav }) {
   const scrollRef      = useRef(null);
   const [canLeft, setCanLeft]   = useState(false);
@@ -1580,15 +1491,15 @@ function RowSection({ title, emoji, items, showRank, showOverview, onSelect, onS
     <div className="catalog-section row-section">
       <div className="sec-header">
         <div className="sec-title">
-          {emoji && <Icon name={emoji} size={20} />}
+          <span className="sec-emoji">{emoji}</span>
           {title}
           <span className="sec-count">{items.length}</span>
         </div>
-        <button className="sec-see-all" onClick={() => onSeeAll && onSeeAll()}>See all →</button>
+        <button className="sec-see-all" onClick={() => onSeeAll && onSeeAll()}>See all â†’</button>
       </div>
       <div className="row-section-wrap">
-        {canLeft  && <button className="row-arrow row-arrow-left"  onClick={() => scroll(-1)}><FaChevronLeft /></button>}
-        {canRight && <button className="row-arrow row-arrow-right" onClick={() => scroll(1)}><FaChevronRight /></button>}
+        {canLeft  && <button className="row-arrow row-arrow-left"  onClick={() => scroll(-1)}>â€¹</button>}
+        {canRight && <button className="row-arrow row-arrow-right" onClick={() => scroll(1)}>â€º</button>}
         <div className="row-scroll" ref={scrollRef}>
           {items.map((item, i) => (
             <div key={item.id} className="row-card" onClick={() => onSelect(item)}
@@ -1636,7 +1547,7 @@ function RowSection({ title, emoji, items, showRank, showOverview, onSelect, onS
   );
 }
 
-// ─── SETTINGS PANEL ───────────────────────────────────────────────────────────
+// â”€â”€â”€ SETTINGS PANEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, session, onSignOut }) {
   const SWATCHES = [
     { key:"green",  color:"#b2f0c5", label:"Jade"   },
@@ -1649,10 +1560,10 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
     <div className="settings-panel">
       <div className="settings-head">
         <div className="settings-title">
-          <Icon name="settings" size={20} />
+          <span className="settings-title-icon">âš™ï¸</span>
           Settings
         </div>
-        <button className="settings-close" onClick={onClose}><FaTimes /></button>
+        <button className="settings-close" onClick={onClose}>âœ•</button>
       </div>
       <div className="settings-body">
 
@@ -1757,18 +1668,18 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
               value={settings.language}
               onChange={e => onChange("language", e.target.value)}>
               <option value="en">English</option>
-              <option value="ja">日本語</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
-              <option value="hi">हिन?दी</option>
+              <option value="ja">æ—¥æœ¬èªž</option>
+              <option value="es">EspaÃ±ol</option>
+              <option value="fr">FranÃ§ais</option>
+              <option value="hi">à¤¹à¤¿à¤¨à¥à¤¦à¥€</option>
             </select>
           </div>
         </div>
 
         <div className="sett-section">
           <div className="sett-section-title">Data</div>
-          <button className="sett-export-btn" onClick={onExport}>⬇ Export My Catalog (JSON)</button>
-          <button className="sett-export-btn" onClick={onClearCache} style={{ marginTop:6 }}>🗑 Clear Image Cache</button>
+          <button className="sett-export-btn" onClick={onExport}>â¬‡ Export My Catalog (JSON)</button>
+          <button className="sett-export-btn" onClick={onClearCache} style={{ marginTop:6 }}>ðŸ—‘ Clear Image Cache</button>
           <div style={{ fontSize:11, color:"var(--txd)", marginTop:14, lineHeight:1.7 }}>
             Your data is stored in Supabase and is private to your account. Export creates a JSON backup.
           </div>
@@ -1788,7 +1699,7 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
               <span style={{ color:"var(--acc)", fontFamily:"'Bebas Neue',sans-serif", letterSpacing:2, fontSize:17 }}>Reel</span>
               <span style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:2, fontSize:17 }}>log</span>
             </div>
-            Powered by TMDB · Built with Supabase<br />
+            Powered by TMDB Â· Built with Supabase<br />
             Streaming data for informational use only.<br />
             Track every film, show &amp; anime you love.
           </div>
@@ -1799,7 +1710,7 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
   );
 }
 
-// ─── AUTH MODAL ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ AUTH MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function AuthModal({ onClose }) {
   const [tab, setTab]         = useState("signin");
   const [email, setEmail]     = useState("");
@@ -1844,14 +1755,14 @@ function AuthModal({ onClose }) {
         <input className="auth-inp" placeholder="Password" type="password" value={pass} onChange={e => setPass(e.target.value)}
           onKeyDown={e => e.key === "Enter" && handleAuth()} />
         <button className="auth-btn" onClick={handleAuth} disabled={loading}>
-          {loading ? "Loading..." : tab === "signin" ? "Sign in →" : "Create account →"}
+          {loading ? "Loading..." : tab === "signin" ? "Sign in â†’" : "Create account â†’"}
         </button>
       </div>
     </div>
   );
 }
 
-// ─── CATEGORY PAGE ────────────────────────────────────────────────────────────
+// â”€â”€â”€ CATEGORY PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function CategoryPage({ allItems, onSelect, PosterImageComponent, onTypeNav }) {
   const [q, setQ] = useState("");
   const [showCategoryPanel, setShowCategoryPanel] = useState(false);
@@ -2089,7 +2000,7 @@ function CategoryPage({ allItems, onSelect, PosterImageComponent, onTypeNav }) {
                 ? <PosterImageComponent item={item} className="row-card-img" />
                 : item.poster
                   ? <img className="row-card-img" src={`https://image.tmdb.org/t/p/w500${item.poster}`} alt={item.title} loading="lazy" />
-                  : <div className="no-img-box"><span style={{ fontSize:28, opacity:.22 }}>🎬</span></div>}
+                  : <div className="no-img-box"><span style={{ fontSize:28, opacity:.22 }}>ðŸŽ¬</span></div>}
               <div className="row-card-grad" />
               <div
                 className="type-badge"
@@ -2111,7 +2022,7 @@ function CategoryPage({ allItems, onSelect, PosterImageComponent, onTypeNav }) {
               <div className="row-card-title">{item.title}</div>
               <div className="row-card-meta">
                 <div className="row-card-year">{item.year}</div>
-                {item.rating > 0 && <div className="row-card-rating">★ {parseFloat(item.rating).toFixed(1)}</div>}
+                {item.rating > 0 && <div className="row-card-rating">â˜… {parseFloat(item.rating).toFixed(1)}</div>}
               </div>
             </div>
           </div>
@@ -2222,7 +2133,7 @@ function GenrePage({ onSelect, PosterImageComponent, onTypeNav }) {
         </div>
         <div style={{ padding:"0 52px 40px" }}>
           <button className="btn-outline" onClick={() => navigate("/")} style={{ padding:"10px 16px", borderRadius:10 }}>
-            {"? Back"}
+            {"← Back"}
           </button>
         </div>
       </div>
@@ -2238,7 +2149,7 @@ function GenrePage({ onSelect, PosterImageComponent, onTypeNav }) {
       </div>
       <div style={{ padding:"0 52px 16px", display:"flex", alignItems:"center", gap:12, flexWrap:"wrap" }}>
         <button className="btn-outline" onClick={() => navigate("/")} style={{ padding:"10px 14px", borderRadius:9999 }}>
-          {"? Back"}
+          {"← Back"}
         </button>
         <input
           className="see-all-inp"
@@ -2260,7 +2171,7 @@ function GenrePage({ onSelect, PosterImageComponent, onTypeNav }) {
                 ? <PosterImageComponent item={item} className="row-card-img" />
                 : item.poster
                   ? <img className="row-card-img" src={`https://image.tmdb.org/t/p/w500${item.poster}`} alt={item.title} loading="lazy" />
-                  : <div className="no-img-box"><span style={{ fontSize:28, opacity:.22 }}>?</span></div>}
+                  : <div className="no-img-box"><span style={{ fontSize:28, opacity:.22 }}>🎬</span></div>}
               <div className="row-card-grad" />
               <div
                 className="type-badge"
@@ -2282,7 +2193,7 @@ function GenrePage({ onSelect, PosterImageComponent, onTypeNav }) {
               <div className="row-card-title">{item.title}</div>
               <div className="row-card-meta">
                 <div className="row-card-year">{item.year}</div>
-                {item.rating > 0 && <div className="row-card-rating">? {parseFloat(item.rating).toFixed(1)}</div>}
+                {item.rating > 0 && <div className="row-card-rating">★ {parseFloat(item.rating).toFixed(1)}</div>}
               </div>
             </div>
           </div>
@@ -2292,13 +2203,13 @@ function GenrePage({ onSelect, PosterImageComponent, onTypeNav }) {
   );
 }
 
-// ─── MAIN APP ─────────────────────────────────────────────────────────────────
+// â”€â”€â”€ MAIN APP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function App() {
   const [allEntries, setAllEntries] = useState([]);
   const [myEntries,  setMyEntries]  = useState([]);
   const [loading, setLoading]       = useState(true);
 
-  // ── settings ──
+  // â”€â”€ settings â”€â”€
   const [settings, setSettings] = useState(() => {
     try { return { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem("rl_settings") || "{}") }; }
     catch { return DEFAULT_SETTINGS; }
@@ -2410,23 +2321,23 @@ export default function App() {
     root.classList.add(cls);
   }, [settings.theme]);
 
-  // ── auth ──
+  // â”€â”€ auth â”€â”€
   const [session, setSession] = useState(null);
   const [showAuth, setShowAuth] = useState(false);
 
-  // ── page ──
+  // â”€â”€ page â”€â”€
   const [page, setPage] = useState("home");
   const [exploreView, setExploreView] = useState("categories"); // "browse" | "categories" | "genres"
   const [exploreCategorySearch, setExploreCategorySearch] = useState("");
   const [exploreGenreSearch, setExploreGenreSearch] = useState("");
 
-  // ── home content ──
+  // â”€â”€ home content â”€â”€
   const [heroItems, setHeroItems]       = useState(HERO_ITEMS);
   const [homeAnime, setHomeAnime]       = useState(STATIC_ANIME);
   const [homeMovies, setHomeMovies]     = useState(STATIC_MOVIES);
   const [homeSeries, setHomeSeries]     = useState(STATIC_SERIES);
 
-  // ── TMDB-style section data ──
+  // â”€â”€ TMDB-style section data â”€â”€
   const [homeTrending,  setHomeTrending]  = useState([]);
   const [homePopular,   setHomePopular]   = useState([]);
   const [homeFree,      setHomeFree]      = useState([]);
@@ -2441,18 +2352,18 @@ export default function App() {
     return Array.from(map.values());
   }, [heroItems, homeAnime, homeMovies, homeSeries, homeTrending, homePopular, homeFree, allEntries, myEntries]);
 
-  // ── section tab states ──
+  // â”€â”€ section tab states â”€â”€
   const [trendMode,   setTrendMode]   = useState("day");
   const [popularMode, setPopularMode] = useState("streaming");
   const [freeMode,    setFreeMode]    = useState("movies");
 
   
-  // ── filters ──
+  // â”€â”€ filters â”€â”€
   const [filterType,   setFilterType]   = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortBy,       setSortBy]       = useState("added");
 
-  // ── search ──
+  // â”€â”€ search â”€â”€
   const [search,    setSearch]    = useState("");
   const [results,   setResults]   = useState([]);
   const [searching, setSearching] = useState(false);
@@ -2460,7 +2371,7 @@ export default function App() {
   const searchRef = useRef(null);
   const debRef    = useRef(null);
 
-  // ── modal ──
+  // â”€â”€ modal â”€â”€
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [editId,    setEditId]    = useState(null);
@@ -2468,10 +2379,10 @@ export default function App() {
   const [saving,    setSaving]    = useState(false);
   const [toast,     setToast]     = useState(null);
 
-  // ── see-all modal ──
+  // â”€â”€ see-all modal â”€â”€
   const [seeAll, setSeeAll] = useState(null); // { title, emoji, items }
 
-  // ── nav scroll ──
+  // â”€â”€ nav scroll â”€â”€
   const [navScrolled, setNavScrolled] = useState(false);
   useEffect(() => {
     const h = () => setNavScrolled(window.scrollY > 40);
@@ -2479,7 +2390,7 @@ export default function App() {
     return () => window.removeEventListener("scroll", h);
   }, []);
 
-  // ── nav dropdown ──
+  // â”€â”€ nav dropdown â”€â”€
   const [navDropdown, setNavDropdown] = useState(null);
   const navDropdownRef = useRef(null);
 
@@ -2501,9 +2412,9 @@ export default function App() {
     }
   }, [page]);
 
-  // ── Load live catalog / hero from TMDB ──
+  // â”€â”€ Load live catalog / hero from TMDB â”€â”€
 
-  // ── Layer 1: TMDB provider name → OTT key ──────────────────────────────────
+  // â”€â”€ Layer 1: TMDB provider name â†’ OTT key â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const PROVIDER_MAP = {
     "Netflix":                  "nf",
     "Amazon Prime Video":       "prime",
@@ -2522,13 +2433,13 @@ export default function App() {
     "HBO Max":                  "hbo",
   };
 
-  // ── Layer 2a: Manual overrides by TMDB ID ───────────────────────────────────
+  // â”€â”€ Layer 2a: Manual overrides by TMDB ID â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const MANUAL_BY_ID = {
     // Format: tmdbId: ["ott_key", ...]
     // Example: 1396: ["nf"]  (Breaking Bad)
   };
 
-  // ── Layer 2b: Manual overrides by title ─────────────────────────────────────
+  // â”€â”€ Layer 2b: Manual overrides by title â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const MANUAL_BY_TITLE = {
     "Daredevil: Born Again":        ["hs"],
     "Loki":                         ["hs"],
@@ -2560,7 +2471,7 @@ export default function App() {
     "Fallout":                      ["prime"],
   };
 
-  // ── Layer 3: Keyword-based smart fallback ───────────────────────────────────
+  // â”€â”€ Layer 3: Keyword-based smart fallback â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const KEYWORD_MAP = [
     { match: ["Marvel", "Disney", "Star Wars", "Pixar", "National Geographic"], ott: ["hs"] },
     { match: ["HBO", "Warner", "Max Original", "DC"],                           ott: ["hs"] },
@@ -2688,21 +2599,21 @@ export default function App() {
           setHomeAnime(withOTT);
         }
 
-        // ── Trending section (day) ──
+        // â”€â”€ Trending section (day) â”€â”€
         const trendDay = await fetch(`${TMDB_BASE}/trending/all/day?api_key=${TMDB_KEY}&language=${lang}`, { signal: abort.signal }).then(r => r.json()).catch(() => null);
         if (trendDay?.results?.length) {
           const mapped = trendDay.results.slice(0, 20).map(r => mapItem(r));
           updateListIfChanged(setHomeTrending, mapped);
         }
 
-        // ── What's Popular — streaming ──
+        // â”€â”€ What's Popular â€” streaming â”€â”€
         const popStream = await fetch(`${TMDB_BASE}/movie/popular?api_key=${TMDB_KEY}&language=${lang}&region=IN`, { signal: abort.signal }).then(r => r.json()).catch(() => null);
         if (popStream?.results?.length) {
           const mapped = popStream.results.slice(0, 20).map(r => mapItem(r, "Movie"));
           updateListIfChanged(setHomePopular, mapped);
         }
 
-        // ── Free to watch — movies ──
+        // â”€â”€ Free to watch â€” movies â”€â”€
         const freeMovies = await fetch(`${TMDB_BASE}/discover/movie?api_key=${TMDB_KEY}&language=${lang}&with_watch_monetization_types=free&watch_region=IN&sort_by=popularity.desc`, { signal: abort.signal }).then(r => r.json()).catch(() => null);
         if (freeMovies?.results?.length) {
           const mapped = freeMovies.results.slice(0, 20).map(r => mapItem(r, "Movie"));
@@ -2726,7 +2637,7 @@ export default function App() {
     }
   }, []);
 
-  // ── Auth listener ──
+  // â”€â”€ Auth listener â”€â”€
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => {
@@ -2735,7 +2646,7 @@ export default function App() {
         setShowAuth(false);
         setPage("mylist");
       } else {
-        // Logged out — clear all user data immediately
+        // Logged out â€” clear all user data immediately
         setAllEntries([]);
         setMyEntries([]);
         setPage("home");
@@ -2744,7 +2655,7 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // ── Load entries (only when signed in) ──
+  // â”€â”€ Load entries (only when signed in) â”€â”€
   useEffect(() => {
     if (!session) {
       setAllEntries([]);
@@ -2765,7 +2676,7 @@ export default function App() {
       .finally(() => setLoading(false));
   }, [session]);
 
-  // ── TMDB search ──
+  // â”€â”€ TMDB search â”€â”€
   useEffect(() => {
     if (!search.trim()) { setResults([]); setShowDrop(false); return; }
     clearTimeout(debRef.current);
@@ -2781,7 +2692,7 @@ export default function App() {
     }, 380);
   }, [search]);
 
-  // ── Close dropdown on outside click ──
+  // â”€â”€ Close dropdown on outside click â”€â”€
   useEffect(() => {
     const h = e => { if (searchRef.current && !searchRef.current.contains(e.target)) setShowDrop(false); };
     document.addEventListener("mousedown", h);
@@ -2899,7 +2810,7 @@ export default function App() {
     showT("Cache cleared!");
   }
 
-  // ── filters ──
+  // â”€â”€ filters â”€â”€
   const source = page === "mylist" ? myEntries : allEntries;
   const filtered = source
     .filter(e => filterType   === "All" || e.type   === filterType)
@@ -2942,28 +2853,6 @@ export default function App() {
           <div style={{ padding:"104px 52px 0" }}>
             {exploreView === "categories" && (
               <>
-                <div style={{ marginBottom:24 }}>
-                  <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:32, color:"var(--tx)", lineHeight:1, marginBottom:16 }}>Browse By</div>
-                  <div className="browse-grid">
-                    <div className="browse-item" onClick={() => setExploreView("categories")}>
-                      <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <rect x="3" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="14" width="7" height="7"></rect>
-                        <rect x="3" y="14" width="7" height="7"></rect>
-                      </svg>
-                      <span className="browse-label">Category</span>
-                    </div>
-                    <div className="browse-item" onClick={() => setExploreView("genres")}>
-                      <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <circle cx="6" cy="12" r="2"></circle>
-                        <circle cx="18" cy="12" r="2"></circle>
-                        <path d="M8 12h8"></path>
-                      </svg>
-                      <span className="browse-label">Genre</span>
-                    </div>
-                  </div>
-                </div>
                 <div className="divider" style={{ margin:"20px 0" }} />
                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:18, padding:"0 0 20px" }}>
                   <div style={{ display:"flex", alignItems:"center", gap:12 }}>
@@ -3026,7 +2915,7 @@ export default function App() {
                       style={{ background:genre.gradient }}
                       onClick={() => { setPage("explore"); navigate(`/genre/${toGenreSlug(genre.name)}`); }}
                     >
-                      <span className="genre-card-emoji">{genre.icon}</span>
+                      <span className="genre-card-emoji">{genre.emoji}</span>
                       <span className="genre-card-overlay" />
                       <span className="genre-card-title">{genre.name}</span>
                     </button>
@@ -3083,20 +2972,20 @@ export default function App() {
 
           <div className="toolbar">
             <div className="search-wrap" ref={searchRef}>
-              <span className="search-ico">?</span>
+              <span className="search-ico">⌕</span>
               <input className="search-inp"
                 placeholder="Search movies, anime, shows from TMDB..."
                 value={search} onChange={e => setSearch(e.target.value)}
                 onFocus={() => results.length && setShowDrop(true)}
               />
-              {searching && <span className="spin-ico">?</span>}
+              {searching && <span className="spin-ico">◌</span>}
               {showDrop && (
                 <div className="drop">
                   {results.map(r => (
                     <div key={r.id} className="drop-row" onClick={() => selectResult(r)}>
                       {r.poster_path
                         ? <img className="drop-img" src={`${TMDB_IMG}${r.poster_path}`} alt="" />
-                        : <div className="drop-img" style={{ display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>?</div>}
+                        : <div className="drop-img" style={{ display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>🎬</div>}
                       <div style={{ flex:1, minWidth:0 }}>
                         <div className="drop-ti">{r.title || r.name}</div>
                         <div className="drop-me">{(r.release_date||r.first_air_date||"").split("-")[0]}</div>
@@ -3127,7 +3016,7 @@ export default function App() {
               <div className={`grid${settings.cardSize === "small" ? " small" : settings.cardSize === "large" ? " large" : ""}`}>
                 {filtered.length === 0 && (
                   <div className="empty-state">
-                    <div className="empty-icon">?</div>
+                    <div className="empty-icon">🎬</div>
                     <div className="empty-title">{mode === "mylist" ? "Your list is empty" : "Nothing here yet"}</div>
                     <div className="empty-sub">{mode === "mylist" ? "Search for a title and add it!" : "Be the first to add something"}</div>
                     {mode === "mylist" && <button className="btn-sm btn-acc" style={{ marginTop:8 }} onClick={openManual}>+ Add title</button>}
@@ -3140,7 +3029,7 @@ export default function App() {
                         ? <img className="card-img" src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy"
                             onError={e => { e.currentTarget.style.display="none"; }} />
                         : <div className="no-img-box">
-                            <div className="no-img-icon">{entry.type==="Anime"?"?":entry.type==="Movie"?"?":"?"}</div>
+                            <div className="no-img-icon">{entry.type==="Anime"?"♨":entry.type==="Movie"?"🎬":"📺"}</div>
                             <span>{entry.type}</span>
                           </div>}
                       <div
@@ -3151,12 +3040,12 @@ export default function App() {
                       </div>
                       <div className="card-grad" />
                       <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>
-                        {getStatusIcon(entry.status)} {entry.status}
+                        {SICON[entry.status]} {entry.status}
                       </div>
                       {session && entry.user_id === session.user.id && (
                         <div className="card-btns">
-                          <button className="card-btn" onClick={e => { e.stopPropagation(); openEdit(entry); }}>?</button>
-                          <button className="card-btn" onClick={e => { e.stopPropagation(); handleDelete(entry.id); }}>?</button>
+                          <button className="card-btn" onClick={e => { e.stopPropagation(); openEdit(entry); }}>✎</button>
+                          <button className="card-btn" onClick={e => { e.stopPropagation(); handleDelete(entry.id); }}>✕</button>
                         </div>
                       )}
                     </div>
@@ -3168,7 +3057,7 @@ export default function App() {
                       </div>
                       {settings.showRatings && entry.rating > 0 && (
                         <div className="card-stars">
-                          {[1,2,3,4,5].map(s => <span key={s} className={`s${entry.rating>=s?" on":""}`}>?</span>)}
+                          {[1,2,3,4,5].map(s => <span key={s} className={`s${entry.rating>=s?" on":""}`}>★</span>)}
                         </div>
                       )}
                       {settings.showStreaming && entry.streaming?.length > 0 && (
@@ -3199,7 +3088,7 @@ export default function App() {
     <div className={accentClass}>
       <style>{CSS}</style>
 
-      {/* ── Cinematic grain overlay ── */}
+      {/* â”€â”€ Cinematic grain overlay â”€â”€ */}
       {settings.cinematicBg && (
         <svg className="grain-svg" aria-hidden="true">
           <filter id="grain-noise">
@@ -3210,7 +3099,7 @@ export default function App() {
         </svg>
       )}
 
-      {/* ── NAV ── */}
+      {/* â”€â”€ NAV â”€â”€ */}
       <nav className={`nav${navScrolled ? " nav-scrolled" : ""}`} ref={navDropdownRef}>
         <div className="nav-logo" onClick={() => { setPage("home"); navigate("/"); setNavDropdown(null); }}>
           <div className="nav-dot" />
@@ -3235,10 +3124,10 @@ export default function App() {
             if (session) { setPage("mylist"); navigate("/"); setNavDropdown(null); }
             else setShowAuth(true);
           }} title={session ? "Profile" : "Sign in / Join"}>
-            <Icon name="user" size={17} />
+            <span className="settings-gear"></span>
           </button>
           <button className="btn-icon" onClick={() => { setShowSettings(s => !s); setNavDropdown(null); }} title="Settings">
-            <Icon name="settings" size={17} />
+            <span className="settings-gear">¸</span>
           </button>
         </div>
       </nav>
@@ -3288,7 +3177,7 @@ export default function App() {
               items={homeTrending}
               onSelect={openFromCard}
               onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"Trending", emoji:"fire", items:homeTrending })}
+              onSeeAll={() => setSeeAll({ title:"Trending", emoji:"", items:homeTrending })}
             />
             <div className="divider" />
             <TmdbSection
@@ -3304,7 +3193,7 @@ export default function App() {
               items={homePopular}
               onSelect={openFromCard}
               onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"What's Popular", emoji:"eye", items:homePopular })}
+              onSeeAll={() => setSeeAll({ title:"What's Popular", emoji:"", items:homePopular })}
             />
             <div className="divider" />
             <TmdbSection
@@ -3315,7 +3204,7 @@ export default function App() {
               items={homeFree}
               onSelect={openFromCard}
               onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"Free To Watch", emoji:"gift", items:homeFree })}
+              onSeeAll={() => setSeeAll({ title:"Free To Watch", emoji:"", items:homeFree })}
             />
             <div className="divider" />
             <TmdbSection
@@ -3324,14 +3213,14 @@ export default function App() {
               items={homeSeries}
               onSelect={openFromCard}
               onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"Binge-worthy Series", emoji:"play", items:homeSeries })}
+              onSeeAll={() => setSeeAll({ title:"Binge-worthy Series", emoji:"", items:homeSeries })}
             />
             <div style={{ height:64 }} />
           </div>
         </>
       )}
 
-      {/*  EXPLORE / MY LIST */}
+      {/*  EXPLORE / MY LIST â*/}
       {page === "explore" && renderLibrary("explore")}
 
       {page === "mylist" && renderLibrary("mylist")}
@@ -3356,8 +3245,8 @@ export default function App() {
                 {modalData.manual
                   ? <input className="finp" placeholder="Enter title..." value={modalData.manualTitle||""} onChange={e=>setModalData(d=>({...d,manualTitle:e.target.value}))} style={{ marginBottom:6 }} />
                   : <div className="modal-ti">{modalData.title}</div>}
-                <div className="modal-sub">{modalData.type}{modalData.year?` · ${modalData.year}`:""}</div>
-                {modalData.overview && <div className="modal-ov">"{modalData.overview.slice(0,110)}"</div>}
+                <div className="modal-sub">{modalData.type}{modalData.year?` Â· ${modalData.year}`:""}</div>
+                {modalData.overview && <div className="modal-ov">"{modalData.overview.slice(0,110)}¦"</div>}
               </div>
             </div>
             <div className="modal-body">
@@ -3382,7 +3271,7 @@ export default function App() {
                     <button key={s} className={`pill${form.status===s?" on":""}`}
                       style={form.status===s?{background:SCOLOR[s]+"22",borderColor:SCOLOR[s],color:SCOLOR[s]}:{}}
                       onClick={() => setForm(f=>({...f,status:s}))}>
-                      {getStatusIcon(s)} {s}
+                      {SICON[s]} {s}
                     </button>
                   ))}
                 </div>
@@ -3417,13 +3306,13 @@ export default function App() {
                 <div className="str-row">
                   {[1,2,3,4,5].map(s => (
                     <span key={s} className={`str${form.rating>=s?" on":""}`}
-                      onClick={() => setForm(f=>({...f,rating:f.rating===s?null:s}))}>★</span>
+                      onClick={() => setForm(f=>({...f,rating:f.rating===s?null:s}))}>â˜…</span>
                   ))}
                 </div>
               </div>
               <div className="field">
                 <label className="flbl">Notes</label>
-                <textarea className="fta" placeholder="Your thoughts…" value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))} />
+                <textarea className="fta" placeholder="Your thoughtsâ€¦" value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))} />
               </div>
             </div>
             <div className="modal-foot">
@@ -3436,7 +3325,7 @@ export default function App() {
         </div>
       )}
 
-      {/* ── SEE ALL MODAL ── */}
+      {/* â”€â”€ SEE ALL MODAL â”€â”€ */}
       {seeAll && (
         <SeeAllModal
           title={seeAll.title}
@@ -3448,7 +3337,7 @@ export default function App() {
         />
       )}
 
-      {/* ── SETTINGS PANEL ── */}
+      {/* â”€â”€ SETTINGS PANEL â”€â”€ */}
       {showSettings && (
         <>
           <div className="backdrop" style={{ zIndex:499 }} onClick={() => setShowSettings(false)} />
@@ -3464,11 +3353,14 @@ export default function App() {
         </>
       )}
 
-      {/* ── AUTH MODAL ── */}
+      {/* â”€â”€ AUTH MODAL â”€â”€ */}
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
 
-      {/* ── TOAST ── */}
+      {/* â”€â”€ TOAST â”€â”€ */}
       {toast && <div className="toast"><div className="toast-dot"/>{toast}</div>}
     </div>
   );
 }
+
+
+
