@@ -2,13 +2,46 @@ import { useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import PosterImage from "./PosterImage";
 
-export default function TmdbSection({ title, tabs = [], activeTab, onTabChange, items, onSelect, onTypeNav, onSeeAll }) {
+// ── Shimmer skeleton card ──────────────────────────────────────────────────────
+function SkeletonCard() {
+  return (
+    <div style={{ flexShrink: 0, width: 150 }}>
+      <div style={{
+        aspectRatio: "2/3", borderRadius: 14,
+        background: "linear-gradient(90deg, var(--c2) 25%, var(--c3) 50%, var(--c2) 75%)",
+        backgroundSize: "200% 100%",
+        animation: "tmdbShimmer 1.5s infinite",
+      }} />
+      <div style={{
+        height: 10, borderRadius: 6, margin: "12px 4px 5px",
+        background: "linear-gradient(90deg, var(--c2) 25%, var(--c3) 50%, var(--c2) 75%)",
+        backgroundSize: "200% 100%",
+        animation: "tmdbShimmer 1.5s infinite 0.1s",
+      }} />
+      <div style={{
+        height: 10, borderRadius: 6, width: "65%", margin: "0 4px",
+        background: "linear-gradient(90deg, var(--c2) 25%, var(--c3) 50%, var(--c2) 75%)",
+        backgroundSize: "200% 100%",
+        animation: "tmdbShimmer 1.5s infinite 0.2s",
+      }} />
+    </div>
+  );
+}
+
+export default function TmdbSection({ title, tabs = [], activeTab, onTabChange, items = [], onSelect, onTypeNav, onSeeAll }) {
   const scrollRef = useRef(null);
   const scroll = dir => scrollRef.current?.scrollBy({ left: dir * 480, behavior: "smooth" });
   const hasTabs = tabs.length > 0;
+  const isLoading = items.length === 0;
 
   return (
     <div className="tmdb-section row-section">
+      <style>{`
+        @keyframes tmdbShimmer {
+          0%   { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+      `}</style>
       <div className="tmdb-sec-head">
         <div className="tmdb-sec-title-wrap">
           <div className="tmdb-sec-title">{title}</div>
@@ -25,7 +58,7 @@ export default function TmdbSection({ title, tabs = [], activeTab, onTabChange, 
           )}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {onSeeAll && (
+          {onSeeAll && !isLoading && (
             <button className="sec-see-all" onClick={onSeeAll}>See all →</button>
           )}
           <div style={{ display: "flex", gap: 6 }}>
@@ -34,38 +67,50 @@ export default function TmdbSection({ title, tabs = [], activeTab, onTabChange, 
           </div>
         </div>
       </div>
-      <div ref={scrollRef} style={{ display: "flex", gap: 16, padding: "16px 52px 28px", overflowX: "auto", scrollBehavior: "smooth", scrollbarWidth: "none" }}>
-        {items.map((item, i) => {
-          const date = item.year || (item.release_date || item.first_air_date || "").slice(0, 10);
-          return (
-            <div key={item.id || i} className="tmdb-card" onClick={() => onSelect && onSelect(item)}>
-              <div className="tmdb-card-poster">
-                <PosterImage item={item} className="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                {item.type && (
-                  <div
-                    className="type-badge"
-                    onClick={e => { e.stopPropagation(); onTypeNav && onTypeNav(item.type); }}
-                  >
-                    {item.type}
+
+      {/* ── Skeleton while loading ── */}
+      {isLoading && (
+        <div style={{ display: "flex", gap: 16, padding: "16px 52px 28px", overflow: "hidden" }}>
+          {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
+        </div>
+      )}
+
+      {/* ── Content ── */}
+      {!isLoading && (
+        <div ref={scrollRef} style={{ display: "flex", gap: 16, padding: "16px 52px 28px", overflowX: "auto", scrollBehavior: "smooth", scrollbarWidth: "none" }}>
+          {items.map((item, i) => {
+            const date = item.year || (item.release_date || item.first_air_date || "").slice(0, 10);
+            return (
+              <div key={item.id || i} className="tmdb-card" onClick={() => onSelect && onSelect(item)}>
+                <div className="tmdb-card-poster">
+                  <PosterImage item={item} className="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  {item.type && (
+                    <div
+                      className="type-badge"
+                      onClick={e => { e.stopPropagation(); onTypeNav && onTypeNav(item.type); }}
+                    >
+                      {item.type}
+                    </div>
+                  )}
+                  <div className="card-overlay">
+                    <button
+                      className="card-add-btn"
+                      onClick={e => { e.stopPropagation(); onSelect && onSelect(item); }}
+                    >
+                      + Add to List
+                    </button>
                   </div>
-                )}
-                <div className="card-overlay">
-                  <button
-                    className="card-add-btn"
-                    onClick={e => { e.stopPropagation(); onSelect && onSelect(item); }}
-                  >
-                    + Add to List
-                  </button>
+                </div>
+                <div className="tmdb-card-info">
+                  <div className="tmdb-card-date">{date}</div>
+                  <div className="tmdb-card-name">{item.title}</div>
                 </div>
               </div>
-              <div className="tmdb-card-info">
-                <div className="tmdb-card-date">{date}</div>
-                <div className="tmdb-card-name">{item.title}</div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
+

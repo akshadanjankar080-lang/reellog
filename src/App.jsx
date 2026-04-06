@@ -22,12 +22,39 @@ import SeeAllModal from "./components/SeeAllModal";
 import RowSection from "./components/RowSection";
 import SettingsPanel from "./components/SettingsPanel";
 import AuthModal from "./components/AuthModal";
+import BrowseItemResults from "./components/BrowseItemResults";
 
 // ─── pages ───────────────────────────────────────────────────────────────────
 import CategoryPage from "./pages/CategoryPage";
 import GenrePage from "./pages/GenrePage";
 import CountryPage from "./pages/CountryPage";
 import LanguagePage from "./pages/LanguagePage";
+import BrowseSectionPage from "./pages/BrowseSectionPage";
+import BrowseItemPage from "./pages/BrowseItemPage";
+
+// ─── OTT ICON — img with text-badge fallback ────────────────────────────────
+function OttIcon({ ott }) {
+  const [broken, setBroken] = useState(false);
+  if (!ott) return null;
+  if (broken) {
+    return (
+      <span style={{
+        display: "inline-flex", alignItems: "center", justifyContent: "center",
+        width: 20, height: 20, borderRadius: 4, fontSize: 9, fontWeight: 800,
+        background: ott.color, color: "#fff", letterSpacing: 0.3, flexShrink: 0
+      }}>{ott.short}</span>
+    );
+  }
+  return (
+    <img
+      src={ott.logo}
+      className="ott-drop-icon"
+      alt={ott.name}
+      onError={() => setBroken(true)}
+      style={{ width: 20, height: 20, objectFit: "contain", borderRadius: 4, flexShrink: 0, background: ott.bg }}
+    />
+  );
+}
 
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function App() {
@@ -152,12 +179,26 @@ export default function App() {
 
   // ── page ──
   const [page, setPage] = useState("home");
-  const [exploreView, setExploreView] = useState(null); // null | "categories" | "genres" | "countries" | "languages"
+  const [exploreView, setExploreView] = useState(null); // null | "categories" | "genres" | "countries" | "languages" | ...
   const [expandedSub, setExpandedSub] = useState(null);
   const [expandedSubSub, setExpandedSubSub] = useState(null);
+  const [browseItem, setBrowseItem] = useState(null); // { sectionType, item } for drill-down results
   const [exploreCategorySearch, setExploreCategorySearch] = useState("");
   const [exploreGenreSearch, setExploreGenreSearch] = useState("");
   const [exploreCountrySearch, setExploreCountrySearch] = useState("");
+  const [exploreLanguageSearch, setExploreLanguageSearch] = useState("");
+  const [exploreFamilyFriendlySearch, setExploreFamilyFriendlySearch] = useState("");
+  const [exploreAwardWinnersSearch, setExploreAwardWinnersSearch] = useState("");
+  const [exploreEditorsPickSearch, setExploreEditorsPickSearch] = useState("");
+  const [exploreAnimeSearch, setExploreAnimeSearch] = useState("");
+  const [exploreFranchiseSearch, setExploreFranchiseSearch] = useState("");
+
+  // ── sub-section filters (shared across Browse By subsections) ──
+  const [subFilterType, setSubFilterType] = useState("All");
+  const [subSortBy, setSubSortBy] = useState("added");
+  const [subOttFilter, setSubOttFilter] = useState("all");
+  const [subSortOpen, setSubSortOpen] = useState(false);
+  const [subOttOpen, setSubOttOpen] = useState(false);
 
   // ── home content ──
   const [heroItems, setHeroItems] = useState(HERO_ITEMS);
@@ -247,11 +288,28 @@ export default function App() {
       setExploreView(null);
       setExpandedSub(null);
       setExpandedSubSub(null);
+      setBrowseItem(null);
       setExploreCategorySearch("");
       setExploreGenreSearch("");
       setExploreCountrySearch("");
+      setExploreLanguageSearch("");
+      setExploreFamilyFriendlySearch("");
+      setExploreAwardWinnersSearch("");
+      setExploreEditorsPickSearch("");
+      setExploreAnimeSearch("");
+      setExploreFranchiseSearch("");
+      setSubFilterType("All");
+      setSubSortBy("added");
+      setSubOttFilter("all");
+      setSubSortOpen(false);
+      setSubOttOpen(false);
     }
   }, [page]);
+
+  // Reset browseItem when navigating to a different section
+  useEffect(() => {
+    setBrowseItem(null);
+  }, [exploreView]);
 
   // ── Load live catalog / hero from TMDB ──
 
@@ -701,9 +759,94 @@ export default function App() {
     return EXPLORE_COUNTRY_CARDS.filter(c => c.name.toLowerCase().includes(search));
   }, [exploreCountrySearch]);
 
+  const filteredExploreLanguages = useMemo(() => {
+    const search = exploreLanguageSearch.trim().toLowerCase();
+    return EXPLORE_LANGUAGE_CARDS.filter(lang => lang.name.toLowerCase().includes(search));
+  }, [exploreLanguageSearch]);
+
+  const filteredExploreFamilyFriendly = useMemo(() => {
+    const search = exploreFamilyFriendlySearch.trim().toLowerCase();
+    return EXPLORE_SUB_FAMILY_FRIENDLY.filter(g => g.name.toLowerCase().includes(search));
+  }, [exploreFamilyFriendlySearch]);
+
+  const filteredExploreAwardWinners = useMemo(() => {
+    const search = exploreAwardWinnersSearch.trim().toLowerCase();
+    return EXPLORE_SUB_AWARD_WINNERS.filter(g => g.name.toLowerCase().includes(search));
+  }, [exploreAwardWinnersSearch]);
+
+  const filteredExploreEditorsPick = useMemo(() => {
+    const search = exploreEditorsPickSearch.trim().toLowerCase();
+    return EXPLORE_SUB_EDITORS_PICK.filter(g => g.name.toLowerCase().includes(search));
+  }, [exploreEditorsPickSearch]);
+
+  const filteredExploreAnime = useMemo(() => {
+    const search = exploreAnimeSearch.trim().toLowerCase();
+    return EXPLORE_SUB_ANIME.filter(g => g.name.toLowerCase().includes(search));
+  }, [exploreAnimeSearch]);
+
+  const filteredExploreFranchise = useMemo(() => {
+    const search = exploreFranchiseSearch.trim().toLowerCase();
+    return EXPLORE_SUB_FRANCHISE.filter(g => g.name.toLowerCase().includes(search));
+  }, [exploreFranchiseSearch]);
+
   const renderLibrary = (mode) => {
     const isExploreMode = mode === "explore";
     const categoryLetters = Object.keys(filteredExploreCategoryGroups);
+
+    // ── shared filter toolbar for Browse By subsections ──
+    const renderSubFilterToolbar = () => (
+      <div className="custom-filter-bar" style={{ marginBottom: 16, marginTop: 4 }}>
+        <div className="fil-group fil-left">
+          {["All", "Movie", "TV Show", "Anime"].map(f => (
+            <button key={f} className={`fil-pill${subFilterType === f ? " on" : ""}`} onClick={() => setSubFilterType(f)}>
+              {f === "TV Show" ? "Series" : f}
+            </button>
+          ))}
+        </div>
+        <div className="fil-group fil-right">
+          <div className="custom-dropdown">
+            <button className="fil-pill drop-trigger" onClick={() => { setSubSortOpen(s => !s); setSubOttOpen(false); }}>
+              Sort: {subSortBy === "added" ? "Recently Added" : subSortBy === "title" ? "Title A-Z" : subSortBy === "rating" ? "Top Rated" : "Newest"}
+              <span className="caret">▼</span>
+            </button>
+            {subSortOpen && (
+              <div className="drop-menu right-align">
+                {[
+                  { val: "added", lbl: "Recently Added" },
+                  { val: "title", lbl: "Title A-Z" },
+                  { val: "rating", lbl: "Top Rated" },
+                  { val: "year", lbl: "Newest" },
+                ].map(o => (
+                  <div key={o.val} className={`drop-item${subSortBy === o.val ? " active" : ""}`} onClick={() => { setSubSortBy(o.val); setSubSortOpen(false); }}>
+                    {o.lbl} {subSortBy === o.val && <span className="chk">✓</span>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="custom-dropdown">
+            <button className="fil-pill drop-trigger" onClick={() => { setSubOttOpen(s => !s); setSubSortOpen(false); }}>
+              {subOttFilter === "all" ? "All Channels" : (OTT[subOttFilter]?.name || "Channel")}
+              {subOttFilter !== "all" && OTT[subOttFilter] && <OttIcon ott={OTT[subOttFilter]} />}
+              <span className="caret">▼</span>
+            </button>
+            {subOttOpen && (
+              <div className="drop-menu right-align" style={{ maxHeight: 300, overflowY: "auto" }}>
+                <div className={`drop-item${subOttFilter === "all" ? " active" : ""}`} onClick={() => { setSubOttFilter("all"); setSubOttOpen(false); }}>
+                  All Channels {subOttFilter === "all" && <span className="chk">✓</span>}
+                </div>
+                {Object.keys(OTT).map(k => (
+                  <div key={k} className={`drop-item${subOttFilter === k ? " active" : ""}`} onClick={() => { setSubOttFilter(k); setSubOttOpen(false); }}>
+                    <OttIcon ott={OTT[k]} />
+                    {OTT[k].name} {subOttFilter === k && <span className="chk">✓</span>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
 
     return (
       <>
@@ -712,7 +855,7 @@ export default function App() {
             <div style={{ marginBottom: 24 }}>
               <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 32, color: "var(--tx)", lineHeight: 1, marginBottom: 16 }}>Browse By</div>
               <div className="browse-grid">
-                <div className={`browse-item ${exploreView === "categories" ? "active" : ""}`} onClick={() => setExploreView(v => v === "categories" ? null : "categories")}>
+                <div className={`browse-item ${exploreView === "categories" ? "active" : ""}`} onClick={() => { setExploreView("categories"); navigate("/explore/category"); }}>
                   <div className="browse-icon">
                     <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <rect x="3" y="3" width="7" height="7"></rect>
@@ -723,7 +866,7 @@ export default function App() {
                   </div>
                   <span className="browse-label">Category</span>
                 </div>
-                <div className={`browse-item ${exploreView === "genres" ? "active" : ""}`} onClick={() => setExploreView(v => v === "genres" ? null : "genres")}>
+                <div className={`browse-item ${exploreView === "genres" ? "active" : ""}`} onClick={() => { setExploreView("genres"); navigate("/explore/genre"); }}>
                   <div className="browse-icon">
                     <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <circle cx="6" cy="12" r="2"></circle>
@@ -733,7 +876,7 @@ export default function App() {
                   </div>
                   <span className="browse-label">Genre</span>
                 </div>
-                <div className={`browse-item ${exploreView === "countries" ? "active" : ""}`} onClick={() => setExploreView(v => v === "countries" ? null : "countries")}>
+                <div className={`browse-item ${exploreView === "countries" ? "active" : ""}`} onClick={() => { setExploreView("countries"); navigate("/explore/country"); }}>
                   <div className="browse-icon">
                     <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <circle cx="12" cy="12" r="10"></circle>
@@ -742,7 +885,7 @@ export default function App() {
                   </div>
                   <span className="browse-label">Country</span>
                 </div>
-                <div className={`browse-item ${exploreView === "languages" ? "active" : ""}`} onClick={() => setExploreView(v => v === "languages" ? null : "languages")}>
+                <div className={`browse-item ${exploreView === "languages" ? "active" : ""}`} onClick={() => { setExploreView("languages"); navigate("/explore/language"); }}>
                   <div className="browse-icon">
                     <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path d="M5 8l6 6"></path>
@@ -755,7 +898,7 @@ export default function App() {
                   </div>
                   <span className="browse-label">Language</span>
                 </div>
-                <div className={`browse-item ${exploreView === "family_friendly" ? "active" : ""}`} onClick={() => setExploreView(v => v === "family_friendly" ? null : "family_friendly")}>
+                <div className={`browse-item ${exploreView === "family_friendly" ? "active" : ""}`} onClick={() => { setExploreView("family_friendly"); navigate("/explore/family-friendly"); }}>
                   <div className="browse-icon">
                     <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -766,7 +909,7 @@ export default function App() {
                   </div>
                   <span className="browse-label">Family Friendly</span>
                 </div>
-                <div className={`browse-item ${exploreView === "award_winners" ? "active" : ""}`} onClick={() => setExploreView(v => v === "award_winners" ? null : "award_winners")}>
+                <div className={`browse-item ${exploreView === "award_winners" ? "active" : ""}`} onClick={() => { setExploreView("award_winners"); navigate("/explore/award-winners"); }}>
                   <div className="browse-icon">
                     <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <circle cx="12" cy="8" r="7"></circle>
@@ -775,7 +918,7 @@ export default function App() {
                   </div>
                   <span className="browse-label">Award Winners</span>
                 </div>
-                <div className={`browse-item ${exploreView === "editors_pick" ? "active" : ""}`} onClick={() => setExploreView(v => v === "editors_pick" ? null : "editors_pick")}>
+                <div className={`browse-item ${exploreView === "editors_pick" ? "active" : ""}`} onClick={() => { setExploreView("editors_pick"); navigate("/explore/editors-pick"); }}>
                   <div className="browse-icon">
                     <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
@@ -783,7 +926,7 @@ export default function App() {
                   </div>
                   <span className="browse-label">Editor's Pick</span>
                 </div>
-                <div className={`browse-item ${exploreView === "anime" ? "active" : ""}`} onClick={() => setExploreView(v => v === "anime" ? null : "anime")}>
+                <div className={`browse-item ${exploreView === "anime" ? "active" : ""}`} onClick={() => { setExploreView("anime"); navigate("/explore/anime"); }}>
                   <div className="browse-icon">
                     <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
@@ -791,7 +934,7 @@ export default function App() {
                   </div>
                   <span className="browse-label">Anime</span>
                 </div>
-                <div className={`browse-item ${exploreView === "franchise" ? "active" : ""}`} onClick={() => setExploreView(v => v === "franchise" ? null : "franchise")}>
+                <div className={`browse-item ${exploreView === "franchise" ? "active" : ""}`} onClick={() => { setExploreView("franchise"); navigate("/explore/franchise"); }}>
                   <div className="browse-icon">
                     <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
@@ -824,27 +967,36 @@ export default function App() {
                   />
                 </div>
 
-                <div style={{ padding: "0 0 80px" }}>
-                  {categoryLetters.map((letter, idx) => (
-                    <div key={letter}>
-                      {idx > 0 && <div className="divider" style={{ margin: "14px 0" }} />}
-                      <div style={{ display: "grid", gridTemplateColumns: "72px 1fr", gap: "18px", alignItems: "flex-start", padding: "6px 0" }}>
-                        <div className="category-letter">{letter}</div>
-                        <div className="category-grid">
-                          {filteredExploreCategoryGroups[letter].map(cat => (
-                            <button
-                              key={`${letter}-${cat}`}
-                              className="category-item"
-                              onClick={() => navigate(`/category/${cat.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`)}
-                            >
-                              {cat}
-                            </button>
-                          ))}
+                {browseItem?.sectionType === "categories" ? (
+                  <BrowseItemResults
+                    sectionType="categories"
+                    item={browseItem.item}
+                    onSelect={openFromCard}
+                    onBack={() => setBrowseItem(null)}
+                  />
+                ) : (
+                  <div style={{ padding: "0 0 80px" }}>
+                    {categoryLetters.map((letter, idx) => (
+                      <div key={letter}>
+                        {idx > 0 && <div className="divider" style={{ margin: "14px 0" }} />}
+                        <div style={{ display: "grid", gridTemplateColumns: "72px 1fr", gap: "18px", alignItems: "flex-start", padding: "6px 0" }}>
+                          <div className="category-letter">{letter}</div>
+                          <div className="category-grid">
+                            {filteredExploreCategoryGroups[letter].map(cat => (
+                              <button
+                                key={`${letter}-${cat}`}
+                                className="category-item"
+                                onClick={() => setBrowseItem({ sectionType: "categories", item: { name: cat } })}
+                              >
+                                {cat}
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </>
             )}
 
@@ -864,20 +1016,29 @@ export default function App() {
                   />
                 </div>
 
-                <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
-                  {filteredExploreGenres.map((genre) => (
-                    <button
-                      key={genre.name}
-                      className="genre-card"
-                      style={{ background: genre.gradient }}
-                      onClick={() => { setPage("explore"); navigate(`/genre/${toGenreSlug(genre.name)}`); }}
-                    >
-                      <span className="genre-card-emoji">{genre.icon}</span>
-                      <span className="genre-card-overlay" />
-                      <span className="genre-card-title">{genre.name}</span>
-                    </button>
-                  ))}
-                </div>
+                {browseItem?.sectionType === "genres" ? (
+                  <BrowseItemResults
+                    sectionType="genres"
+                    item={browseItem.item}
+                    onSelect={openFromCard}
+                    onBack={() => setBrowseItem(null)}
+                  />
+                ) : (
+                  <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
+                    {filteredExploreGenres.map((genre) => (
+                      <button
+                        key={genre.name}
+                        className="genre-card"
+                        style={{ background: genre.gradient }}
+                        onClick={() => setBrowseItem({ sectionType: "genres", item: genre })}
+                      >
+                        <span className="genre-card-emoji">{genre.icon}</span>
+                        <span className="genre-card-overlay" />
+                        <span className="genre-card-title">{genre.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </>
             )}
 
@@ -897,176 +1058,292 @@ export default function App() {
                   />
                 </div>
 
-                <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
-                  {filteredExploreCountries.map((country) => (
-                    <button
-                      key={country.name}
-                      className="genre-card"
-                      style={{ background: country.gradient }}
-                      onClick={() => { setPage("explore"); navigate(`/country/${toCountrySlug(country.name)}`); }}
-                    >
-                      <span className="genre-card-emoji">{country.icon}</span>
-                      <span className="genre-card-overlay" />
-                      <span className="genre-card-title">{country.name}</span>
-                    </button>
-                  ))}
-                </div>
+                {browseItem?.sectionType === "countries" ? (
+                  <BrowseItemResults
+                    sectionType="countries"
+                    item={browseItem.item}
+                    onSelect={openFromCard}
+                    onBack={() => setBrowseItem(null)}
+                  />
+                ) : (
+                  <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
+                    {filteredExploreCountries.map((country) => (
+                      <button
+                        key={country.name}
+                        className="genre-card"
+                        style={{ background: country.gradient }}
+                        onClick={() => setBrowseItem({ sectionType: "countries", item: country })}
+                      >
+                        <span className="genre-card-emoji">{country.icon}</span>
+                        <span className="genre-card-overlay" />
+                        <span className="genre-card-title">{country.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </>
             )}
 
             {exploreView === "languages" && (
               <>
                 <div className="divider" style={{ margin: "20px 0" }} />
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 24px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 16px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <div className="page-h1" style={{ margin: 0 }}>Languages</div>
                   </div>
+                  <input
+                    className="search-inp"
+                    style={{ maxWidth: 320, borderRadius: 9999, background: "var(--c1)" }}
+                    placeholder="Search language"
+                    value={exploreLanguageSearch}
+                    onChange={e => setExploreLanguageSearch(e.target.value)}
+                  />
                 </div>
+                {renderSubFilterToolbar()}
 
-                <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
-                  {EXPLORE_LANGUAGE_CARDS.map((lang) => (
-                    <button
-                      key={lang.name}
-                      className="genre-card"
-                      style={{ background: lang.gradient }}
-                      onClick={() => { setPage("explore"); navigate(`/language/${lang.iso}`); }}
-                    >
-                      <span className="genre-card-emoji">{lang.icon}</span>
-                      <span className="genre-card-overlay" />
-                      <span className="genre-card-title">{lang.name}</span>
-                    </button>
-                  ))}
-                </div>
+                {browseItem?.sectionType === "languages" ? (
+                  <BrowseItemResults
+                    sectionType="languages"
+                    item={browseItem.item}
+                    onSelect={openFromCard}
+                    onBack={() => setBrowseItem(null)}
+                  />
+                ) : (
+                  <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
+                    {filteredExploreLanguages.map((lang) => (
+                      <button
+                        key={lang.name}
+                        className="genre-card"
+                        style={{ background: lang.gradient }}
+                        onClick={() => setBrowseItem({ sectionType: "languages", item: lang })}
+                      >
+                        <span className="genre-card-emoji">{lang.icon}</span>
+                        <span className="genre-card-overlay" />
+                        <span className="genre-card-title">{lang.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </>
             )}
 
             {exploreView === "family_friendly" && (
               <>
                 <div className="divider" style={{ margin: "20px 0" }} />
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 24px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 16px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <div className="page-h1" style={{ margin: 0 }}>Family Friendly</div>
                     <span className="sub-ac-badge" style={{ marginLeft: 16 }}>CURATED</span>
                   </div>
+                  <input
+                    className="search-inp"
+                    style={{ maxWidth: 320, borderRadius: 9999, background: "var(--c1)" }}
+                    placeholder="Search family friendly"
+                    value={exploreFamilyFriendlySearch}
+                    onChange={e => setExploreFamilyFriendlySearch(e.target.value)}
+                  />
                 </div>
+                {renderSubFilterToolbar()}
 
-                <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
-                  {EXPLORE_SUB_FAMILY_FRIENDLY.map((g) => (
-                    <button
-                      key={g.name}
-                      className="genre-card"
-                      style={{ background: g.gradient }}
-                    >
-                      <span className="genre-card-emoji">{g.icon}</span>
-                      <span className="genre-card-overlay" />
-                      <span className="genre-card-title">{g.name}</span>
-                    </button>
-                  ))}
-                </div>
+                {browseItem?.sectionType === "family_friendly" ? (
+                  <BrowseItemResults
+                    sectionType="family_friendly"
+                    item={browseItem.item}
+                    onSelect={openFromCard}
+                    onBack={() => setBrowseItem(null)}
+                  />
+                ) : (
+                  <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
+                    {filteredExploreFamilyFriendly.map((g) => (
+                      <button
+                        key={g.name}
+                        className="genre-card"
+                        style={{ background: g.gradient }}
+                        onClick={() => setBrowseItem({ sectionType: "family_friendly", item: g })}
+                      >
+                        <span className="genre-card-emoji">{g.icon}</span>
+                        <span className="genre-card-overlay" />
+                        <span className="genre-card-title">{g.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </>
             )}
 
             {exploreView === "award_winners" && (
               <>
                 <div className="divider" style={{ margin: "20px 0" }} />
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 24px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 16px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <div className="page-h1" style={{ margin: 0 }}>Award Winners</div>
                     <span className="sub-ac-badge" style={{ marginLeft: 16 }}>ACCLAIMED</span>
                   </div>
+                  <input
+                    className="search-inp"
+                    style={{ maxWidth: 320, borderRadius: 9999, background: "var(--c1)" }}
+                    placeholder="Search award winners"
+                    value={exploreAwardWinnersSearch}
+                    onChange={e => setExploreAwardWinnersSearch(e.target.value)}
+                  />
                 </div>
+                {renderSubFilterToolbar()}
 
-                <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
-                  {EXPLORE_SUB_AWARD_WINNERS.map((g) => (
-                    <button
-                      key={g.name}
-                      className="genre-card"
-                      style={{ background: g.gradient }}
-                    >
-                      <span className="genre-card-emoji">{g.icon}</span>
-                      <span className="genre-card-overlay" />
-                      <span className="genre-card-title">{g.name}</span>
-                    </button>
-                  ))}
-                </div>
+                {browseItem?.sectionType === "award_winners" ? (
+                  <BrowseItemResults
+                    sectionType="award_winners"
+                    item={browseItem.item}
+                    onSelect={openFromCard}
+                    onBack={() => setBrowseItem(null)}
+                  />
+                ) : (
+                  <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
+                    {filteredExploreAwardWinners.map((g) => (
+                      <button
+                        key={g.name}
+                        className="genre-card"
+                        style={{ background: g.gradient }}
+                        onClick={() => setBrowseItem({ sectionType: "award_winners", item: g })}
+                      >
+                        <span className="genre-card-emoji">{g.icon}</span>
+                        <span className="genre-card-overlay" />
+                        <span className="genre-card-title">{g.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </>
             )}
 
             {exploreView === "editors_pick" && (
               <>
                 <div className="divider" style={{ margin: "20px 0" }} />
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 24px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 16px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <div className="page-h1" style={{ margin: 0 }}>Editor's Pick</div>
                     <span className="sub-ac-badge" style={{ marginLeft: 16 }}>TOP OF THE LINE</span>
                   </div>
+                  <input
+                    className="search-inp"
+                    style={{ maxWidth: 320, borderRadius: 9999, background: "var(--c1)" }}
+                    placeholder="Search editor's pick"
+                    value={exploreEditorsPickSearch}
+                    onChange={e => setExploreEditorsPickSearch(e.target.value)}
+                  />
                 </div>
+                {renderSubFilterToolbar()}
 
-                <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
-                  {EXPLORE_SUB_EDITORS_PICK.map((g) => (
-                    <button
-                      key={g.name}
-                      className="genre-card"
-                      style={{ background: g.gradient }}
-                    >
-                      <span className="genre-card-emoji">{g.icon}</span>
-                      <span className="genre-card-overlay" />
-                      <span className="genre-card-title">{g.name}</span>
-                    </button>
-                  ))}
-                </div>
+                {browseItem?.sectionType === "editors_pick" ? (
+                  <BrowseItemResults
+                    sectionType="editors_pick"
+                    item={browseItem.item}
+                    onSelect={openFromCard}
+                    onBack={() => setBrowseItem(null)}
+                  />
+                ) : (
+                  <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
+                    {filteredExploreEditorsPick.map((g) => (
+                      <button
+                        key={g.name}
+                        className="genre-card"
+                        style={{ background: g.gradient }}
+                        onClick={() => setBrowseItem({ sectionType: "editors_pick", item: g })}
+                      >
+                        <span className="genre-card-emoji">{g.icon}</span>
+                        <span className="genre-card-overlay" />
+                        <span className="genre-card-title">{g.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </>
             )}
 
             {exploreView === "anime" && (
               <>
                 <div className="divider" style={{ margin: "20px 0" }} />
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 24px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 16px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <div className="page-h1" style={{ margin: 0 }}>Anime</div>
                     <span className="sub-ac-badge" style={{ marginLeft: 16 }}>POPULAR</span>
                   </div>
+                  <input
+                    className="search-inp"
+                    style={{ maxWidth: 320, borderRadius: 9999, background: "var(--c1)" }}
+                    placeholder="Search anime"
+                    value={exploreAnimeSearch}
+                    onChange={e => setExploreAnimeSearch(e.target.value)}
+                  />
                 </div>
+                {renderSubFilterToolbar()}
 
-                <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
-                  {EXPLORE_SUB_ANIME.map((g) => (
-                    <button
-                      key={g.name}
-                      className="genre-card"
-                      style={{ background: g.gradient }}
-                    >
-                      <span className="genre-card-emoji">{g.icon}</span>
-                      <span className="genre-card-overlay" />
-                      <span className="genre-card-title">{g.name}</span>
-                    </button>
-                  ))}
-                </div>
+                {browseItem?.sectionType === "anime" ? (
+                  <BrowseItemResults
+                    sectionType="anime"
+                    item={browseItem.item}
+                    onSelect={openFromCard}
+                    onBack={() => setBrowseItem(null)}
+                  />
+                ) : (
+                  <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
+                    {filteredExploreAnime.map((g) => (
+                      <button
+                        key={g.name}
+                        className="genre-card"
+                        style={{ background: g.gradient }}
+                        onClick={() => setBrowseItem({ sectionType: "anime", item: g })}
+                      >
+                        <span className="genre-card-emoji">{g.icon}</span>
+                        <span className="genre-card-overlay" />
+                        <span className="genre-card-title">{g.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </>
             )}
 
             {exploreView === "franchise" && (
               <>
                 <div className="divider" style={{ margin: "20px 0" }} />
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 24px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: "0 0 16px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <div className="page-h1" style={{ margin: 0 }}>Franchise</div>
                     <span className="sub-ac-badge" style={{ marginLeft: 16 }}>MEGA HITS</span>
                   </div>
+                  <input
+                    className="search-inp"
+                    style={{ maxWidth: 320, borderRadius: 9999, background: "var(--c1)" }}
+                    placeholder="Search franchise"
+                    value={exploreFranchiseSearch}
+                    onChange={e => setExploreFranchiseSearch(e.target.value)}
+                  />
                 </div>
+                {renderSubFilterToolbar()}
 
-                <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
-                  {EXPLORE_SUB_FRANCHISE.map((g) => (
-                    <button
-                      key={g.name}
-                      className="genre-card"
-                      style={{ background: g.gradient }}
-                    >
-                      <span className="genre-card-emoji">{g.icon}</span>
-                      <span className="genre-card-overlay" />
-                      <span className="genre-card-title">{g.name}</span>
-                    </button>
-                  ))}
-                </div>
+                {browseItem?.sectionType === "franchise" ? (
+                  <BrowseItemResults
+                    sectionType="franchise"
+                    item={browseItem.item}
+                    onSelect={openFromCard}
+                    onBack={() => setBrowseItem(null)}
+                  />
+                ) : (
+                  <div className="genre-card-grid" style={{ padding: "0 0 80px" }}>
+                    {filteredExploreFranchise.map((g) => (
+                      <button
+                        key={g.name}
+                        className="genre-card"
+                        style={{ background: g.gradient }}
+                        onClick={() => setBrowseItem({ sectionType: "franchise", item: g })}
+                      >
+                        <span className="genre-card-emoji">{g.icon}</span>
+                        <span className="genre-card-overlay" />
+                        <span className="genre-card-title">{g.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -1187,7 +1464,7 @@ export default function App() {
                 <div className="custom-dropdown">
                   <button className="fil-pill drop-trigger" onClick={() => { setOttDropdownOpen(s => !s); setSortDropdownOpen(false); }}>
                     {ottFilter === "all" ? "All Channels" : (OTT[ottFilter]?.name || "Channel")}
-                    {ottFilter !== "all" && OTT[ottFilter]?.logo && <img src={OTT[ottFilter].logo} className="ott-drop-icon" alt="" />}
+                    {ottFilter !== "all" && OTT[ottFilter] && <OttIcon ott={OTT[ottFilter]} />}
                     <span className="caret">▼</span>
                   </button>
                   {ottDropdownOpen && (
@@ -1197,7 +1474,7 @@ export default function App() {
                       </div>
                       {Object.keys(OTT).map(k => (
                         <div key={k} className={`drop-item${ottFilter === k ? " active" : ""}`} onClick={() => { setOttFilter(k); setOttDropdownOpen(false); }}>
-                          <img src={OTT[k].logo} className="ott-drop-icon" alt="" />
+                          <OttIcon ott={OTT[k]} />
                           {OTT[k].name} {ottFilter === k && <span className="chk">✓</span>}
                         </div>
                       ))}
@@ -1207,28 +1484,7 @@ export default function App() {
               </div>
             </div>
 
-            <style>{`
-            .custom-filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; margin-top: 24px; }
-            .fil-group { display: flex; align-items: center; gap: 10px; }
-            .fil-pill { height: 38px; padding: 0 16px; border-radius: 999px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--txm); font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-            .fil-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); transform: scale(1.05); color: var(--tx); filter: brightness(1.1); }
-            .fil-pill.on, .fil-pill.active { background: var(--acc); color: #000; border-color: var(--acc); box-shadow: 0 0 10px var(--acc-glow); }
-            .toggle-pill .chk { font-size: 12px; font-weight: bold; }
-            .custom-dropdown { position: relative; }
-            .drop-trigger .caret { font-size: 10px; opacity: 0.6; }
-            .drop-menu { position: absolute; top: calc(100% + 8px); left: 0; background: rgba(20, 20, 25, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 6px; min-width: 180px; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); animation: slideFadeIn 0.2s ease; }
-            .drop-menu.right-align { left: auto; right: 0; }
-            .drop-item { padding: 10px 14px; border-radius: 8px; color: var(--txm); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; }
-            .drop-item:hover { background: rgba(255, 255, 255, 0.08); color: var(--tx); }
-            .drop-item.active { color: var(--acc); font-weight: 600; }
-            .drop-item .chk { margin-left: auto; color: var(--acc); }
-            .ott-drop-icon { width: 20px; height: 20px; border-radius: 4px; object-fit: cover; }
-            @keyframes slideFadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-            
-            /* Hide the old fil-row if any lingering css */
-            .fil-row { display: none !important; }
-            .sort-sel { display: none !important; }
-            `}</style>
+
           </div>
 
           <div className="grid-wrap">
@@ -1354,6 +1610,11 @@ export default function App() {
       </nav>
 
       <Routes>
+        {/* ── Browse By drill-down routes ─────────────────────────── */}
+        <Route path="/explore/:section" element={<BrowseSectionPage />} />
+        <Route path="/explore/:section/:item" element={<BrowseItemPage />} />
+
+        {/* ── Legacy direct routes ─────────────────────────────────── */}
         <Route
           path="/genre/:slug"
           element={
