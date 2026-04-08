@@ -26,9 +26,9 @@ export const Icon = ({ name, size = 16 }) => {
 
 export const getStatusIcon = (status) => {
   const iconMap = {
-    "Watched": "✓",
-    "Watching": "▶",
-    "Want to Watch": "○",
+    "Watched":       "\u2713", // ✓ checkmark
+    "Watching":      "\u25B6", // ▶ play
+    "Want to Watch": "\u25CB", // ○ circle
   };
-  return iconMap[status] || status;
+  return iconMap[status] || "";
 };

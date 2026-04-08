@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { supabase } from "../lib/supabase";
 
 export default function AuthModal({ onClose }) {
@@ -29,7 +29,7 @@ export default function AuthModal({ onClose }) {
     <div className="backdrop" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="auth-modal">
         <div className="auth-logo">Reel<span>log</span></div>
-        <div className="auth-sub">{tab === "signin" ? "Welcome back!" : "Create your free account"}</div>
+        <div className="auth-sub">{tab === "signin" ? "Welcome back! TEST": "Create your free account"}</div>
         <div className="auth-tabs">
           <button className={`auth-tab${tab === "signin" ? " on" : ""}`}
             onClick={() => { setTab("signin"); setErr(""); setMsg(""); }}>Sign in</button>
@@ -41,11 +41,32 @@ export default function AuthModal({ onClose }) {
         {tab === "signup" && (
           <input className="auth-inp" placeholder="Your name" value={name} onChange={e => setName(e.target.value)} />
         )}
+        <button
+          type="button"
+          className="auth-google-btn"
+          onClick={() => supabase.auth.signInWithOAuth({
+            provider: "google",
+            options: { redirectTo: window.location.origin }
+          })}
+        >
+          <span style={{ fontWeight: 900, fontSize: 15 }}>G</span>
+          Continue with Google
+        </button>
+        <div className="auth-divider">or continue with email</div>
         <input className="auth-inp" placeholder="Email address" type="email" value={email} onChange={e => setEmail(e.target.value)} />
         <input className="auth-inp" placeholder="Password" type="password" value={pass} onChange={e => setPass(e.target.value)}
           onKeyDown={e => e.key === "Enter" && handleAuth()} />
+        {tab === "signin" && (
+          <div className="auth-forgot" onClick={() => {
+            if (!email) { setErr("Enter your email above first"); return; }
+            supabase.auth.resetPasswordForEmail(email);
+            setMsg("Reset link sent! Check your email.");
+          }}>
+            Forgot password?
+          </div>
+        )}
         <button className="auth-btn" onClick={handleAuth} disabled={loading}>
-          {loading ? "Loading..." : tab === "signin" ? "Sign in →" : "Create account →"}
+          {loading ? "Loading..." : tab === "signin" ? "Sign in" : "Create account"}
         </button>
       </div>
     </div>

@@ -1,55 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { TMDB_BASE, TMDB_KEY, TMDB_W, TMDB_IMG, OTT, HERO_ITEMS } from "../lib/constants";
+import { TMDB_W, TMDB_IMG, OTT, HERO_ITEMS } from "../lib/constants";
 import { Icon } from "./Icon";
 
 
 export default function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
-  const [fallbackSlides, setFallbackSlides] = useState(HERO_ITEMS);
-  const slides = items?.length ? items : fallbackSlides;
+  const slides = items?.length ? items : HERO_ITEMS;
   const [idx, setIdx] = useState(0);
   const [transitioning, setTrans] = useState(false);
   const intervalRef = useRef(null);
   const thumbStripRef = useRef(null);
   const thumbRefs = useRef([]);
-
-  useEffect(() => {
-    if (items?.length) return;
-    let cancelled = false;
-    const loadTrending = async () => {
-      try {
-        const r = await fetch(`${TMDB_BASE}/trending/all/week?api_key=${TMDB_KEY}`);
-        const d = await r.json();
-        const mapped = (d.results || [])
-          .filter(r => r.backdrop_path)
-          .slice(0, 20)
-          .map(r => {
-            const isMovie = r.media_type === "movie";
-            const year = (r.release_date || r.first_air_date || "").split("-")[0];
-            return {
-              id: `tr-${r.id}`,
-              tmdbId: r.id,
-              tmdbType: isMovie ? "movie" : "tv",
-              title: r.title || r.name || "Untitled",
-              year,
-              rating: r.vote_average ? r.vote_average.toFixed(1) : "N/A",
-              type: isMovie ? "Movie" : "TV Show",
-              poster: r.poster_path,
-              backdrop: r.backdrop_path,
-              streaming: [],
-              overview: r.overview,
-            };
-          });
-        if (!cancelled && mapped.length) setFallbackSlides(mapped);
-      } catch {
-        /* ignore */
-      }
-    };
-    loadTrending();
-    return () => { cancelled = true; };
-  }, [items]);
-
-  useEffect(() => { setIdx(0); }, [slides.length]);
 
   const goTo = (i) => {
     if (i === idx || transitioning || !slides.length) return;
@@ -70,15 +31,16 @@ export default function HeroCarousel({ items, onAdd, session, setShowAuth, autop
     return () => clearInterval(intervalRef.current);
   }, [autoplay, slides.length]);
 
-  const item = slides[idx] || slides[0];
+  const activeIdx = slides.length ? Math.min(idx, slides.length - 1) : 0;
+  const item = slides[activeIdx] || slides[0];
   if (!item) return null;
 
   return (
     <div className="hero-wrap">
       {slides.map((h, i) => (
         <div key={i}
-          className={`hero-bg-img ${i === idx && !transitioning ? "active" : "enter"}`}
-          style={{ backgroundImage: `url(${TMDB_W}${h.backdrop})`, zIndex: i === idx ? 1 : 0 }}
+          className={`hero-bg-img ${i === activeIdx && !transitioning ? "active" : "enter"}`}
+          style={{ backgroundImage: `url(${TMDB_W}${h.backdrop})`, zIndex: i === activeIdx ? 1 : 0 }}
         />
       ))}
       <div className="hero-overlay" style={{ zIndex: 2 }} />
@@ -91,9 +53,6 @@ export default function HeroCarousel({ items, onAdd, session, setShowAuth, autop
         </div>
         <p className="hero-overview">{item.overview}</p>
         <div className="hero-actions">
-          <button className="btn-hero-play" onClick={() => session ? onAdd(item) : setShowAuth(true)}>
-            ▶ &nbsp;Add to List
-          </button>
           {item.streaming?.length > 0 && (
             <button className="btn-hero-add" onClick={() => {
               const ottKey = item.streaming[0];
@@ -102,11 +61,11 @@ export default function HeroCarousel({ items, onAdd, session, setShowAuth, autop
                 window.open(ottData.url + encodeURIComponent(item.title), '_blank');
               }
             }} title="Open in streaming app">
-              ▶ &nbsp;Watch Now
+              {"\u25B6"}&nbsp;Watch Now
             </button>
           )}
-          <button className="btn-hero-add" onClick={() => session ? onAdd(item) : setShowAuth(true)}>
-            ℹ &nbsp;More Info
+          <button className="btn-hero-play" onClick={() => session ? onAdd(item) : setShowAuth(true)}>
+            +&nbsp;Add to List
           </button>
         </div>
       </div>
@@ -119,7 +78,7 @@ export default function HeroCarousel({ items, onAdd, session, setShowAuth, autop
             return (
               <button
                 key={i}
-                className={`hero-thumb${i === idx ? " active" : ""}`}
+                className={`hero-thumb${i === activeIdx ? " active" : ""}`}
                 onClick={() => goTo(i)}
                 ref={el => { thumbRefs.current[i] = el; }}
                 aria-label={`Go to ${h.title || "slide"}`}

@@ -1,0 +1,22 @@
+{
+  "lastSelectedProfileForWorkspace": {
+    "file:///c%3A/Users/Akshad/Projects/reellog:::personal": "local",
+    "file:///c%3A/Users/Akshad/.continue:::personal": "local"
+  },
+  "lastSelectedOrgIdForWorkspace": {
+    "file:///c%3A/Users/Akshad/Projects/reellog": "personal",
+    "file:///c%3A/Users/Akshad/.continue": "personal"
+  },
+  "selectedModelsByProfileId": {
+    "local": {
+      "chat": "DeepSeek: DeepSeek V3.2",
+      "edit": "GPT-5.2",
+      "apply": "GPT-5.2",
+      "embed": "Transformers.js (Built-In)",
+      "autocomplete": null,
+      "rerank": null,
+      "summarize": null,
+      "subagent": null
+    }
+  }
+}

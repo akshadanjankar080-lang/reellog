@@ -3,7 +3,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import PosterImage from "./PosterImage";
 import { Icon } from "./Icon";
 
-export default function RowSection({ title, emoji, items, showRank, showOverview, onSelect, onSeeAll, showStreaming, onTypeNav }) {
+export default function RowSection({ title, emoji, items, showRank, showOverview, onSelect, onSeeAll, onTypeNav }) {
   const scrollRef = useRef(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(true);

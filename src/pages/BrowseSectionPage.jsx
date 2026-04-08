@@ -1,4 +1,5 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+﻿import { useState, useMemo, useRef, useEffect } from "react";
+import { FaArrowLeft, FaSearch } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   EXPLORE_CATEGORY_GROUPS,
@@ -12,7 +13,7 @@ import {
   EXPLORE_SUB_FRANCHISE,
 } from "../lib/constants";
 
-// ─── Config ───────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const SECTION_META = {
   category: { label: "Categories", tagline: "Every genre, every mood, every story" },
@@ -22,13 +23,13 @@ const SECTION_META = {
   "family-friendly": { label: "Family Friendly", tagline: "Great for all ages, all tastes" },
   "award-winners": { label: "Award Winners", tagline: "The very best, recognized by the world" },
   "editors-pick": { label: "Editor's Pick", tagline: "Handpicked by our curators" },
-  anime: { label: "Anime", tagline: "From shōnen epics to slice-of-life gems" },
+  anime: { label: "Anime", tagline: "From shonen epics to slice-of-life gems" },
   franchise: { label: "Franchise", tagline: "Worlds that never end" },
 };
 
 const SEARCHABLE = new Set(["category", "genre", "country", "language"]);
 
-// Full A–Z alphabet for sidebar (always shown, unavailable letters dimmed)
+// Full Aâ€“Z alphabet for sidebar (always shown, unavailable letters dimmed)
 const ALL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 // 16-color cinematic dark gradient palette (for non-category sections)
@@ -55,10 +56,10 @@ function slugify(str) {
   return (str || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
-// ─── Page-scoped styles ───────────────────────────────────────────────────────
+// â”€â”€â”€ Page-scoped styles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const PAGE_STYLES = `
-/* ── Hero ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bsp-page { min-height: 100vh; background: var(--bk); padding-bottom: 80px; }
 
 .bsp-hero {
@@ -196,7 +197,7 @@ const PAGE_STYLES = `
   background: var(--acc-dim);
 }
 
-/* ── Section label ───────────────────────────────────────────────────── */
+/* â”€â”€ Section label â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bsp-section-wrap { padding: 0 52px; margin-bottom: 32px; }
 .bsp-section-header {
   display: flex; align-items: center; justify-content: space-between;
@@ -218,21 +219,21 @@ const PAGE_STYLES = `
 }
 .bsp-section-count { font-size: 12px; color: var(--txd); letter-spacing: 0.5px; }
 
-/* ── Featured grid ───────────────────────────────────────────────────── */
+/* â”€â”€ Featured grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bsp-featured-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
-/* ── All grid ─────────────────────────────────────────────────────────── */
+/* â”€â”€ All grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bsp-all-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
   gap: 12px;
 }
 
-/* ── Premium Card ─────────────────────────────────────────────────────── */
+/* â”€â”€ Premium Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bsp-card {
   position: relative; overflow: hidden;
   border-radius: 18px;
@@ -326,7 +327,7 @@ const PAGE_STYLES = `
 }
 .bsp-card:hover .bsp-card-cta { opacity: 1; transform: translateY(0); }
 
-/* ── Empty state ──────────────────────────────────────────────────────── */
+/* â”€â”€ Empty state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bsp-empty {
   padding: 100px 0; text-align: center;
   animation: bspCardIn 0.4s ease both;
@@ -335,9 +336,9 @@ const PAGE_STYLES = `
 .bsp-empty-title { font-size: 19px; color: var(--txm); margin-bottom: 8px; font-weight: 500; }
 .bsp-empty-sub { font-size: 14px; color: var(--txd); }
 
-/* ════════════════════════════════════════════════════════════════════════
-   CATEGORY A–Z LAYOUT
-   ════════════════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   CATEGORY Aâ€“Z LAYOUT
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .cat-wrap {
   display: flex;
   position: relative;
@@ -351,7 +352,7 @@ const PAGE_STYLES = `
   padding-right: 64px; /* clearance for sidebar */
 }
 
-/* ── Letter group ──────────────────────────────────────────────────────── */
+/* â”€â”€ Letter group â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cat-group { margin-bottom: 4px; }
 
 /* Sticky letter header */
@@ -381,7 +382,7 @@ const PAGE_STYLES = `
   background: rgba(255,255,255,0.1);
 }
 
-/* ── Category pills ────────────────────────────────────────────────────── */
+/* â”€â”€ Category pills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cat-pills {
   display: flex;
   flex-wrap: wrap;
@@ -418,7 +419,7 @@ const PAGE_STYLES = `
 }
 .cat-pill:active { transform: translateY(-1px) scale(1.01); }
 
-/* ── A–Z Sidebar ───────────────────────────────────────────────────────── */
+/* â”€â”€ Aâ€“Z Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cat-sidebar {
   position: fixed;
   right: 18px;
@@ -465,7 +466,7 @@ const PAGE_STYLES = `
   font-size: 12px;
 }
 .cat-sidebar-btn.cat-sidebar-disabled {
-  opacity: 0.2; /* ⚠️ CSS opacity is 0–1. Do NOT set to 100 — use 0.2 for 20% */
+  opacity: 0.2; /* âš ï¸ CSS opacity is 0â€“1. Do NOT set to 100 â€” use 0.2 for 20% */
   cursor: default;
   pointer-events: none;
 }
@@ -479,7 +480,7 @@ const PAGE_STYLES = `
   transition: top 0.2s ease;
 }
 
-/* ── Responsive ───────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 900px) {
   .bsp-featured-grid { grid-template-columns: 1fr 1fr; }
   .cat-wrap { padding: 0 20px 80px; }
@@ -521,7 +522,7 @@ const PAGE_STYLES = `
 }
 `;
 
-// ─── PremiumCard (for non-category sections) ─────────────────────────────────
+// â”€â”€â”€ PremiumCard (for non-category sections) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function PremiumCard({ item, index, section, navigate, size = "normal" }) {
   const gradient = item.gradient ?? GRADIENTS[index % GRADIENTS.length];
@@ -543,13 +544,13 @@ function PremiumCard({ item, index, section, navigate, size = "normal" }) {
       <div className="bsp-card-body">
         {item.icon && <span className="bsp-card-icon-wrap" aria-hidden>{item.icon}</span>}
         <div className="bsp-card-name">{item.name}</div>
-        {isFeat && <div className="bsp-card-cta">Explore →</div>}
+        {isFeat && <div className="bsp-card-cta">Explore {"->"}</div>}
       </div>
     </button>
   );
 }
 
-// ─── SectionBlock (for non-category sections) ─────────────────────────────────
+// â”€â”€â”€ SectionBlock (for non-category sections) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function SectionBlock({ label, count, items, section, navigate, size, gridClass }) {
   if (!items.length) return null;
@@ -578,7 +579,7 @@ function SectionBlock({ label, count, items, section, navigate, size, gridClass 
   );
 }
 
-// ─── A–Z Sidebar ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ Aâ€“Z Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function AlphabetSidebar({ available, active, onSelect }) {
   return (
@@ -606,9 +607,9 @@ function AlphabetSidebar({ available, active, onSelect }) {
   );
 }
 
-// ─── Category A–Z Browse ──────────────────────────────────────────────────────
+// â”€â”€â”€ Category Aâ€“Z Browse â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-function CategoryBrowse({ filteredGroups, navigate, section, totalCount }) {
+function CategoryBrowse({ filteredGroups, navigate, section }) {
   const letters = Object.keys(filteredGroups);
   const available = useMemo(() => new Set(letters), [letters]);
   const [activeLetter, setActiveLetter] = useState(letters[0] ?? null);
@@ -616,7 +617,7 @@ function CategoryBrowse({ filteredGroups, navigate, section, totalCount }) {
   // Refs for each letter section element
   const groupRefs = useRef({});
 
-  // IntersectionObserver — track which letter group is in view
+  // IntersectionObserver â€” track which letter group is in view
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -636,11 +637,7 @@ function CategoryBrowse({ filteredGroups, navigate, section, totalCount }) {
     return () => observer.disconnect();
   }, [filteredGroups]);
 
-  // Reset when filtered groups change (search)
-  const lettersKey = letters.join(",");
-  useEffect(() => {
-    if (letters.length > 0) setActiveLetter(letters[0]);
-  }, [lettersKey]);
+  const resolvedActiveLetter = available.has(activeLetter) ? activeLetter : letters[0] ?? null;
 
   // Smooth scroll to letter section
   const scrollTo = (letter) => {
@@ -655,12 +652,12 @@ function CategoryBrowse({ filteredGroups, navigate, section, totalCount }) {
   return (
     <>
       <div className="cat-wrap">
-        {/* ── Main content ── */}
+        {/* â”€â”€ Main content â”€â”€ */}
         <div className="cat-main">
 
           {letters.length === 0 && (
             <div className="bsp-empty">
-              <div className="bsp-empty-icon">🔍</div>
+              <div className="bsp-empty-icon"><FaSearch aria-hidden="true" /></div>
               <div className="bsp-empty-title">No categories found</div>
               <div className="bsp-empty-sub">Try a different search term</div>
             </div>
@@ -698,17 +695,17 @@ function CategoryBrowse({ filteredGroups, navigate, section, totalCount }) {
         </div>
       </div>
 
-      {/* ── Fixed A–Z sidebar ── */}
+      {/* â”€â”€ Fixed Aâ€“Z sidebar â”€â”€ */}
       <AlphabetSidebar
         available={available}
-        active={activeLetter}
+        active={resolvedActiveLetter}
         onSelect={scrollTo}
       />
     </>
   );
 }
 
-// ─── BrowseHero ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ BrowseHero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function BrowseHero({ label, tagline, count, search, setSearch, hasSearch, onBack }) {
   return (
@@ -720,7 +717,7 @@ function BrowseHero({ label, tagline, count, search, setSearch, hasSearch, onBac
       <div className="bsp-hero-inner">
         <div className="bsp-crumb">
           <span className="bsp-crumb-link" onClick={onBack}>Explore</span>
-          <span className="bsp-crumb-sep">›</span>
+          <span className="bsp-crumb-sep">&gt;</span>
           <span className="bsp-crumb-active">{label}</span>
         </div>
 
@@ -730,15 +727,15 @@ function BrowseHero({ label, tagline, count, search, setSearch, hasSearch, onBac
 
         {hasSearch && (
           <div className="bsp-search-wrap">
-            <span className="bsp-search-icon">⌕</span>
+            <span className="bsp-search-icon"><FaSearch aria-hidden="true" /></span>
             <input
               className="bsp-search"
-              placeholder={`Search ${label.toLowerCase()}…`}
+              placeholder={`Search ${label.toLowerCase()}...`}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
             {search && (
-              <button className="bsp-search-clear" onClick={() => setSearch("")}>×</button>
+              <button className="bsp-search-clear" onClick={() => setSearch("")}>x</button>
             )}
           </div>
         )}
@@ -747,7 +744,7 @@ function BrowseHero({ label, tagline, count, search, setSearch, hasSearch, onBac
   );
 }
 
-// ─── Main Page ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Main Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function BrowseSectionPage() {
   const { section } = useParams();
@@ -758,7 +755,7 @@ export default function BrowseSectionPage() {
   const hasSearch = SEARCHABLE.has(section);
   const q = search.trim().toLowerCase();
 
-  // ── Category: keep grouped for A-Z layout ─────────────────────────────────
+  // â”€â”€ Category: keep grouped for A-Z layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const filteredCatGroups = useMemo(() => {
     if (section !== "category") return null;
     const next = {};
@@ -774,7 +771,7 @@ export default function BrowseSectionPage() {
     return Object.values(filteredCatGroups).flat().length;
   }, [filteredCatGroups]);
 
-  // ── All other sections: flat item list ────────────────────────────────────
+  // â”€â”€ All other sections: flat item list â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const allItems = useMemo(() => {
     switch (section) {
       case "genre": return EXPLORE_GENRE_CARDS;
@@ -808,9 +805,7 @@ export default function BrowseSectionPage() {
 
       <div className="bsp-page">
         {/* Fixed back button */}
-        <button className="bsp-back" onClick={() => navigate("/explore")}>
-          ← Explore
-        </button>
+        <button className="bsp-back" onClick={() => navigate("/explore")}><FaArrowLeft size={12} aria-hidden="true" style={{ marginRight: 8 }} />Explore</button>
 
         {/* Cinematic hero */}
         <BrowseHero
@@ -823,17 +818,16 @@ export default function BrowseSectionPage() {
           onBack={() => navigate("/explore")}
         />
 
-        {/* ── CATEGORY: A–Z indexed layout ── */}
+        {/* â”€â”€ CATEGORY: Aâ€“Z indexed layout â”€â”€ */}
         {section === "category" && filteredCatGroups && (
           <CategoryBrowse
             filteredGroups={filteredCatGroups}
             navigate={navigate}
             section={section}
-            totalCount={catTotalCount}
           />
         )}
 
-        {/* ── ALL OTHER SECTIONS: premium card grid ── */}
+        {/* â”€â”€ ALL OTHER SECTIONS: premium card grid â”€â”€ */}
         {section !== "category" && (
           <>
             {featured.length > 0 && (
@@ -861,7 +855,7 @@ export default function BrowseSectionPage() {
 
             {filtered.length === 0 && (
               <div className="bsp-empty" style={{ padding: "80px 52px" }}>
-                <div className="bsp-empty-icon">🔍</div>
+                <div className="bsp-empty-icon"><FaSearch aria-hidden="true" /></div>
                 <div className="bsp-empty-title">No results found</div>
                 <div className="bsp-empty-sub">Try a different search term</div>
               </div>
@@ -872,3 +866,6 @@ export default function BrowseSectionPage() {
     </>
   );
 }
+
+
+

@@ -70,14 +70,18 @@ export default function TmdbSection({ title, tabs = [], activeTab, onTabChange, 
 
       {/* ── Skeleton while loading ── */}
       {isLoading && (
-        <div style={{ display: "flex", gap: 16, padding: "16px 52px 28px", overflow: "hidden" }}>
+        <div className="tmdb-scroll-inner" style={{ display: "flex", gap: 16, overflow: "hidden" }}>
           {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
         </div>
       )}
 
       {/* ── Content ── */}
       {!isLoading && (
-        <div ref={scrollRef} style={{ display: "flex", gap: 16, padding: "16px 52px 28px", overflowX: "auto", scrollBehavior: "smooth", scrollbarWidth: "none" }}>
+        <div
+          ref={scrollRef}
+          className="tmdb-scroll-inner"
+          style={{ display: "flex", gap: 16, overflowX: "auto", scrollBehavior: "smooth", scrollbarWidth: "none" }}
+        >
           {items.map((item, i) => {
             const date = item.year || (item.release_date || item.first_air_date || "").slice(0, 10);
             return (
@@ -113,4 +117,3 @@ export default function TmdbSection({ title, tabs = [], activeTab, onTabChange, 
     </div>
   );
 }
-

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { FaDragon, FaFilm, FaTv } from "react-icons/fa";
 import { TMDB_IMG, TMDB_BASE, TMDB_KEY } from "../lib/constants";
 
 export default function PosterImage({ item, className, style, alt }) {
@@ -22,7 +23,9 @@ export default function PosterImage({ item, className, style, alt }) {
       const d = await r.json();
       if (d.poster_path) setSrc(`${TMDB_IMG}${d.poster_path}`);
       else setSrc(null);
-    } catch { setSrc(null); }
+    } catch {
+      setSrc(null);
+    }
   }, [item]);
 
   useEffect(() => {
@@ -35,10 +38,16 @@ export default function PosterImage({ item, className, style, alt }) {
   };
 
   if (!src) {
+    const fallbackIcon = item.type === "Anime"
+      ? <FaDragon aria-hidden="true" />
+      : item.type === "Movie"
+        ? <FaFilm aria-hidden="true" />
+        : <FaTv aria-hidden="true" />;
+
     return (
       <div className={className || "no-img-box"} style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "var(--txd)", gap: 5, fontSize: 10, background: "var(--c3)", ...style }}>
-        <div style={{ fontSize: 28, opacity: .22 }}>
-          {item.type === "Anime" ? "⛩" : item.type === "Movie" ? "🎬" : "📺"}
+        <div style={{ fontSize: 28, opacity: 0.22 }}>
+          {fallbackIcon}
         </div>
         <span style={{ fontSize: 9, letterSpacing: 1 }}>{item.type}</span>
       </div>
