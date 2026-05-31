@@ -1,0 +1,16 @@
+name: Local Config
+version: 1.0.0
+schema: v1
+models:
+  - name: GPT-5.2
+    provider: openai
+    model: gpt-5.2
+    apiKey: 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
+  - name: Autodetect
+    provider: openai
+    model: AUTODETECT
+    apiKey: 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
+  - name: "DeepSeek: DeepSeek V3.2"
+    provider: openrouter
+    model: deepseek/deepseek-v3.2
+    apiKey: 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
