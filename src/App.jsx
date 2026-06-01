@@ -1,6 +1,9 @@
-﻿import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Routes, Route, useNavigate, useParams, useLocation } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
+import { Navbar } from "./components/layout/Navbar";
+import { MyListPage } from "./pages/MyListPage";
+import { useLibrary } from "./hooks/useLibrary";
 import {
   FaHome,
   FaList,
@@ -52,76 +55,76 @@ const supabase = createClient(
 );
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ TMDB ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
-const TMDB_IMG   = "https://image.tmdb.org/t/p/w300";
-const TMDB_W     = "https://image.tmdb.org/t/p/w780";
-const TMDB_HERO  = "https://image.tmdb.org/t/p/w1280";
-const TMDB_BASE  = "https://api.themoviedb.org/3";
-const TMDB_KEY   = "dfb570e7a09aa4e72df7064fc4a703f0";
+const TMDB_IMG = "https://image.tmdb.org/t/p/w300";
+const TMDB_W = "https://image.tmdb.org/t/p/w780";
+const TMDB_HERO = "https://image.tmdb.org/t/p/w1280";
+const TMDB_BASE = "https://api.themoviedb.org/3";
+const TMDB_KEY = "dfb570e7a09aa4e72df7064fc4a703f0";
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ CONSTANTS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const STATUSES = ["Want to Watch", "Watching", "Watched", "Paused", "Dropped"];
-const SCOLOR   = { Watched: "#b2f0c5", Watching: "#f4e08a", "Want to Watch": "#8ebbf5", Paused: "#b8b8b8", Dropped: "#f47070" };
-const SICON    = { Watched: "\u2713", Watching: "\u25b6", "Want to Watch": "\u25cb", Paused: "II", Dropped: "X" };
+const SCOLOR = { Watched: "#b2f0c5", Watching: "#f4e08a", "Want to Watch": "#8ebbf5", Paused: "#b8b8b8", Dropped: "#f47070" };
+const SICON = { Watched: "\u2713", Watching: "\u25b6", "Want to Watch": "\u25cb", Paused: "II", Dropped: "X" };
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ OTT STREAMING PLATFORMS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const OTT = {
-  nf:    { name:"Netflix",      short:"NF",   color:"#E50914", bg:"#141414", logo:"https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",                                            url:"https://www.netflix.com/search?q=" },
-  prime: { name:"Prime Video",  short:"PV",   color:"#00A8E1", bg:"#0F171E", logo:"https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png",                                                  url:"https://www.primevideo.com/search?phrase=" },
-  hs:    { name:"JioHotstar",   short:"HS",   color:"#1a56db", bg:"#0D0D2B", logo:"https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg",                                       url:"https://www.hotstar.com/in/search?q=" },
-  hbo:   { name:"Max",          short:"MAX",  color:"#7B2FBE", bg:"#0B0B1A", logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/HBO_Max_Logo.svg/512px-HBO_Max_Logo.svg.png",               url:"https://www.max.com/search?q=" },
-  sony:  { name:"SonyLIV",      short:"SONY", color:"#003087", bg:"#001A4E", logo:"https://upload.wikimedia.org/wikipedia/commons/4/4a/SonyLIV_logo.svg",                                                 url:"https://www.sonyliv.com/search?keyword=" },
-  zee5:  { name:"ZEE5",         short:"ZEE5", color:"#7B2D8B", bg:"#1A0030", logo:"https://upload.wikimedia.org/wikipedia/commons/7/7a/ZEE5_logo.svg",                                                   url:"https://www.zee5.com/search?q=" },
-  atv:   { name:"Apple TV+",    short:"ATV",  color:"#888",    bg:"#1C1C1E", logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Apple_TV_Plus_Logo.svg/512px-Apple_TV_Plus_Logo.svg.png",   url:"https://tv.apple.com/search?term=" },
-  cr:    { name:"Crunchyroll",  short:"CR",   color:"#F47521", bg:"#1A0800", logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Crunchyroll_icon_2024.svg/512px-Crunchyroll_icon_2024.svg.png", url:"https://www.crunchyroll.com/search?q=" },
+  nf: { name: "Netflix", short: "NF", color: "#E50914", bg: "#141414", logo: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg", url: "https://www.netflix.com/search?q=" },
+  prime: { name: "Prime Video", short: "PV", color: "#00A8E1", bg: "#0F171E", logo: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png", url: "https://www.primevideo.com/search?phrase=" },
+  hs: { name: "JioHotstar", short: "HS", color: "#1a56db", bg: "#0D0D2B", logo: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Disney%2B_Hotstar_logo.svg", url: "https://www.hotstar.com/in/search?q=" },
+  hbo: { name: "Max", short: "MAX", color: "#7B2FBE", bg: "#0B0B1A", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/HBO_Max_Logo.svg/512px-HBO_Max_Logo.svg.png", url: "https://www.max.com/search?q=" },
+  sony: { name: "SonyLIV", short: "SONY", color: "#003087", bg: "#001A4E", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4a/SonyLIV_logo.svg", url: "https://www.sonyliv.com/search?keyword=" },
+  zee5: { name: "ZEE5", short: "ZEE5", color: "#7B2D8B", bg: "#1A0030", logo: "https://upload.wikimedia.org/wikipedia/commons/7/7a/ZEE5_logo.svg", url: "https://www.zee5.com/search?q=" },
+  atv: { name: "Apple TV+", short: "ATV", color: "#888", bg: "#1C1C1E", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Apple_TV_Plus_Logo.svg/512px-Apple_TV_Plus_Logo.svg.png", url: "https://tv.apple.com/search?term=" },
+  cr: { name: "Crunchyroll", short: "CR", color: "#F47521", bg: "#1A0800", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Crunchyroll_icon_2024.svg/512px-Crunchyroll_icon_2024.svg.png", url: "https://www.crunchyroll.com/search?q=" },
 };
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ STATIC CATALOG ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const STATIC_ANIME = [
-  { id:"a1",  tmdbId:1429,   tmdbType:"tv",    title:"Attack on Titan",                   year:2013, rating:9.1, type:"Anime",   poster:"/hTP1DtLGFAmna71pe5kzkm7zBCc.jpg",  streaming:["cr","nf"],    categories:["Action","Adventure","Animated"], overview:"Humanity battles giant humanoid Titans behind massive walls. When the walls are breached, young Eren Yeager vows revenge and changes the world." },
-  { id:"a2",  tmdbId:85937,  tmdbType:"tv",    title:"Demon Slayer",                       year:2019, rating:8.7, type:"Anime",   poster:"/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg",  streaming:["cr","nf"],    categories:["Action","Adventure","Anime"], overview:"A boy trains as a demon slayer to avenge his family and cure his sister who was turned into a demon." },
-  { id:"a3",  tmdbId:95479,  tmdbType:"tv",    title:"Jujutsu Kaisen",                     year:2020, rating:8.6, type:"Anime",   poster:null,                                  streaming:["cr"],         categories:["Action","Anime","Animated"], overview:"A boy swallows a cursed object and must battle dangerous cursed spirits alongside Jujutsu sorcerers." },
-  { id:"a4",  tmdbId:31911,  tmdbType:"tv",    title:"Fullmetal Alchemist: Brotherhood",   year:2009, rating:9.1, type:"Anime",   poster:"/9Yjx4OutGMrJNgLdmLLNLJaQBMX.jpg",  streaming:["cr","nf"],    categories:["Anime","Adventure","Anthology"], overview:"Two brothers search for the Philosopher's Stone after a failed alchemical ritual leaves them broken." },
-  { id:"a5",  tmdbId:46298,  tmdbType:"tv",    title:"Hunter x Hunter",                    year:2011, rating:9.0, type:"Anime",   poster:"/gHuCPlS2bMbcuONEqRDvMV0AVgO.jpg",  streaming:["cr"],         categories:["Anime","Adventure","Action"], overview:"A boy follows his father's footsteps to become a legendary Hunter in a world of wonder and danger." },
-  { id:"a6",  tmdbId:80777,  tmdbType:"tv",    title:"Vinland Saga",                       year:2019, rating:8.8, type:"Anime",   poster:"/4mFJHHlMoOWhEEqtFjVKv3CRbQr.jpg",  streaming:["cr","prime"], categories:["Anime","Adventure","Action","Animated"], overview:"A young Viking warrior seeks revenge in a brutal medieval world, eventually questioning the meaning of true strength." },
-  { id:"a7",  tmdbId:64927,  tmdbType:"tv",    title:"Re:Zero",                            year:2016, rating:8.3, type:"Anime",   poster:"/aGrqIBHi09G2RPQHH79RGkJFYvB.jpg",  streaming:["cr"],         categories:["Anime","Adventure"], overview:"A boy transported to a fantasy world discovers he can reset time upon death - a power that becomes a curse." },
-  { id:"a8",  tmdbId:120089, tmdbType:"tv",    title:"Spy x Family",                       year:2022, rating:8.5, type:"Anime",   poster:"/4SRTuMnT3XbMRAfAtBKlXKHoqkT.jpg",  streaming:["cr","nf"],    categories:["Anime","Action","Animated"], overview:"A spy assembles a fake family for a mission, unaware each member harbours a secret of their own." },
-  { id:"a9",  tmdbId:114410, tmdbType:"tv",    title:"Chainsaw Man",                       year:2022, rating:8.5, type:"Anime",   poster:"/npdB6oBX4SHkH9LhEVrSYOHhDpd.jpg",  streaming:["cr"],         categories:["Anime","Action","Animated"], overview:"A destitute boy merges with his devil dog and becomes a Devil Hunter, craving the simplest things in life." },
-  { id:"a10", tmdbId:65806,  tmdbType:"tv",    title:"Mob Psycho 100",                     year:2016, rating:8.5, type:"Anime",   poster:null,                                  streaming:["cr","nf"],    categories:["Anime","Animated"], overview:"A powerful esper boy tries to live a normal life, suppressing emotions that could level a city." },
-  { id:"a11", tmdbId:209867, tmdbType:"tv",    title:"Frieren: Beyond Journey's End",      year:2023, rating:9.0, type:"Anime",   poster:"/9LDpSFAJQnrYQurFP4cFhNdIrNM.jpg",  streaming:["cr"],         categories:["Anime","Adventure","Animated"], overview:"An elf mage reflects on a completed journey years after defeating the Demon King, discovering what it means to connect." },
-  { id:"a12", tmdbId:30984,  tmdbType:"tv",    title:"Bleach: Thousand-Year Blood War",    year:2022, rating:8.9, type:"Anime",   poster:"/2EewmxXe72ogD0EaWM8gqa0BPDR.jpg",  streaming:["cr","nf"],    categories:["Anime","Action","Animated"], overview:"Ichigo and Soul Society face their most powerful enemy in a war that will redefine what it means to be a Soul Reaper." },
+  { id: "a1", tmdbId: 1429, tmdbType: "tv", title: "Attack on Titan", year: 2013, rating: 9.1, type: "Anime", poster: "/hTP1DtLGFAmna71pe5kzkm7zBCc.jpg", streaming: ["cr", "nf"], categories: ["Action", "Adventure", "Animated"], overview: "Humanity battles giant humanoid Titans behind massive walls. When the walls are breached, young Eren Yeager vows revenge and changes the world." },
+  { id: "a2", tmdbId: 85937, tmdbType: "tv", title: "Demon Slayer", year: 2019, rating: 8.7, type: "Anime", poster: "/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg", streaming: ["cr", "nf"], categories: ["Action", "Adventure", "Anime"], overview: "A boy trains as a demon slayer to avenge his family and cure his sister who was turned into a demon." },
+  { id: "a3", tmdbId: 95479, tmdbType: "tv", title: "Jujutsu Kaisen", year: 2020, rating: 8.6, type: "Anime", poster: null, streaming: ["cr"], categories: ["Action", "Anime", "Animated"], overview: "A boy swallows a cursed object and must battle dangerous cursed spirits alongside Jujutsu sorcerers." },
+  { id: "a4", tmdbId: 31911, tmdbType: "tv", title: "Fullmetal Alchemist: Brotherhood", year: 2009, rating: 9.1, type: "Anime", poster: "/9Yjx4OutGMrJNgLdmLLNLJaQBMX.jpg", streaming: ["cr", "nf"], categories: ["Anime", "Adventure", "Anthology"], overview: "Two brothers search for the Philosopher's Stone after a failed alchemical ritual leaves them broken." },
+  { id: "a5", tmdbId: 46298, tmdbType: "tv", title: "Hunter x Hunter", year: 2011, rating: 9.0, type: "Anime", poster: "/gHuCPlS2bMbcuONEqRDvMV0AVgO.jpg", streaming: ["cr"], categories: ["Anime", "Adventure", "Action"], overview: "A boy follows his father's footsteps to become a legendary Hunter in a world of wonder and danger." },
+  { id: "a6", tmdbId: 80777, tmdbType: "tv", title: "Vinland Saga", year: 2019, rating: 8.8, type: "Anime", poster: "/4mFJHHlMoOWhEEqtFjVKv3CRbQr.jpg", streaming: ["cr", "prime"], categories: ["Anime", "Adventure", "Action", "Animated"], overview: "A young Viking warrior seeks revenge in a brutal medieval world, eventually questioning the meaning of true strength." },
+  { id: "a7", tmdbId: 64927, tmdbType: "tv", title: "Re:Zero", year: 2016, rating: 8.3, type: "Anime", poster: "/aGrqIBHi09G2RPQHH79RGkJFYvB.jpg", streaming: ["cr"], categories: ["Anime", "Adventure"], overview: "A boy transported to a fantasy world discovers he can reset time upon death - a power that becomes a curse." },
+  { id: "a8", tmdbId: 120089, tmdbType: "tv", title: "Spy x Family", year: 2022, rating: 8.5, type: "Anime", poster: "/4SRTuMnT3XbMRAfAtBKlXKHoqkT.jpg", streaming: ["cr", "nf"], categories: ["Anime", "Action", "Animated"], overview: "A spy assembles a fake family for a mission, unaware each member harbours a secret of their own." },
+  { id: "a9", tmdbId: 114410, tmdbType: "tv", title: "Chainsaw Man", year: 2022, rating: 8.5, type: "Anime", poster: "/npdB6oBX4SHkH9LhEVrSYOHhDpd.jpg", streaming: ["cr"], categories: ["Anime", "Action", "Animated"], overview: "A destitute boy merges with his devil dog and becomes a Devil Hunter, craving the simplest things in life." },
+  { id: "a10", tmdbId: 65806, tmdbType: "tv", title: "Mob Psycho 100", year: 2016, rating: 8.5, type: "Anime", poster: null, streaming: ["cr", "nf"], categories: ["Anime", "Animated"], overview: "A powerful esper boy tries to live a normal life, suppressing emotions that could level a city." },
+  { id: "a11", tmdbId: 209867, tmdbType: "tv", title: "Frieren: Beyond Journey's End", year: 2023, rating: 9.0, type: "Anime", poster: "/9LDpSFAJQnrYQurFP4cFhNdIrNM.jpg", streaming: ["cr"], categories: ["Anime", "Adventure", "Animated"], overview: "An elf mage reflects on a completed journey years after defeating the Demon King, discovering what it means to connect." },
+  { id: "a12", tmdbId: 30984, tmdbType: "tv", title: "Bleach: Thousand-Year Blood War", year: 2022, rating: 8.9, type: "Anime", poster: "/2EewmxXe72ogD0EaWM8gqa0BPDR.jpg", streaming: ["cr", "nf"], categories: ["Anime", "Action", "Animated"], overview: "Ichigo and Soul Society face their most powerful enemy in a war that will redefine what it means to be a Soul Reaper." },
 ];
 
 const STATIC_MOVIES = [
-  { id:"m1",  tmdbId:693134, tmdbType:"movie", title:"Dune: Part Two",                     year:2024, rating:8.5, type:"Movie",   poster:"/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",  streaming:["hs","hbo"],   categories:["Action","Adventure","Adaptation"], overview:"Paul Atreides unites with the Fremen while seeking revenge against the conspirators who destroyed his family." },
-  { id:"m2",  tmdbId:872585, tmdbType:"movie", title:"Oppenheimer",                         year:2023, rating:8.9, type:"Movie",   poster:"/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",  streaming:["prime"],      categories:["Biography","Drama","Adaptation"], overview:"The story of J. Robert Oppenheimer and the development of the atomic bomb that changed warfare forever." },
-  { id:"m3",  tmdbId:157336, tmdbType:"movie", title:"Interstellar",                        year:2014, rating:8.7, type:"Movie",   poster:"/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",  streaming:["nf","prime"], categories:["Adventure","Sci-Fi"], overview:"Explorers travel through a wormhole in space to ensure humanity's survival across galaxies." },
-  { id:"m4",  tmdbId:27205,  tmdbType:"movie", title:"Inception",                           year:2010, rating:8.8, type:"Movie",   poster:"/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",  streaming:["nf","prime"], categories:["Action","Adventure","Adult Comedy"], overview:"A thief who steals corporate secrets through the art of dream-sharing is given one last impossible mission." },
-  { id:"m5",  tmdbId:155,    tmdbType:"movie", title:"The Dark Knight",                     year:2008, rating:9.0, type:"Movie",   poster:"/qJ2tW6WMUDux911r6m7haRef0WH.jpg",  streaming:["hs","prime"], categories:["Action","Drama"], overview:"Batman faces the Joker, a criminal mastermind who wants to plunge Gotham into anarchy." },
-  { id:"m6",  tmdbId:129,    tmdbType:"movie", title:"Spirited Away",                       year:2001, rating:8.6, type:"Movie",   poster:"/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",  streaming:["nf"],         categories:["Animation","Adventure","Anime","Art House"], overview:"A girl enters the spirit world to rescue her parents turned into pigs - a breathtaking journey of growth." },
-  { id:"m7",  tmdbId:372058, tmdbType:"movie", title:"Your Name",                           year:2016, rating:8.4, type:"Movie",   poster:"/q719jXXEzOoYaps6babgKnONONX.jpg",  streaming:["nf","prime"], categories:["Anime","Adventure","Anthology"], overview:"Two strangers find themselves inexplicably linked through body-swapping dreams that transcend time." },
-  { id:"m8",  tmdbId:496243, tmdbType:"movie", title:"Parasite",                            year:2019, rating:8.5, type:"Movie",   poster:"/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",  streaming:["prime","hs"], categories:["Drama"], overview:"Greed and class discrimination threaten a symbiotic relationship between two families in modern Seoul." },
-  { id:"m9",  tmdbId:545611, tmdbType:"movie", title:"Everything Everywhere All at Once",   year:2022, rating:7.8, type:"Movie",   poster:"/w3LxiVYdWWRvEVdn5RYq6jIqkb1.jpg",  streaming:["prime","hs"], categories:["Adventure","Comedy","Drama","Anthology"], overview:"A Chinese immigrant is swept up in an adventure across the multiverse to save the world." },
-  { id:"m10", tmdbId:278,    tmdbType:"movie", title:"The Shawshank Redemption",            year:1994, rating:9.3, type:"Movie",   poster:"/lyQBXzOQSuE59IsHyhrp0qIiPAz.jpg",  streaming:["nf","prime"], categories:["Drama","Adaptation"], overview:"Two imprisoned men bond over decades, finding solace and eventual redemption through acts of decency." },
+  { id: "m1", tmdbId: 693134, tmdbType: "movie", title: "Dune: Part Two", year: 2024, rating: 8.5, type: "Movie", poster: "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg", streaming: ["hs", "hbo"], categories: ["Action", "Adventure", "Adaptation"], overview: "Paul Atreides unites with the Fremen while seeking revenge against the conspirators who destroyed his family." },
+  { id: "m2", tmdbId: 872585, tmdbType: "movie", title: "Oppenheimer", year: 2023, rating: 8.9, type: "Movie", poster: "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", streaming: ["prime"], categories: ["Biography", "Drama", "Adaptation"], overview: "The story of J. Robert Oppenheimer and the development of the atomic bomb that changed warfare forever." },
+  { id: "m3", tmdbId: 157336, tmdbType: "movie", title: "Interstellar", year: 2014, rating: 8.7, type: "Movie", poster: "/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", streaming: ["nf", "prime"], categories: ["Adventure", "Sci-Fi"], overview: "Explorers travel through a wormhole in space to ensure humanity's survival across galaxies." },
+  { id: "m4", tmdbId: 27205, tmdbType: "movie", title: "Inception", year: 2010, rating: 8.8, type: "Movie", poster: "/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg", streaming: ["nf", "prime"], categories: ["Action", "Adventure", "Adult Comedy"], overview: "A thief who steals corporate secrets through the art of dream-sharing is given one last impossible mission." },
+  { id: "m5", tmdbId: 155, tmdbType: "movie", title: "The Dark Knight", year: 2008, rating: 9.0, type: "Movie", poster: "/qJ2tW6WMUDux911r6m7haRef0WH.jpg", streaming: ["hs", "prime"], categories: ["Action", "Drama"], overview: "Batman faces the Joker, a criminal mastermind who wants to plunge Gotham into anarchy." },
+  { id: "m6", tmdbId: 129, tmdbType: "movie", title: "Spirited Away", year: 2001, rating: 8.6, type: "Movie", poster: "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg", streaming: ["nf"], categories: ["Animation", "Adventure", "Anime", "Art House"], overview: "A girl enters the spirit world to rescue her parents turned into pigs - a breathtaking journey of growth." },
+  { id: "m7", tmdbId: 372058, tmdbType: "movie", title: "Your Name", year: 2016, rating: 8.4, type: "Movie", poster: "/q719jXXEzOoYaps6babgKnONONX.jpg", streaming: ["nf", "prime"], categories: ["Anime", "Adventure", "Anthology"], overview: "Two strangers find themselves inexplicably linked through body-swapping dreams that transcend time." },
+  { id: "m8", tmdbId: 496243, tmdbType: "movie", title: "Parasite", year: 2019, rating: 8.5, type: "Movie", poster: "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg", streaming: ["prime", "hs"], categories: ["Drama"], overview: "Greed and class discrimination threaten a symbiotic relationship between two families in modern Seoul." },
+  { id: "m9", tmdbId: 545611, tmdbType: "movie", title: "Everything Everywhere All at Once", year: 2022, rating: 7.8, type: "Movie", poster: "/w3LxiVYdWWRvEVdn5RYq6jIqkb1.jpg", streaming: ["prime", "hs"], categories: ["Adventure", "Comedy", "Drama", "Anthology"], overview: "A Chinese immigrant is swept up in an adventure across the multiverse to save the world." },
+  { id: "m10", tmdbId: 278, tmdbType: "movie", title: "The Shawshank Redemption", year: 1994, rating: 9.3, type: "Movie", poster: "/lyQBXzOQSuE59IsHyhrp0qIiPAz.jpg", streaming: ["nf", "prime"], categories: ["Drama", "Adaptation"], overview: "Two imprisoned men bond over decades, finding solace and eventual redemption through acts of decency." },
 ];
 
 const STATIC_SERIES = [
-  { id:"s1",  tmdbId:1396,   tmdbType:"tv",    title:"Breaking Bad",                        year:2008, rating:9.5, type:"TV Show", poster:"/ggFHVNu6YYI5L9pCfOacjizRGt.jpg",   streaming:["nf"],         categories:["Drama"], overview:"A chemistry teacher turns to manufacturing meth to secure his family's financial future after a terminal diagnosis." },
-  { id:"s2",  tmdbId:1438,   tmdbType:"tv",    title:"The Wire",                            year:2002, rating:9.3, type:"TV Show", poster:"/4lbclFySvugI51fwsyxBTOm4DqK.jpg",   streaming:["hbo"],        categories:["Drama"], overview:"The Baltimore drug scene, seen through the eyes of both drug dealers and law enforcement." },
-  { id:"s3",  tmdbId:94605,  tmdbType:"tv",    title:"Arcane",                              year:2021, rating:9.0, type:"TV Show", poster:"/fqldf2t8ztc9aiwn3k6mlX3tvRT.jpg",   streaming:["nf"],         categories:["Animation","Adventure"], overview:"Two sisters on opposite sides of a conflict born in the utopian region of Piltover and its oppressed undercity." },
-  { id:"s4",  tmdbId:95396,  tmdbType:"tv",    title:"Severance",                           year:2022, rating:8.7, type:"TV Show", poster:"/tE3zEVeNaxD2aJMXnFfPHpQxOhJ.jpg",   streaming:["atv"],        categories:["Drama","Sci-Fi"], overview:"Workers have their work and personal memories surgically separated, creating a haunting corporate dystopia." },
-  { id:"s5",  tmdbId:100088, tmdbType:"tv",    title:"The Last of Us",                      year:2023, rating:8.8, type:"TV Show", poster:"/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg",   streaming:["hbo","hs"],   categories:["Action","Adventure"], overview:"A hardened smuggler and a teenage girl traverse a post-apocalyptic United States filled with infected and factions." },
-  { id:"s6",  tmdbId:94997,  tmdbType:"tv",    title:"House of the Dragon",                 year:2022, rating:8.5, type:"TV Show", poster:"/z2yahl2uefxDCl0nogcRBstwruJ.jpg",   streaming:["hbo","hs"],   categories:["Action","Adventure","Drama"], overview:"The internal succession war of House Targaryen, set 200 years before the events of Game of Thrones." },
-  { id:"s7",  tmdbId:63351,  tmdbType:"tv",    title:"Succession",                          year:2018, rating:8.9, type:"TV Show", poster:"/e2X8fBflR3zqzWNBlHFzSAE5Jah.jpg",   streaming:["hbo"],        categories:["Drama"], overview:"The Roy family controls one of the biggest media empires in the world - and tears itself apart fighting for it." },
-  { id:"s8",  tmdbId:70523,  tmdbType:"tv",    title:"Dark",                                year:2017, rating:8.8, type:"TV Show", poster:"/apbrbWs5M0SUFOSnPKzFm8Jj3jv.jpg",   streaming:["nf"],         categories:["Drama","Sci-Fi"], overview:"A mind-bending family saga involving four interdependent families in a German town across different time periods." },
-  { id:"s9",  tmdbId:95557,  tmdbType:"tv",    title:"Invincible",                          year:2021, rating:8.7, type:"TV Show", poster:"/yDWJYRAwMNKa767NIf0q8jk6r7i.jpg",   streaming:["prime"],      categories:["Action","Adventure","Animation"], overview:"A teenage boy discovers his father is the most powerful superhero on the planet - and something far darker." },
-  { id:"s10", tmdbId:136315, tmdbType:"tv",    title:"The Bear",                            year:2022, rating:8.8, type:"TV Show", poster:null,                                   streaming:["hs","atv"],   categories:["Comedy","Drama"], overview:"A James Beard-nominated chef returns to Chicago to run his family's chaotic sandwich shop after a family tragedy." },
+  { id: "s1", tmdbId: 1396, tmdbType: "tv", title: "Breaking Bad", year: 2008, rating: 9.5, type: "TV Show", poster: "/ggFHVNu6YYI5L9pCfOacjizRGt.jpg", streaming: ["nf"], categories: ["Drama"], overview: "A chemistry teacher turns to manufacturing meth to secure his family's financial future after a terminal diagnosis." },
+  { id: "s2", tmdbId: 1438, tmdbType: "tv", title: "The Wire", year: 2002, rating: 9.3, type: "TV Show", poster: "/4lbclFySvugI51fwsyxBTOm4DqK.jpg", streaming: ["hbo"], categories: ["Drama"], overview: "The Baltimore drug scene, seen through the eyes of both drug dealers and law enforcement." },
+  { id: "s3", tmdbId: 94605, tmdbType: "tv", title: "Arcane", year: 2021, rating: 9.0, type: "TV Show", poster: "/fqldf2t8ztc9aiwn3k6mlX3tvRT.jpg", streaming: ["nf"], categories: ["Animation", "Adventure"], overview: "Two sisters on opposite sides of a conflict born in the utopian region of Piltover and its oppressed undercity." },
+  { id: "s4", tmdbId: 95396, tmdbType: "tv", title: "Severance", year: 2022, rating: 8.7, type: "TV Show", poster: "/tE3zEVeNaxD2aJMXnFfPHpQxOhJ.jpg", streaming: ["atv"], categories: ["Drama", "Sci-Fi"], overview: "Workers have their work and personal memories surgically separated, creating a haunting corporate dystopia." },
+  { id: "s5", tmdbId: 100088, tmdbType: "tv", title: "The Last of Us", year: 2023, rating: 8.8, type: "TV Show", poster: "/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg", streaming: ["hbo", "hs"], categories: ["Action", "Adventure"], overview: "A hardened smuggler and a teenage girl traverse a post-apocalyptic United States filled with infected and factions." },
+  { id: "s6", tmdbId: 94997, tmdbType: "tv", title: "House of the Dragon", year: 2022, rating: 8.5, type: "TV Show", poster: "/z2yahl2uefxDCl0nogcRBstwruJ.jpg", streaming: ["hbo", "hs"], categories: ["Action", "Adventure", "Drama"], overview: "The internal succession war of House Targaryen, set 200 years before the events of Game of Thrones." },
+  { id: "s7", tmdbId: 63351, tmdbType: "tv", title: "Succession", year: 2018, rating: 8.9, type: "TV Show", poster: "/e2X8fBflR3zqzWNBlHFzSAE5Jah.jpg", streaming: ["hbo"], categories: ["Drama"], overview: "The Roy family controls one of the biggest media empires in the world - and tears itself apart fighting for it." },
+  { id: "s8", tmdbId: 70523, tmdbType: "tv", title: "Dark", year: 2017, rating: 8.8, type: "TV Show", poster: "/apbrbWs5M0SUFOSnPKzFm8Jj3jv.jpg", streaming: ["nf"], categories: ["Drama", "Sci-Fi"], overview: "A mind-bending family saga involving four interdependent families in a German town across different time periods." },
+  { id: "s9", tmdbId: 95557, tmdbType: "tv", title: "Invincible", year: 2021, rating: 8.7, type: "TV Show", poster: "/yDWJYRAwMNKa767NIf0q8jk6r7i.jpg", streaming: ["prime"], categories: ["Action", "Adventure", "Animation"], overview: "A teenage boy discovers his father is the most powerful superhero on the planet - and something far darker." },
+  { id: "s10", tmdbId: 136315, tmdbType: "tv", title: "The Bear", year: 2022, rating: 8.8, type: "TV Show", poster: null, streaming: ["hs", "atv"], categories: ["Comedy", "Drama"], overview: "A James Beard-nominated chef returns to Chicago to run his family's chaotic sandwich shop after a family tragedy." },
 ];
 
 const HERO_ITEMS = [
-  { title:"Attack on Titan", tmdbId:1429, tmdbType:"tv",    poster:"/hTP1DtLGFAmna71pe5kzkm7zBCc.jpg", backdrop:"/d8duYyyC9J5T825Hg7grmaabfxQ.jpg", rating:"9.1", type:"Anime",   year:2013, streaming:["cr","nf"],    overview:"Humanity's last survivors fight giant humanoid Titans behind colossal walls. When the walls are breached, young Eren Yeager vows revenge that will change the world." },
-  { title:"Dune: Part Two",  tmdbId:693134,tmdbType:"movie", poster:"/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg", backdrop:"/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg", rating:"8.5", type:"Movie",   year:2024, streaming:["hs","hbo"],   overview:"Paul Atreides unites with Chani and the Fremen while on a warpath of revenge against the conspirators who destroyed his family." },
-  { title:"Arcane",          tmdbId:94605, tmdbType:"tv",    poster:"/fqldf2t8ztc9aiwn3k6mlX3tvRT.jpg", backdrop:"/sPUBwJ2TxJAKcVaA6axzBVi6UKN.jpg", rating:"9.0", type:"TV Show", year:2021, streaming:["nf"],         overview:"Set in the utopian region of Piltover and the oppressed underground of Zaun, two sisters champion different sides of a brewing conflict." },
-  { title:"Frieren",         tmdbId:209867,tmdbType:"tv",    poster:"/9LDpSFAJQnrYQurFP4cFhNdIrNM.jpg", backdrop:"/yDWJYRAwMNKa767NIf0q8jk6r7i.jpg", rating:"9.0", type:"Anime",   year:2023, streaming:["cr"],         overview:"After the party's victory, elf mage Frieren sets out on a journey of reflection, exploring what it means to truly live and connect with others." },
+  { title: "Attack on Titan", tmdbId: 1429, tmdbType: "tv", poster: "/hTP1DtLGFAmna71pe5kzkm7zBCc.jpg", backdrop: "/d8duYyyC9J5T825Hg7grmaabfxQ.jpg", rating: "9.1", type: "Anime", year: 2013, streaming: ["cr", "nf"], overview: "Humanity's last survivors fight giant humanoid Titans behind colossal walls. When the walls are breached, young Eren Yeager vows revenge that will change the world." },
+  { title: "Dune: Part Two", tmdbId: 693134, tmdbType: "movie", poster: "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg", backdrop: "/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg", rating: "8.5", type: "Movie", year: 2024, streaming: ["hs", "hbo"], overview: "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge against the conspirators who destroyed his family." },
+  { title: "Arcane", tmdbId: 94605, tmdbType: "tv", poster: "/fqldf2t8ztc9aiwn3k6mlX3tvRT.jpg", backdrop: "/sPUBwJ2TxJAKcVaA6axzBVi6UKN.jpg", rating: "9.0", type: "TV Show", year: 2021, streaming: ["nf"], overview: "Set in the utopian region of Piltover and the oppressed underground of Zaun, two sisters champion different sides of a brewing conflict." },
+  { title: "Frieren", tmdbId: 209867, tmdbType: "tv", poster: "/9LDpSFAJQnrYQurFP4cFhNdIrNM.jpg", backdrop: "/yDWJYRAwMNKa767NIf0q8jk6r7i.jpg", rating: "9.0", type: "Anime", year: 2023, streaming: ["cr"], overview: "After the party's victory, elf mage Frieren sets out on a journey of reflection, exploring what it means to truly live and connect with others." },
 ];
 
 const EXPLORE_CATEGORY_GROUPS = {
@@ -148,26 +151,26 @@ const EXPLORE_CATEGORY_GROUPS = {
 };
 
 const EXPLORE_GENRE_CARDS = [
-  { name:"Action",          gradient:"linear-gradient(135deg, #1a0a0a, #8B0000)", icon:<FaFire />,           tmdbGenreId:28 },
-  { name:"Adventure",       gradient:"linear-gradient(135deg, #0a1628, #1a4a2e)", icon:<FaCompass />,        tmdbGenreId:12 },
-  { name:"Animation",       gradient:"linear-gradient(135deg, #1a0a2e, #4a1a6e)", icon:<FaFilm />,           tmdbGenreId:16 },
-  { name:"Comedy",          gradient:"linear-gradient(135deg, #1a1200, #5a4a00)", icon:<FaLaugh />,          tmdbGenreId:35 },
-  { name:"Crime",           gradient:"linear-gradient(135deg, #0a0a0a, #2a1a00)", icon:<FaUserSecret />,     tmdbGenreId:80 },
-  { name:"Documentary",     gradient:"linear-gradient(135deg, #0a1a1a, #003333)", icon:<FaBookOpen />,       tmdbGenreId:99 },
-  { name:"Drama",           gradient:"linear-gradient(135deg, #1a0a1a, #3a003a)", icon:<FaTheaterMasks />,   tmdbGenreId:18 },
-  { name:"Fantasy",         gradient:"linear-gradient(135deg, #0a0a2a, #1a003a)", icon:<FaMagic />,          tmdbGenreId:14 },
-  { name:"History",         gradient:"linear-gradient(135deg, #1a1000, #3a2800)", icon:<FaLandmark />,       tmdbGenreId:36 },
-  { name:"Horror",          gradient:"linear-gradient(135deg, #0a0000, #3a0000)", icon:<FaGhost />,          tmdbGenreId:27 },
-  { name:"Music",           gradient:"linear-gradient(135deg, #001a1a, #003a3a)", icon:<FaMusic />,          tmdbGenreId:10402 },
-  { name:"Mystery",         gradient:"linear-gradient(135deg, #080818, #18083a)", icon:<FaQuestionCircle />, tmdbGenreId:9648 },
-  { name:"Romance",         gradient:"linear-gradient(135deg, #1a0010, #4a0028)", icon:<FaHeart />,          tmdbGenreId:10749 },
-  { name:"Science Fiction", gradient:"linear-gradient(135deg, #000a1a, #001a3a)", icon:<FaRobot />,          tmdbGenreId:878 },
-  { name:"Thriller",        gradient:"linear-gradient(135deg, #050510, #100520)", icon:<FaBolt />,           tmdbGenreId:53 },
-  { name:"War",             gradient:"linear-gradient(135deg, #0a0a00, #1a1a00)", icon:<FaShieldAlt />,      tmdbGenreId:10752 },
-  { name:"Western",         gradient:"linear-gradient(135deg, #1a0800, #3a1800)", icon:<FaHatCowboy />,      tmdbGenreId:37 },
-  { name:"Anime",           gradient:"linear-gradient(135deg, #1a0010, #00103a)", icon:<FaDragon />,         keywordQuery:"anime" },
-  { name:"Superhero",       gradient:"linear-gradient(135deg, #0a001a, #1a0000)", icon:<FaUserShield />,     keywordQuery:"superhero" },
-  { name:"Psychological",   gradient:"linear-gradient(135deg, #050510, #200520)", icon:<FaBrain />,          keywordQuery:"psychological" },
+  { name: "Action", gradient: "linear-gradient(135deg, #1a0a0a, #8B0000)", icon: <FaFire />, tmdbGenreId: 28 },
+  { name: "Adventure", gradient: "linear-gradient(135deg, #0a1628, #1a4a2e)", icon: <FaCompass />, tmdbGenreId: 12 },
+  { name: "Animation", gradient: "linear-gradient(135deg, #1a0a2e, #4a1a6e)", icon: <FaFilm />, tmdbGenreId: 16 },
+  { name: "Comedy", gradient: "linear-gradient(135deg, #1a1200, #5a4a00)", icon: <FaLaugh />, tmdbGenreId: 35 },
+  { name: "Crime", gradient: "linear-gradient(135deg, #0a0a0a, #2a1a00)", icon: <FaUserSecret />, tmdbGenreId: 80 },
+  { name: "Documentary", gradient: "linear-gradient(135deg, #0a1a1a, #003333)", icon: <FaBookOpen />, tmdbGenreId: 99 },
+  { name: "Drama", gradient: "linear-gradient(135deg, #1a0a1a, #3a003a)", icon: <FaTheaterMasks />, tmdbGenreId: 18 },
+  { name: "Fantasy", gradient: "linear-gradient(135deg, #0a0a2a, #1a003a)", icon: <FaMagic />, tmdbGenreId: 14 },
+  { name: "History", gradient: "linear-gradient(135deg, #1a1000, #3a2800)", icon: <FaLandmark />, tmdbGenreId: 36 },
+  { name: "Horror", gradient: "linear-gradient(135deg, #0a0000, #3a0000)", icon: <FaGhost />, tmdbGenreId: 27 },
+  { name: "Music", gradient: "linear-gradient(135deg, #001a1a, #003a3a)", icon: <FaMusic />, tmdbGenreId: 10402 },
+  { name: "Mystery", gradient: "linear-gradient(135deg, #080818, #18083a)", icon: <FaQuestionCircle />, tmdbGenreId: 9648 },
+  { name: "Romance", gradient: "linear-gradient(135deg, #1a0010, #4a0028)", icon: <FaHeart />, tmdbGenreId: 10749 },
+  { name: "Science Fiction", gradient: "linear-gradient(135deg, #000a1a, #001a3a)", icon: <FaRobot />, tmdbGenreId: 878 },
+  { name: "Thriller", gradient: "linear-gradient(135deg, #050510, #100520)", icon: <FaBolt />, tmdbGenreId: 53 },
+  { name: "War", gradient: "linear-gradient(135deg, #0a0a00, #1a1a00)", icon: <FaShieldAlt />, tmdbGenreId: 10752 },
+  { name: "Western", gradient: "linear-gradient(135deg, #1a0800, #3a1800)", icon: <FaHatCowboy />, tmdbGenreId: 37 },
+  { name: "Anime", gradient: "linear-gradient(135deg, #1a0010, #00103a)", icon: <FaDragon />, keywordQuery: "anime" },
+  { name: "Superhero", gradient: "linear-gradient(135deg, #0a001a, #1a0000)", icon: <FaUserShield />, keywordQuery: "superhero" },
+  { name: "Psychological", gradient: "linear-gradient(135deg, #050510, #200520)", icon: <FaBrain />, keywordQuery: "psychological" },
 ];
 
 function toGenreSlug(str) {
@@ -176,17 +179,17 @@ function toGenreSlug(str) {
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ SETTINGS DEFAULTS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const DEFAULT_SETTINGS = {
-  theme:       "black", // ui theme: black, light, or neo (original)
+  theme: "black", // ui theme: black, light, or neo (original)
   accentColor: "green",
-  cardSize:    "medium",
-  showRatings:  true,
+  cardSize: "medium",
+  showRatings: true,
   showOverviews: false,
-  autoplay:     true,
-  language:     "en",
+  autoplay: true,
+  language: "en",
   adultContent: false,
   animationsReduced: false,
   showStreaming: true,
-  cinematicBg:  true,
+  cinematicBg: true,
 };
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ GLOBAL CSS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
@@ -1487,11 +1490,11 @@ function PosterImage({ item, className, style, alt }) {
         : <FaTv aria-hidden="true" />;
 
     return (
-      <div className={className || "no-img-box"} style={{ width:"100%", height:"100%", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", color:"var(--txd)", gap:5, fontSize:10, background:"var(--c3)", ...style }}>
-        <div style={{ fontSize:28, opacity:.22 }}>
+      <div className={className || "no-img-box"} style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "var(--txd)", gap: 5, fontSize: 10, background: "var(--c3)", ...style }}>
+        <div style={{ fontSize: 28, opacity: .22 }}>
           {fallbackIcon}
         </div>
-        <span style={{ fontSize:9, letterSpacing:1 }}>{item.type}</span>
+        <span style={{ fontSize: 9, letterSpacing: 1 }}>{item.type}</span>
       </div>
     );
   }
@@ -1502,7 +1505,7 @@ function PosterImage({ item, className, style, alt }) {
 // TMDB SECTION (Trending / What's Popular / Free) 
 function TmdbSection({ title, tabs = [], activeTab, onTabChange, items, onSelect, onTypeNav, onSeeAll }) {
   const scrollRef = useRef(null);
-  const scroll = dir => scrollRef.current?.scrollBy({ left: dir * 480, behavior:"smooth" });
+  const scroll = dir => scrollRef.current?.scrollBy({ left: dir * 480, behavior: "smooth" });
   const hasTabs = tabs.length > 0;
 
   return (
@@ -1511,7 +1514,7 @@ function TmdbSection({ title, tabs = [], activeTab, onTabChange, items, onSelect
         <div className="tmdb-sec-title-wrap">
           <div className="tmdb-sec-title">{title}</div>
           {hasTabs && (
-            <div className="tmdb-tabs" style={{ marginLeft:16 }}>
+            <div className="tmdb-tabs" style={{ marginLeft: 16 }}>
               {tabs.map(t => (
                 <button key={t.key}
                   className={`tmdb-tab${activeTab === t.key ? " on" : ""}`}
@@ -1522,23 +1525,23 @@ function TmdbSection({ title, tabs = [], activeTab, onTabChange, items, onSelect
             </div>
           )}
         </div>
-        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           {onSeeAll && (
             <button className="sec-see-all" onClick={onSeeAll}>See all <FaChevronRight size={12} aria-hidden="true" /></button>
           )}
-          <div style={{ display:"flex", gap:6 }}>
-            <button className="row-arrow-btn" onClick={() => scroll(-1)} style={{ width:32, height:32, borderRadius:50, border:"1px solid var(--grey3)", background:"none", color:"var(--txm)", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"all .15s" }} onMouseOver={e=>e.currentTarget.style.borderColor="var(--acc-border)"} onMouseOut={e=>e.currentTarget.style.borderColor="var(--grey3)"}><FaChevronLeft /></button>
-            <button className="row-arrow-btn" onClick={() => scroll(1)}  style={{ width:32, height:32, borderRadius:50, border:"1px solid var(--grey3)", background:"none", color:"var(--txm)", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"all .15s" }} onMouseOver={e=>e.currentTarget.style.borderColor="var(--acc-border)"} onMouseOut={e=>e.currentTarget.style.borderColor="var(--grey3)"}><FaChevronRight /></button>
+          <div style={{ display: "flex", gap: 6 }}>
+            <button className="row-arrow-btn" onClick={() => scroll(-1)} style={{ width: 32, height: 32, borderRadius: 50, border: "1px solid var(--grey3)", background: "none", color: "var(--txm)", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all .15s" }} onMouseOver={e => e.currentTarget.style.borderColor = "var(--acc-border)"} onMouseOut={e => e.currentTarget.style.borderColor = "var(--grey3)"}><FaChevronLeft /></button>
+            <button className="row-arrow-btn" onClick={() => scroll(1)} style={{ width: 32, height: 32, borderRadius: 50, border: "1px solid var(--grey3)", background: "none", color: "var(--txm)", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all .15s" }} onMouseOver={e => e.currentTarget.style.borderColor = "var(--acc-border)"} onMouseOut={e => e.currentTarget.style.borderColor = "var(--grey3)"}><FaChevronRight /></button>
           </div>
         </div>
       </div>
-      <div ref={scrollRef} style={{ display:"flex", gap:16, padding:"16px 52px 28px", overflowX:"auto", scrollBehavior:"smooth", scrollbarWidth:"none" }}>
+      <div ref={scrollRef} style={{ display: "flex", gap: 16, padding: "16px 52px 28px", overflowX: "auto", scrollBehavior: "smooth", scrollbarWidth: "none" }}>
         {items.map((item, i) => {
-          const date = item.year || (item.release_date||item.first_air_date||"").slice(0,10);
+          const date = item.year || (item.release_date || item.first_air_date || "").slice(0, 10);
           return (
             <div key={item.id || i} className="tmdb-card" onClick={() => onSelect && onSelect(item)}>
               <div className="tmdb-card-poster">
-                <PosterImage item={item} className="" style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
+                <PosterImage item={item} className="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 {item.type && (
                   <div
                     className="type-badge"
@@ -1572,9 +1575,9 @@ function TmdbSection({ title, tabs = [], activeTab, onTabChange, items, onSelect
 function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
   const [fallbackSlides, setFallbackSlides] = useState(HERO_ITEMS);
   const slides = items?.length ? items : fallbackSlides;
-  const [idx, setIdx]             = useState(0);
+  const [idx, setIdx] = useState(0);
   const [transitioning, setTrans] = useState(false);
-  const intervalRef               = useRef(null);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     if (items?.length) return;
@@ -1636,11 +1639,11 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
       {slides.map((h, i) => (
         <div key={i}
           className={`hero-bg-img ${i === activeIdx && !transitioning ? "active" : "enter"}`}
-          style={{ backgroundImage:`url(${TMDB_HERO}${h.backdrop})`, zIndex: i === activeIdx ? 1 : 0 }}
+          style={{ backgroundImage: `url(${TMDB_HERO}${h.backdrop})`, zIndex: i === activeIdx ? 1 : 0 }}
         />
       ))}
-      <div className="hero-overlay" style={{ zIndex:2 }} />
-      <div className="hero-content" style={{ zIndex:3 }}>
+      <div className="hero-overlay" style={{ zIndex: 2 }} />
+      <div className="hero-content" style={{ zIndex: 3 }}>
         <div className="hero-badge"><Icon name="fire" size={14} /> TRENDING NOW</div>
         <div className="hero-title">{item.title}</div>
         <div className="hero-meta">
@@ -1746,7 +1749,7 @@ function SeeAllModal({ title, emoji, items, onClose, onSelect, onTypeNav }) {
   const [q, setQ] = useState("");
   const [headOpacity, setHeadOpacity] = useState(1);
   const backdropRef = useRef(null);
-  const filtered  = items.filter(it => it.title.toLowerCase().includes(q.toLowerCase()));
+  const filtered = items.filter(it => it.title.toLowerCase().includes(q.toLowerCase()));
 
   useEffect(() => {
     const handleBackdropScroll = (e) => {
@@ -1768,7 +1771,7 @@ function SeeAllModal({ title, emoji, items, onClose, onSelect, onTypeNav }) {
           <div className="see-all-title">
             {emoji && <span style={{ marginRight: 8, display: "inline-block", verticalAlign: "middle" }}><Icon name={emoji} size={20} /></span>}
             {title}
-            <span style={{ fontSize:12, color:"var(--txm)", fontFamily:"'DM Sans',sans-serif", fontWeight:400, marginLeft:4 }}>{items.length} titles</span>
+            <span style={{ fontSize: 12, color: "var(--txm)", fontFamily: "'DM Sans',sans-serif", fontWeight: 400, marginLeft: 4 }}>{items.length} titles</span>
           </div>
           <button className="settings-close" onClick={onClose}><FaTimes /></button>
         </div>
@@ -1779,7 +1782,7 @@ function SeeAllModal({ title, emoji, items, onClose, onSelect, onTypeNav }) {
         </div>
         <div className="see-all-grid">
           {filtered.map((item, i) => (
-            <div key={item.id} className="row-card" style={{ width:"100%", animationDelay:`${i*.03}s` }}
+            <div key={item.id} className="row-card" style={{ width: "100%", animationDelay: `${i * .03}s` }}
               onClick={() => { onSelect(item); onClose(); }}>
               <div className="row-card-img-box">
                 <PosterImage item={item} className="row-card-img" />
@@ -1816,8 +1819,8 @@ function SeeAllModal({ title, emoji, items, onClose, onSelect, onTypeNav }) {
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ ROW SECTION ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 function RowSection({ title, emoji, items, showRank, showOverview, onSelect, onSeeAll, onTypeNav }) {
-  const scrollRef      = useRef(null);
-  const [canLeft, setCanLeft]   = useState(false);
+  const scrollRef = useRef(null);
+  const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(true);
 
   const checkArrows = () => {
@@ -1830,13 +1833,13 @@ function RowSection({ title, emoji, items, showRank, showOverview, onSelect, onS
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    el.addEventListener("scroll", checkArrows, { passive:true });
+    el.addEventListener("scroll", checkArrows, { passive: true });
     checkArrows();
     return () => el.removeEventListener("scroll", checkArrows);
   }, [items]);
 
   const scroll = (dir) => {
-    scrollRef.current?.scrollBy({ left: dir * 340, behavior:"smooth" });
+    scrollRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
   };
 
   return (
@@ -1850,12 +1853,12 @@ function RowSection({ title, emoji, items, showRank, showOverview, onSelect, onS
         <button className="sec-see-all" onClick={() => onSeeAll && onSeeAll()}>See all <FaChevronRight size={12} aria-hidden="true" /></button>
       </div>
       <div className="row-section-wrap">
-        {canLeft  && <button className="row-arrow row-arrow-left"  onClick={() => scroll(-1)}><FaChevronLeft /></button>}
+        {canLeft && <button className="row-arrow row-arrow-left" onClick={() => scroll(-1)}><FaChevronLeft /></button>}
         {canRight && <button className="row-arrow row-arrow-right" onClick={() => scroll(1)}><FaChevronRight /></button>}
         <div className="row-scroll" ref={scrollRef}>
           {items.map((item, i) => (
             <div key={item.id} className="row-card" onClick={() => onSelect(item)}
-              style={{ animationDelay:`${i * 0.04}s` }}>
+              style={{ animationDelay: `${i * 0.04}s` }}>
               <div className="row-card-img-box">
                 <PosterImage item={item} className="row-card-img" />
                 <div className="row-card-grad" />
@@ -1886,7 +1889,7 @@ function RowSection({ title, emoji, items, showRank, showOverview, onSelect, onS
                   <div className="row-card-year">{item.year}</div>
                 </div>
                 {showOverview && item.overview && (
-                  <div style={{ fontSize:10, color:"var(--txd)", marginTop:5, lineHeight:1.5, display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
+                  <div style={{ fontSize: 10, color: "var(--txd)", marginTop: 5, lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                     {item.overview}
                   </div>
                 )}
@@ -1902,11 +1905,11 @@ function RowSection({ title, emoji, items, showRank, showOverview, onSelect, onS
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ SETTINGS PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, session, onSignOut }) {
   const SWATCHES = [
-    { key:"green",  color:"#b2f0c5", label:"Jade"   },
-    { key:"yellow", color:"#f4d06f", label:"Gold"   },
-    { key:"blue",   color:"#8ebbf5", label:"Cobalt" },
-    { key:"red",    color:"#f47070", label:"Ember"  },
-    { key:"white",  color:"#ffffff", label:"White"  },
+    { key: "green", color: "#b2f0c5", label: "Jade" },
+    { key: "yellow", color: "#f4d06f", label: "Gold" },
+    { key: "blue", color: "#8ebbf5", label: "Cobalt" },
+    { key: "red", color: "#f47070", label: "Ember" },
+    { key: "white", color: "#ffffff", label: "White" },
   ];
 
   return (
@@ -1927,7 +1930,7 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
 
         <div className="sett-section">
           <div className="sett-section-title">Appearance</div>
-          <div className="sett-control" style={{ marginTop:0 }}>
+          <div className="sett-control" style={{ marginTop: 0 }}>
             <div className="sett-control-head">
               <div>
                 <div className="sett-control-title">Theme</div>
@@ -1937,9 +1940,9 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
             </div>
             <div className="theme-pills">
               {[
-                { key:"black", label:"Black" },
-                { key:"light", label:"Light" },
-                { key:"neo",   label:"Neo" },
+                { key: "black", label: "Black" },
+                { key: "light", label: "Light" },
+                { key: "neo", label: "Neo" },
               ].map(t => (
                 <button key={t.key}
                   className={`theme-pill${settings.theme === t.key ? " on" : ""}`}
@@ -1978,7 +1981,7 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
               <div className="sett-control-hint">{settings.cardSize || "medium"}</div>
             </div>
             <div className="card-size-btns">
-              {["small","medium","large"].map(s => (
+              {["small", "medium", "large"].map(s => (
                 <button key={s} className={`size-btn${settings.cardSize === s ? " on" : ""}`}
                   onClick={() => onChange("cardSize", s)}>
                   {s.toUpperCase()}
@@ -1987,7 +1990,7 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
             </div>
           </div>
 
-          <div className="sett-row" style={{ marginTop:14, paddingBottom:0 }}>
+          <div className="sett-row" style={{ marginTop: 14, paddingBottom: 0 }}>
             <div>
               <div className="sett-label">Cinematic Background</div>
               <div className="sett-desc">Film grain & gradient overlay</div>
@@ -2000,10 +2003,10 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
         <div className="sett-section">
           <div className="sett-section-title">Display</div>
           {[
-            { key:"showRatings",       label:"Show Ratings",       desc:"Show IMDb-style star ratings on cards" },
-            { key:"showOverviews",     label:"Show Overviews",     desc:"Show plot summary under card title" },
-            { key:"showStreaming",     label:"Show Streaming",     desc:"Show OTT platform badges on card hover" },
-            { key:"animationsReduced", label:"Reduce Motion",      desc:"Minimize card hover & page animations" },
+            { key: "showRatings", label: "Show Ratings", desc: "Show IMDb-style star ratings on cards" },
+            { key: "showOverviews", label: "Show Overviews", desc: "Show plot summary under card title" },
+            { key: "showStreaming", label: "Show Streaming", desc: "Show OTT platform badges on card hover" },
+            { key: "animationsReduced", label: "Reduce Motion", desc: "Minimize card hover & page animations" },
           ].map(opt => (
             <div key={opt.key} className="sett-row">
               <div>
@@ -2019,8 +2022,8 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
         <div className="sett-section">
           <div className="sett-section-title">Discovery</div>
           {[
-            { key:"autoplay",     label:"Hero Autoplay",   desc:"Auto-rotate the hero banner carousel" },
-            { key:"adultContent", label:"Mature Content",  desc:"Include adult-rated titles in search" },
+            { key: "autoplay", label: "Hero Autoplay", desc: "Auto-rotate the hero banner carousel" },
+            { key: "adultContent", label: "Mature Content", desc: "Include adult-rated titles in search" },
           ].map(opt => (
             <div key={opt.key} className="sett-row">
               <div>
@@ -2040,7 +2043,7 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
               <div className="sett-label">UI Language</div>
               <div className="sett-desc">Interface language preference</div>
             </div>
-            <select className="fsel" style={{ width:"auto" }}
+            <select className="fsel" style={{ width: "auto" }}
               value={settings.language}
               onChange={e => onChange("language", e.target.value)}>
               <option value="en">English</option>
@@ -2064,7 +2067,7 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
         {session && (
           <div className="sett-section">
             <div className="sett-section-title">Account</div>
-            <div className="sett-row" style={{ paddingTop:0 }}>
+            <div className="sett-row" style={{ paddingTop: 0 }}>
               <div>
                 <div className="sett-label">Signed in</div>
                 <div className="sett-desc">{session?.user?.email || "Your ReelLog account"}</div>
@@ -2076,8 +2079,8 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
 
         <div className="sett-section">
           <div className="sett-section-title">About</div>
-          <div style={{ fontSize:12, color:"var(--txd)", lineHeight:1.8 }}>
-            <div className="sett-about-brand" style={{ marginBottom:8 }}>
+          <div style={{ fontSize: 12, color: "var(--txd)", lineHeight: 1.8 }}>
+            <div className="sett-about-brand" style={{ marginBottom: 8 }}>
               <span>Reel</span>log
             </div>
             Powered by TMDB | Built with Supabase<br />
@@ -2108,10 +2111,10 @@ function ProfilePage({ session, profile, entries, customLists, onEditProfile, on
 
   const watched = entries.filter(e => e.status === "Watched");
   const stats = [
-    { label:"Movies Watched", value:watched.filter(e => e.type === "Movie").length },
-    { label:"TV Shows Watched", value:watched.filter(e => e.type === "TV Show").length },
-    { label:"Anime Watched", value:watched.filter(e => e.type === "Anime").length },
-    { label:"Total Entries", value:entries.length },
+    { label: "Movies Watched", value: watched.filter(e => e.type === "Movie").length },
+    { label: "TV Shows Watched", value: watched.filter(e => e.type === "TV Show").length },
+    { label: "Anime Watched", value: watched.filter(e => e.type === "Anime").length },
+    { label: "Total Entries", value: entries.length },
   ];
   const activity = [
     ...entries.slice(0, 4).map(e => `${e.status === "Watched" ? "Watched" : "Added"} ${e.title}`),
@@ -2158,14 +2161,14 @@ function ProfilePage({ session, profile, entries, customLists, onEditProfile, on
                 <div className="custom-list-cover">{list.cover ? <img src={list.cover} alt={list.title} /> : null}</div>
                 <div className="custom-list-body">
                   <span className={`visibility-badge ${list.visibility === "public" ? "public" : ""}`}>{list.visibility}</span>
-                  <div className="custom-list-title" style={{ marginTop:8 }}>{list.title}</div>
+                  <div className="custom-list-title" style={{ marginTop: 8 }}>{list.title}</div>
                   <div className="custom-list-desc">{list.description || "No description yet."}</div>
-                  <div className="library-section-count" style={{ marginTop:10 }}>{list.items?.length || 0} titles</div>
+                  <div className="library-section-count" style={{ marginTop: 10 }}>{list.items?.length || 0} titles</div>
                 </div>
               </div>
-              <div style={{ display:"flex", gap:8, padding:"0 14px 14px" }}>
-                <button className="premium-btn ghost" style={{ flex:1 }} onClick={() => onEditList(list)}>Edit</button>
-                <button className="premium-btn danger" style={{ flex:1 }} onClick={() => onDeleteList(list.id)}>Delete</button>
+              <div style={{ display: "flex", gap: 8, padding: "0 14px 14px" }}>
+                <button className="premium-btn ghost" style={{ flex: 1 }} onClick={() => onEditList(list)}>Edit</button>
+                <button className="premium-btn danger" style={{ flex: 1 }} onClick={() => onDeleteList(list.id)}>Delete</button>
               </div>
             </div>
           ))}
@@ -2192,24 +2195,24 @@ function ListDetailPage({ session, customLists, entries, onOpenEntry, onEditList
   return (
     <div className="list-page">
       <section className="list-hero">
-        <div className="custom-list-cover" style={{ width:220, borderRadius:20 }}>{list.cover ? <img src={list.cover} alt={list.title} /> : null}</div>
+        <div className="custom-list-cover" style={{ width: 220, borderRadius: 20 }}>{list.cover ? <img src={list.cover} alt={list.title} /> : null}</div>
         <div>
           <span className={`visibility-badge ${list.visibility === "public" ? "public" : ""}`}>{list.visibility}</span>
-          <div className="list-title" style={{ marginTop:12 }}>{list.title}</div>
+          <div className="list-title" style={{ marginTop: 12 }}>{list.title}</div>
           <div className="list-desc">{list.description || "A curated ReelLog list."}</div>
           <div className="list-meta"><span>By {list.ownerName || "ReelLog user"}</span><span>{listItems.length} titles</span></div>
         </div>
         {isOwner && <div className="profile-actions"><button className="premium-btn ghost" onClick={() => onEditList(list)}>Edit List</button><button className="premium-btn danger" onClick={() => onDeleteList(list.id)}>Delete</button></div>}
       </section>
-      {isOwner && <div className="premium-panel" style={{ marginBottom:22 }}><div className="premium-panel-title">Add Titles</div><div className="list-controls"><select className="list-select" onChange={e => e.target.value && onAddItem(list.id, e.target.value)} defaultValue=""><option value="">Choose from your library...</option>{entries.map(entry => <option key={entry.id} value={entry.id}>{entry.title}</option>)}</select><button className="premium-btn ghost" onClick={() => onEditList(list)}>Edit Details</button></div></div>}
+      {isOwner && <div className="premium-panel" style={{ marginBottom: 22 }}><div className="premium-panel-title">Add Titles</div><div className="list-controls"><select className="list-select" onChange={e => e.target.value && onAddItem(list.id, e.target.value)} defaultValue=""><option value="">Choose from your library...</option>{entries.map(entry => <option key={entry.id} value={entry.id}>{entry.title}</option>)}</select><button className="premium-btn ghost" onClick={() => onEditList(list)}>Edit Details</button></div></div>}
       <div className="grid">
         {listItems.length === 0 && <div className="library-empty"><div className="library-empty-icon"><FaFilm /></div><div className="library-empty-title">This list is empty.</div><div className="library-empty-sub">Add titles from your library to start shaping the collection.</div></div>}
         {listItems.map((entry, index) => (
           <div key={entry.id} className="card" onClick={() => onOpenEntry(entry)}>
             <div className="card-img-box">
-              {entry.poster ? <img className="card-img" src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display="none"; }} /> : <div className="no-img-box"><div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div><span>{entry.type}</span></div>}
+              {entry.poster ? <img className="card-img" src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display = "none"; }} /> : <div className="no-img-box"><div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div><span>{entry.type}</span></div>}
               <div className="card-grad" />
-              <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>{getStatusIcon(entry.status)} {entry.status}</div>
+              <div className="card-status-tag" style={{ color: SCOLOR[entry.status], borderColor: SCOLOR[entry.status] + "44" }}>{getStatusIcon(entry.status)} {entry.status}</div>
               {isOwner && <div className="list-item-tools" onClick={e => e.stopPropagation()}><button className="tiny-tool" onClick={() => onMoveItem(list.id, index, -1)}>Up</button><button className="tiny-tool" onClick={() => onMoveItem(list.id, index, 1)}>Down</button><button className="tiny-tool" onClick={() => onRemoveItem(list.id, entry.id)}>Remove</button></div>}
             </div>
             <div className="card-body"><div className="card-title">{entry.title}</div><div className="card-meta-row"><span className="card-type">{entry.type}</span><span className="card-year">{entry.year}</span></div></div>
@@ -2221,13 +2224,13 @@ function ListDetailPage({ session, customLists, entries, onOpenEntry, onEditList
 }
 
 function AuthModal({ onClose }) {
-  const [tab, setTab]         = useState("signin");
-  const [email, setEmail]     = useState("");
-  const [pass, setPass]       = useState("");
-  const [name, setName]       = useState("");
+  const [tab, setTab] = useState("signin");
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [err, setErr]         = useState("");
-  const [msg, setMsg]         = useState("");
+  const [err, setErr] = useState("");
+  const [msg, setMsg] = useState("");
   const [googleHover, setGoogleHover] = useState(false);
 
   async function handleAuth() {
@@ -2237,7 +2240,7 @@ function AuthModal({ onClose }) {
         const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
         if (error) throw error;
       } else {
-        const { error } = await supabase.auth.signUp({ email, password: pass, options:{ data:{ name } } });
+        const { error } = await supabase.auth.signUp({ email, password: pass, options: { data: { name } } });
         if (error) throw error;
         setMsg("Check your email to confirm your account!");
       }
@@ -2326,13 +2329,13 @@ function CategoryPage({ allItems, onSelect, PosterImageComponent, onTypeNav }) {
 
   // Read :type param from the URL via react-router
   const pathParts = window.location.pathname.split("/category/");
-  const rawType   = pathParts[1] ? decodeURIComponent(pathParts[1]) : "";
+  const rawType = pathParts[1] ? decodeURIComponent(pathParts[1]) : "";
 
   const baseLabel =
-    rawType === "movie"   ? "Movie"   :
-    rawType === "tv-show" ? "TV Show" :
-    rawType === "anime"   ? "Anime"   :
-    rawType === "categories" ? "Categories" : "";
+    rawType === "movie" ? "Movie" :
+      rawType === "tv-show" ? "TV Show" :
+        rawType === "anime" ? "Anime" :
+          rawType === "categories" ? "Categories" : "";
 
   const isCategoryView = rawType === "categories";
   const [q, setQ] = useState("");
@@ -2381,7 +2384,7 @@ function CategoryPage({ allItems, onSelect, PosterImageComponent, onTypeNav }) {
   const orderedLetters = useMemo(() => Object.keys(categoryGroups), [categoryGroups]);
   const visibleLetters = orderedLetters.filter(l => filteredCategoryGroups[l]?.length);
 
-  const activeCategorySlug = (!["movie","tv-show","anime","categories"].includes(rawType) && rawType) ? rawType : null;
+  const activeCategorySlug = (!["movie", "tv-show", "anime", "categories"].includes(rawType) && rawType) ? rawType : null;
   const label = activeCategorySlug
     ? activeCategorySlug.split("-").map(w => w ? w[0].toUpperCase() + w.slice(1) : w).join(" ")
     : baseLabel;
@@ -2400,13 +2403,13 @@ function CategoryPage({ allItems, onSelect, PosterImageComponent, onTypeNav }) {
 
   const filtered = useMemo(() =>
     items.filter(i => i.title?.toLowerCase().includes(q.toLowerCase()))
-  , [items, q]);
+    , [items, q]);
 
   if (isCategoryView) {
     return (
-      <div style={{ paddingTop:86, minHeight:"100vh", background:"var(--bk)" }}>
-        <div style={{ padding:"48px 52px 72px" }}>
-          <div style={{ marginBottom:22 }}>
+      <div style={{ paddingTop: 86, minHeight: "100vh", background: "var(--bk)" }}>
+        <div style={{ padding: "48px 52px 72px" }}>
+          <div style={{ marginBottom: 22 }}>
             <div className="browse-grid">
               <div className="browse-item" onClick={() => setShowCategoryPanel(true)}>
                 <svg className="browse-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -2479,22 +2482,22 @@ function CategoryPage({ allItems, onSelect, PosterImageComponent, onTypeNav }) {
           </div>
 
           {showCategoryPanel && (
-            <div style={{ marginTop:28 }}>
-              <div className="divider" style={{ marginBottom:22 }} />
-              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:18, marginBottom:18 }}>
-                <div style={{ display:"flex", alignItems:"center", gap:12, flexWrap:"wrap" }}>
+            <div style={{ marginTop: 28 }}>
+              <div className="divider" style={{ marginBottom: 22 }} />
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, marginBottom: 18 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                   <button
                     className="btn-outline"
-                    style={{ borderRadius:9999, padding:"10px 14px", background:"var(--c2)", color:"var(--tx)" }}
+                    style={{ borderRadius: 9999, padding: "10px 14px", background: "var(--c2)", color: "var(--tx)" }}
                     onClick={() => setShowCategoryPanel(false)}
                   >
                     {"< Back"}
                   </button>
-                  <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:52, color:"var(--tx)", lineHeight:1 }}>Categories</div>
+                  <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 52, color: "var(--tx)", lineHeight: 1 }}>Categories</div>
                 </div>
                 <input
                   className="search-inp"
-                  style={{ maxWidth:320, borderRadius:9999, background:"var(--c1)" }}
+                  style={{ maxWidth: 320, borderRadius: 9999, background: "var(--c1)" }}
                   placeholder="Search category"
                   value={q}
                   onChange={e => setQ(e.target.value)}
@@ -2503,8 +2506,8 @@ function CategoryPage({ allItems, onSelect, PosterImageComponent, onTypeNav }) {
 
               {visibleLetters.map((letter, idx) => (
                 <div key={letter}>
-                  {idx > 0 && <div className="divider" style={{ margin:"14px 0" }} />}
-                  <div style={{ display:"grid", gridTemplateColumns:"72px 1fr", gap:"18px", alignItems:"flex-start", padding:"6px 0" }}>
+                  {idx > 0 && <div className="divider" style={{ margin: "14px 0" }} />}
+                  <div style={{ display: "grid", gridTemplateColumns: "72px 1fr", gap: "18px", alignItems: "flex-start", padding: "6px 0" }}>
                     <div className="category-letter">{letter}</div>
                     <div className="category-grid">
                       {filteredCategoryGroups[letter].map(cat => (
@@ -2528,31 +2531,31 @@ function CategoryPage({ allItems, onSelect, PosterImageComponent, onTypeNav }) {
   }
 
   return (
-    <div style={{ paddingTop:86, minHeight:"100vh" }}>
+    <div style={{ paddingTop: 86, minHeight: "100vh" }}>
       <div className="page-header">
         <div className="page-eyebrow">Browse</div>
         <div className="page-h1">{label || "All"} <em>Titles</em></div>
         <div className="page-count">{filtered.length} titles</div>
       </div>
-      <div style={{ padding:"0 52px 16px" }}>
+      <div style={{ padding: "0 52px 16px" }}>
         <input
           className="see-all-inp"
-          style={{ maxWidth:420 }}
+          style={{ maxWidth: 420 }}
           placeholder={`Search ${label || "all"}...`}
           value={q}
           onChange={e => setQ(e.target.value)}
         />
       </div>
-      <div className="see-all-grid" style={{ padding:"8px 52px 80px" }}>
+      <div className="see-all-grid" style={{ padding: "8px 52px 80px" }}>
         {filtered.map((item, i) => (
-          <div key={item.id || i} className="row-card" style={{ width:"100%", animationDelay:`${i*.03}s` }}
+          <div key={item.id || i} className="row-card" style={{ width: "100%", animationDelay: `${i * .03}s` }}
             onClick={() => onSelect && onSelect(item)}>
             <div className="row-card-img-box">
               {PosterImageComponent
                 ? <PosterImageComponent item={item} className="row-card-img" />
                 : item.poster
                   ? <img className="row-card-img" src={`https://image.tmdb.org/t/p/w300${item.poster}`} alt={item.title} loading="lazy" />
-                  : <div className="no-img-box"><span style={{ fontSize:28, opacity:.22 }}><FaFilm aria-hidden="true" /></span></div>}
+                  : <div className="no-img-box"><span style={{ fontSize: 28, opacity: .22 }}><FaFilm aria-hidden="true" /></span></div>}
               <div className="row-card-grad" />
               <div
                 className="type-badge"
@@ -2575,7 +2578,7 @@ function CategoryPage({ allItems, onSelect, PosterImageComponent, onTypeNav }) {
               <div className="row-card-meta">
                 <div className="row-card-year">{item.year}</div>
                 {item.rating > 0 && (
-                  <div className="row-card-rating" style={{ display:"inline-flex", alignItems:"center", gap:4 }}>
+                  <div className="row-card-rating" style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
                     <FaStar size={11} aria-hidden="true" />
                     {parseFloat(item.rating).toFixed(1)}
                   </div>
@@ -2682,14 +2685,14 @@ function GenrePage({ onSelect, PosterImageComponent, onTypeNav }) {
 
   if (!activeGenre) {
     return (
-      <div style={{ paddingTop:86, minHeight:"100vh" }}>
+      <div style={{ paddingTop: 86, minHeight: "100vh" }}>
         <div className="page-header">
           <div className="page-eyebrow">Browse</div>
           <div className="page-h1">Genre <em>Not Found</em></div>
           <div className="page-count">0 titles</div>
         </div>
-        <div style={{ padding:"0 52px 40px" }}>
-          <button className="btn-outline" onClick={() => navigate("/")} style={{ padding:"10px 16px", borderRadius:10 }}>
+        <div style={{ padding: "0 52px 40px" }}>
+          <button className="btn-outline" onClick={() => navigate("/")} style={{ padding: "10px 16px", borderRadius: 10 }}>
             {"? Back"}
           </button>
         </div>
@@ -2698,42 +2701,42 @@ function GenrePage({ onSelect, PosterImageComponent, onTypeNav }) {
   }
 
   return (
-    <div style={{ paddingTop:86, minHeight:"100vh" }}>
+    <div style={{ paddingTop: 86, minHeight: "100vh" }}>
       <div className="page-header">
         <div className="page-eyebrow">Genre</div>
         <div className="page-h1">{activeGenre.name} <em>Titles</em></div>
         <div className="page-count">{loading ? "Loading..." : `${filtered.length} titles`}</div>
       </div>
-      <div style={{ padding:"0 52px 16px", display:"flex", alignItems:"center", gap:12, flexWrap:"wrap" }}>
-        <button className="btn-outline" onClick={() => navigate("/")} style={{ padding:"10px 14px", borderRadius:9999 }}>
+      <div style={{ padding: "0 52px 16px", display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+        <button className="btn-outline" onClick={() => navigate("/")} style={{ padding: "10px 14px", borderRadius: 9999 }}>
           {"? Back"}
         </button>
         <input
           className="see-all-inp"
-          style={{ maxWidth:420 }}
+          style={{ maxWidth: 420 }}
           placeholder="Search genre titles..."
           value={q}
           onChange={e => setQ(e.target.value)}
         />
       </div>
 
-      {err && <div style={{ padding:"0 52px 18px", color:"var(--red)" }}>{err}</div>}
+      {err && <div style={{ padding: "0 52px 18px", color: "var(--red)" }}>{err}</div>}
 
-      <div className="see-all-grid" style={{ padding:"8px 52px 80px" }}>
+      <div className="see-all-grid" style={{ padding: "8px 52px 80px" }}>
         {!loading && filtered.map((item, i) => (
-          <div key={item.id || i} className="row-card" style={{ width:"100%", animationDelay:`${i*.03}s` }}
+          <div key={item.id || i} className="row-card" style={{ width: "100%", animationDelay: `${i * .03}s` }}
             onClick={() => onSelect && onSelect(item)}>
             <div className="row-card-img-box">
-              {PosterImageComponent ? (  
+              {PosterImageComponent ? (
                 <PosterImageComponent item={item} className="row-card-img" />
               ) : item.poster ? (
-                <img 
-                  className="row-card-img" 
-                  src={`https://image.tmdb.org/t/p/w300${item.poster}`} 
-                  alt={item.title} 
-                      loading="lazy" 
-                    />
-              ) : null}     
+                <img
+                  className="row-card-img"
+                  src={`https://image.tmdb.org/t/p/w300${item.poster}`}
+                  alt={item.title}
+                  loading="lazy"
+                />
+              ) : null}
               <div className="row-card-grad" />
               <div
                 className="type-badge"
@@ -2756,7 +2759,7 @@ function GenrePage({ onSelect, PosterImageComponent, onTypeNav }) {
               <div className="row-card-meta">
                 <div className="row-card-year">{item.year}</div>
                 {item.rating > 0 && (
-                  <div className="row-card-rating" style={{ display:"inline-flex", alignItems:"center", gap:4 }}>
+                  <div className="row-card-rating" style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
                     <FaStar size={11} aria-hidden="true" />
                     {parseFloat(item.rating).toFixed(1)}
                   </div>
@@ -2773,8 +2776,8 @@ function GenrePage({ onSelect, PosterImageComponent, onTypeNav }) {
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ MAIN APP ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 export default function App() {
   const [allEntries, setAllEntries] = useState([]);
-  const [myEntries,  setMyEntries]  = useState([]);
-  const [loading, setLoading]       = useState(true);
+  const [myEntries, setMyEntries] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ settings ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
   const [settings, setSettings] = useState(() => {
@@ -2805,9 +2808,9 @@ export default function App() {
 
   const accentClass =
     settings.accentColor === "yellow" ? "acc-yellow" :
-    settings.accentColor === "blue"   ? "acc-blue"   :
-    settings.accentColor === "red"    ? "acc-red"    :
-    settings.accentColor === "white"  ? "acc-white"  : "";
+      settings.accentColor === "blue" ? "acc-blue" :
+        settings.accentColor === "red" ? "acc-red" :
+          settings.accentColor === "white" ? "acc-white" : "";
 
   const navigate = useNavigate();
 
@@ -2842,9 +2845,9 @@ export default function App() {
       const mapR = r => {
         const title = r.title || r.name || "";
         const mediaType = r.media_type || "movie";
-        return { id:r.id, tmdbId:r.id, tmdbType:mediaType, title, year:(r.release_date||r.first_air_date||"").slice(0,4), rating:r.vote_average, type:mediaType==="movie"?"Movie":"TV Show", poster:r.poster_path, backdrop:r.backdrop_path, overview:r.overview, streaming:[], _rawId:r.id, _type:mediaType };
+        return { id: r.id, tmdbId: r.id, tmdbType: mediaType, title, year: (r.release_date || r.first_air_date || "").slice(0, 4), rating: r.vote_average, type: mediaType === "movie" ? "Movie" : "TV Show", poster: r.poster_path, backdrop: r.backdrop_path, overview: r.overview, streaming: [], _rawId: r.id, _type: mediaType };
       };
-      updateListIfChanged(setHomeTrending, res.results.slice(0,20).map(mapR));
+      updateListIfChanged(setHomeTrending, res.results.slice(0, 20).map(mapR));
     }
   }, [settings.language, updateListIfChanged]);
 
@@ -2852,15 +2855,15 @@ export default function App() {
     const lang = settings.language || "en";
     const POPULAR_ENDPOINTS = {
       streaming: `${TMDB_BASE}/movie/popular?api_key=${TMDB_KEY}&language=${lang}&region=IN`,
-      tv:        `${TMDB_BASE}/tv/popular?api_key=${TMDB_KEY}&language=${lang}`,
-      rent:      `${TMDB_BASE}/discover/movie?api_key=${TMDB_KEY}&language=${lang}&with_watch_monetization_types=rent&watch_region=IN&sort_by=popularity.desc`,
-      theaters:  `${TMDB_BASE}/movie/now_playing?api_key=${TMDB_KEY}&language=${lang}&region=IN`,
+      tv: `${TMDB_BASE}/tv/popular?api_key=${TMDB_KEY}&language=${lang}`,
+      rent: `${TMDB_BASE}/discover/movie?api_key=${TMDB_KEY}&language=${lang}&with_watch_monetization_types=rent&watch_region=IN&sort_by=popularity.desc`,
+      theaters: `${TMDB_BASE}/movie/now_playing?api_key=${TMDB_KEY}&language=${lang}&region=IN`,
     };
     const res = await fetch(POPULAR_ENDPOINTS[mode] || POPULAR_ENDPOINTS.streaming).then(r => r.json()).catch(() => null);
     if (res?.results?.length) {
       const typeLabel = mode === "tv" ? "TV Show" : "Movie";
-      const mapR = r => ({ id:r.id, tmdbId:r.id, tmdbType:mode==="tv"?"tv":"movie", title:r.title||r.name||"", year:(r.release_date||r.first_air_date||"").slice(0,4), rating:r.vote_average, type:typeLabel, poster:r.poster_path, backdrop:r.backdrop_path, overview:r.overview, streaming:[], _rawId:r.id, _type:mode==="tv"?"tv":"movie" });
-      updateListIfChanged(setHomePopular, res.results.slice(0,20).map(mapR));
+      const mapR = r => ({ id: r.id, tmdbId: r.id, tmdbType: mode === "tv" ? "tv" : "movie", title: r.title || r.name || "", year: (r.release_date || r.first_air_date || "").slice(0, 4), rating: r.vote_average, type: typeLabel, poster: r.poster_path, backdrop: r.backdrop_path, overview: r.overview, streaming: [], _rawId: r.id, _type: mode === "tv" ? "tv" : "movie" });
+      updateListIfChanged(setHomePopular, res.results.slice(0, 20).map(mapR));
     }
   }, [settings.language, updateListIfChanged]);
 
@@ -2870,8 +2873,8 @@ export default function App() {
     const res = await fetch(`${TMDB_BASE}/discover/${freeType}?api_key=${TMDB_KEY}&language=${lang}&with_watch_monetization_types=free&watch_region=IN&sort_by=popularity.desc`).then(r => r.json()).catch(() => null);
     if (res?.results?.length) {
       const typeLabel = mode === "movies" ? "Movie" : "TV Show";
-      const mapR = r => ({ id:r.id, tmdbId:r.id, tmdbType:freeType, title:r.title||r.name||"", year:(r.release_date||r.first_air_date||"").slice(0,4), rating:r.vote_average, type:typeLabel, poster:r.poster_path, backdrop:r.backdrop_path, overview:r.overview, streaming:[], _rawId:r.id, _type:freeType });
-      updateListIfChanged(setHomeFree, res.results.slice(0,20).map(mapR));
+      const mapR = r => ({ id: r.id, tmdbId: r.id, tmdbType: freeType, title: r.title || r.name || "", year: (r.release_date || r.first_air_date || "").slice(0, 4), rating: r.vote_average, type: typeLabel, poster: r.poster_path, backdrop: r.backdrop_path, overview: r.overview, streaming: [], _rawId: r.id, _type: freeType });
+      updateListIfChanged(setHomeFree, res.results.slice(0, 20).map(mapR));
     }
   }, [settings.language, updateListIfChanged]);
 
@@ -2893,7 +2896,7 @@ export default function App() {
   // Sync theme to <html> so CSS variables cascade everywhere
   useEffect(() => {
     const root = document.documentElement;
-    const cls  = `theme-${settings.theme || "black"}`;
+    const cls = `theme-${settings.theme || "black"}`;
     root.classList.remove("theme-black", "theme-light", "theme-neo");
     root.classList.add(cls);
   }, [settings.theme]);
@@ -2912,7 +2915,7 @@ export default function App() {
   const [profileDraft, setProfileDraft] = useState(defaultProfile());
   const [showProfileEdit, setShowProfileEdit] = useState(false);
   const [customLists, setCustomLists] = useState([]);
-  const [listDraft, setListDraft] = useState({ title:"", description:"", cover:"", visibility:"public", items:[] });
+  const [listDraft, setListDraft] = useState({ title: "", description: "", cover: "", visibility: "public", items: [] });
   const [editingListId, setEditingListId] = useState(null);
   const [showListModal, setShowListModal] = useState(false);
   const [addToListEntry, setAddToListEntry] = useState(null);
@@ -2936,27 +2939,27 @@ export default function App() {
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ section tab states ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 
-  
+
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ filters ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
-  const [filterType,   setFilterType]   = useState("All");
+  const [filterType, setFilterType] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
-  const [sortBy,       setSortBy]       = useState("added");
+  const [sortBy, setSortBy] = useState("added");
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ search ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
-  const [search,    setSearch]    = useState("");
-  const [results,   setResults]   = useState([]);
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
-  const [showDrop,  setShowDrop]  = useState(false);
+  const [showDrop, setShowDrop] = useState(false);
   const searchRef = useRef(null);
-  const debRef    = useRef(null);
+  const debRef = useRef(null);
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ modal ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
-  const [editId,    setEditId]    = useState(null);
-  const [form,      setForm]      = useState({ status:"Want to Watch", rating:null, notes:"" });
-  const [saving,    setSaving]    = useState(false);
-  const [toast,     setToast]     = useState(null);
+  const [editId, setEditId] = useState(null);
+  const [form, setForm] = useState({ status: "Want to Watch", rating: null, notes: "" });
+  const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState(null);
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ see-all modal ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
   const [seeAll, setSeeAll] = useState(null); // { title, emoji, items }
@@ -3000,21 +3003,21 @@ export default function App() {
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Layer 1: TMDB provider name ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ OTT key ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
   const PROVIDER_MAP = {
-    "Netflix":                  "nf",
-    "Amazon Prime Video":       "prime",
-    "Disney Plus Hotstar":      "hs",
-    "Hotstar":                  "hs",
-    "JioHotstar":               "hs",
-    "Disney+ Hotstar":          "hs",
-    "SonyLIV":                  "sony",
-    "SonyLiv":                  "sony",
-    "ZEE5":                     "zee5",
-    "Zee5":                     "zee5",
-    "Apple TV+":                "atv",
-    "Apple TV Plus":            "atv",
-    "Crunchyroll":              "cr",
-    "Max":                      "hbo",
-    "HBO Max":                  "hbo",
+    "Netflix": "nf",
+    "Amazon Prime Video": "prime",
+    "Disney Plus Hotstar": "hs",
+    "Hotstar": "hs",
+    "JioHotstar": "hs",
+    "Disney+ Hotstar": "hs",
+    "SonyLIV": "sony",
+    "SonyLiv": "sony",
+    "ZEE5": "zee5",
+    "Zee5": "zee5",
+    "Apple TV+": "atv",
+    "Apple TV Plus": "atv",
+    "Crunchyroll": "cr",
+    "Max": "hbo",
+    "HBO Max": "hbo",
   };
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Layer 2a: Manual overrides by TMDB ID ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
@@ -3025,40 +3028,40 @@ export default function App() {
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Layer 2b: Manual overrides by title ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
   const MANUAL_BY_TITLE = {
-    "The Mandalorian":              ["hs"],
-    "Obi-Wan Kenobi":               ["hs"],
-    "The Last of Us":               ["hs"],
-    "House of the Dragon":          ["hs"],
-    "Succession":                   ["hs"],
-    "The Wire":                     ["hs"],
-    "Peaky Blinders":               ["nf"],
-    "Squid Game":                   ["nf"],
-    "Wednesday":                    ["nf"],
-    "Stranger Things":              ["nf"],
-    "Arcane":                       ["nf"],
-    "Dark":                         ["nf"],
-    "Invincible":                   ["prime"],
-    "The Boys":                     ["prime"],
-    "Reacher":                      ["prime"],
-    "Fallout":                      ["prime"],
+    "The Mandalorian": ["hs"],
+    "Obi-Wan Kenobi": ["hs"],
+    "The Last of Us": ["hs"],
+    "House of the Dragon": ["hs"],
+    "Succession": ["hs"],
+    "The Wire": ["hs"],
+    "Peaky Blinders": ["nf"],
+    "Squid Game": ["nf"],
+    "Wednesday": ["nf"],
+    "Stranger Things": ["nf"],
+    "Arcane": ["nf"],
+    "Dark": ["nf"],
+    "Invincible": ["prime"],
+    "The Boys": ["prime"],
+    "Reacher": ["prime"],
+    "Fallout": ["prime"],
   };
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Layer 3: Keyword-based smart fallback ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
   const KEYWORD_MAP = [
     { match: ["Marvel", "Disney", "Star Wars", "Pixar", "National Geographic"], ott: ["hs"] },
-    { match: ["HBO", "Warner", "Max Original", "DC"],                           ott: ["hs"] },
-    { match: ["Amazon", "Prime Original", "Amazon Studios"],                    ott: ["prime"] },
-    { match: ["Netflix", "Netflix Original"],                                   ott: ["nf"] },
-    { match: ["Sony", "Sony Pictures"],                                         ott: ["sony"] },
-    { match: ["ZEE", "Zee Studios"],                                            ott: ["zee5"] },
-    { match: ["Apple", "A24"],                                                  ott: ["atv"] },
+    { match: ["HBO", "Warner", "Max Original", "DC"], ott: ["hs"] },
+    { match: ["Amazon", "Prime Original", "Amazon Studios"], ott: ["prime"] },
+    { match: ["Netflix", "Netflix Original"], ott: ["nf"] },
+    { match: ["Sony", "Sony Pictures"], ott: ["sony"] },
+    { match: ["ZEE", "Zee Studios"], ott: ["zee5"] },
+    { match: ["Apple", "A24"], ott: ["atv"] },
   ];
 
   async function getOTT(id, type, title = "") {
     if (MANUAL_BY_ID[id]) return MANUAL_BY_ID[id];
     if (title && MANUAL_BY_TITLE[title]) return MANUAL_BY_TITLE[title];
     try {
-      const res  = await fetch(`${TMDB_BASE}/${type}/${id}/watch/providers?api_key=${TMDB_KEY}`);
+      const res = await fetch(`${TMDB_BASE}/${type}/${id}/watch/providers?api_key=${TMDB_KEY}`);
       const data = await res.json();
       const flatrate = data.results?.IN?.flatrate || [];
       const mapped = [...new Set(
@@ -3076,16 +3079,16 @@ export default function App() {
 
   useEffect(() => {
     const abort = new AbortController();
-    const lang  = settings.language || "en";
+    const lang = settings.language || "en";
     const adult = settings.adultContent ? "true" : "false";
     const mapItem = (r, typeLabel) => {
-      const title     = r.title || r.name || "";
-      const year      = (r.release_date || r.first_air_date || "").slice(0, 4);
+      const title = r.title || r.name || "";
+      const year = (r.release_date || r.first_air_date || "").slice(0, 4);
       const mediaType = r.media_type || (typeLabel === "Movie" ? "movie" : "tv");
       const resolvedType = typeLabel || (mediaType === "movie" ? "Movie" : "TV Show");
 
       return {
-        
+
         id: r.id,
         tmdbId: r.id,
         tmdbType: mediaType,
@@ -3095,7 +3098,7 @@ export default function App() {
         type: resolvedType,
         poster: r.poster_path,
         backdrop: r.backdrop_path,
-        overview: r.overview,   
+        overview: r.overview,
 
         ott: null,
         streaming: [],
@@ -3133,7 +3136,7 @@ export default function App() {
           r.backdrop_path && r.poster_path;
 
         const globalList = (trendAll?.results || []).filter(valid);
-        const indiaList  = (trendAllIN?.results || []).filter(valid);
+        const indiaList = (trendAllIN?.results || []).filter(valid);
 
         const heroCombined = [];
         const seen = new Set();
@@ -3314,22 +3317,22 @@ export default function App() {
     const type = getType(r);
     const year = (r.release_date || r.first_air_date || "").split("-")[0];
     const tmdbType = r.media_type || (type === "Movie" ? "movie" : "tv");
-    
+
     // Fetch OTT data
     const streaming = await getOTT(r.id, tmdbType, r.title || r.name || "");
-    
-    setModalData({ 
-      title:r.title||r.name, 
-      type, 
-      year, 
-      poster:r.poster_path, 
-      tmdb_id:r.id, 
+
+    setModalData({
+      title: r.title || r.name,
+      type,
+      year,
+      poster: r.poster_path,
+      tmdb_id: r.id,
       tmdbId: r.id,
       tmdbType,
-      overview:r.overview,
+      overview: r.overview,
       streaming: streaming || []
     });
-    setForm({ status:"Want to Watch", rating:null, notes:"" });
+    setForm({ status: "Want to Watch", rating: null, notes: "" });
     setEditId(null); setShowDrop(false); setSearch(""); setShowModal(true);
   }
 
@@ -3340,49 +3343,49 @@ export default function App() {
       navigate(`/detail/${tmdbType}/${tmdbId}`);
       return;
     }
-    setModalData({ title:item.title, type:item.type, year:item.year, poster:item.poster, tmdb_id:item.tmdb_id, tmdbId:item.tmdbId, tmdbType:item.tmdbType, overview:item.overview, streaming:item.streaming||[] });
-    setForm({ status:"Want to Watch", rating:null, notes:"" });
+    setModalData({ title: item.title, type: item.type, year: item.year, poster: item.poster, tmdb_id: item.tmdb_id, tmdbId: item.tmdbId, tmdbType: item.tmdbType, overview: item.overview, streaming: item.streaming || [] });
+    setForm({ status: "Want to Watch", rating: null, notes: "" });
     setEditId(null);
     setShowModal(true);
   }
 
   function openManual() {
     if (!session) { setShowAuth(true); return; }
-    setModalData({ title:"", type:"Movie", year:"", poster:null, manual:true });
-    setForm({ status:"Want to Watch", rating:null, notes:"" });
+    setModalData({ title: "", type: "Movie", year: "", poster: null, manual: true });
+    setForm({ status: "Want to Watch", rating: null, notes: "" });
     setEditId(null); setShowModal(true);
   }
 
   function openEdit(entry) {
-    setModalData({ title:entry.title, type:entry.type, year:entry.year, poster:entry.poster, tmdb_id:entry.tmdb_id });
-    setForm({ status:entry.status, rating:entry.rating, notes:entry.notes||"" });
+    setModalData({ title: entry.title, type: entry.type, year: entry.year, poster: entry.poster, tmdb_id: entry.tmdb_id });
+    setForm({ status: entry.status, rating: entry.rating, notes: entry.notes || "" });
     setEditId(entry.id); setShowModal(true);
   }
 
   async function handleSave() {
-    const title = modalData.manual ? (modalData.manualTitle||"").trim() : modalData.title;
+    const title = modalData.manual ? (modalData.manualTitle || "").trim() : modalData.title;
     if (!title) return;
     if (!session) { setShowAuth(true); return; }
     setSaving(true);
     try {
       const row = {
-        title, type:modalData.type, year:modalData.year,
-        poster:modalData.poster, tmdb_id:modalData.tmdb_id,
-        user_id:session.user.id,
-        user_name:session.user.user_metadata?.name || session.user.email?.split("@")[0] || "User",
+        title, type: modalData.type, year: modalData.year,
+        poster: modalData.poster, tmdb_id: modalData.tmdb_id,
+        user_id: session.user.id,
+        user_name: session.user.user_metadata?.name || session.user.email?.split("@")[0] || "User",
         ...form
       };
       if (editId !== null) {
         const { data } = await supabase.from("entries").update(row).eq("id", editId).select();
         const updated = data[0];
         setAllEntries(p => p.map(e => e.id === editId ? updated : e));
-        setMyEntries(p  => p.map(e => e.id === editId ? updated : e));
+        setMyEntries(p => p.map(e => e.id === editId ? updated : e));
         showT("Updated!");
       } else {
         const { data } = await supabase.from("entries").insert(row).select();
         const newRow = data[0];
         setAllEntries(p => [newRow, ...p]);
-        setMyEntries(p  => [newRow, ...p]);
+        setMyEntries(p => [newRow, ...p]);
         showT("Added to catalog!");
       }
       setShowModal(false);
@@ -3390,10 +3393,55 @@ export default function App() {
     setSaving(false);
   }
 
+  async function handleDirectSave(item, targetStatus) {
+    if (!session) { setShowAuth(true); return; }
+    setSaving(true);
+    try {
+      const existingEntry = myEntries.find(e => String(e.tmdb_id) === String(item.tmdbId) && e.type === item.type);
+
+      const row = {
+        title: item.title,
+        type: item.type,
+        year: item.year,
+        poster: item.poster,
+        tmdb_id: item.tmdbId,
+        user_id: session.user.id,
+        user_name: session.user.user_metadata?.name || session.user.email?.split("@")[0] || "User",
+        status: targetStatus,
+        rating: existingEntry ? existingEntry.rating : null,
+        notes: existingEntry ? existingEntry.notes : ""
+      };
+
+      if (existingEntry) {
+        const { data, error } = await supabase.from("entries").update(row).eq("id", existingEntry.id).select();
+        if (error) throw error;
+        if (data && data.length > 0) {
+          const updated = data[0];
+          setAllEntries(p => p.map(e => e.id === existingEntry.id ? updated : e));
+          setMyEntries(p => p.map(e => e.id === existingEntry.id ? updated : e));
+          showT(`Status updated to ${targetStatus}`);
+        }
+      } else {
+        const { data, error } = await supabase.from("entries").insert(row).select();
+        if (error) throw error;
+        if (data && data.length > 0) {
+          const newRow = data[0];
+          setAllEntries(p => [newRow, ...p]);
+          setMyEntries(p => [newRow, ...p]);
+          showT(`Added to ${targetStatus}`);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      showT("Something went wrong.");
+    }
+    setSaving(false);
+  }
+
   async function handleDelete(id) {
     await supabase.from("entries").delete().eq("id", id);
     setAllEntries(p => p.filter(e => e.id !== id));
-    setMyEntries(p  => p.filter(e => e.id !== id));
+    setMyEntries(p => p.filter(e => e.id !== id));
     showT("Removed.");
   }
 
@@ -3437,33 +3485,33 @@ export default function App() {
   function openCreateList() {
     if (!session) { setShowAuth(true); return; }
     setEditingListId(null);
-    setListDraft({ title:"", description:"", cover:"", visibility:"public", items:[] });
+    setListDraft({ title: "", description: "", cover: "", visibility: "public", items: [] });
     setShowListModal(true);
   }
 
   function openEditList(list) {
     setEditingListId(list.id);
-    setListDraft({ ...list, items:[...(list.items || [])] });
+    setListDraft({ ...list, items: [...(list.items || [])] });
     setShowListModal(true);
   }
 
   function saveCustomList() {
     if (!session || !listDraft.title.trim()) return;
     if (editingListId) {
-      setCustomLists(p => p.map(l => l.id === editingListId ? { ...l, ...listDraft, title:listDraft.title.trim(), updatedAt:new Date().toISOString() } : l));
+      setCustomLists(p => p.map(l => l.id === editingListId ? { ...l, ...listDraft, title: listDraft.title.trim(), updatedAt: new Date().toISOString() } : l));
       showT("List updated!");
     } else {
       const list = {
         id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-        title:listDraft.title.trim(),
-        description:listDraft.description,
-        cover:listDraft.cover,
-        visibility:listDraft.visibility || "public",
-        items:listDraft.items || [],
-        ownerId:session.user.id,
-        ownerName:profile.username,
-        createdAt:new Date().toISOString(),
-        updatedAt:new Date().toISOString(),
+        title: listDraft.title.trim(),
+        description: listDraft.description,
+        cover: listDraft.cover,
+        visibility: listDraft.visibility || "public",
+        items: listDraft.items || [],
+        ownerId: session.user.id,
+        ownerName: profile.username,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       setCustomLists(p => [list, ...p]);
       showT(`Created list "${list.title}"`);
@@ -3480,13 +3528,13 @@ export default function App() {
   function addEntryToList(listId, entryId) {
     setCustomLists(p => p.map(l => {
       if (String(l.id) !== String(listId) || l.items?.some(id => String(id) === String(entryId))) return l;
-      return { ...l, items:[...(l.items || []), entryId], updatedAt:new Date().toISOString() };
+      return { ...l, items: [...(l.items || []), entryId], updatedAt: new Date().toISOString() };
     }));
     showT("Added to list.");
   }
 
   function removeEntryFromList(listId, entryId) {
-    setCustomLists(p => p.map(l => String(l.id) === String(listId) ? { ...l, items:(l.items || []).filter(id => String(id) !== String(entryId)), updatedAt:new Date().toISOString() } : l));
+    setCustomLists(p => p.map(l => String(l.id) === String(listId) ? { ...l, items: (l.items || []).filter(id => String(id) !== String(entryId)), updatedAt: new Date().toISOString() } : l));
   }
 
   function moveListItem(listId, index, direction) {
@@ -3496,15 +3544,15 @@ export default function App() {
       const next = index + direction;
       if (next < 0 || next >= items.length) return l;
       [items[index], items[next]] = [items[next], items[index]];
-      return { ...l, items, updatedAt:new Date().toISOString() };
+      return { ...l, items, updatedAt: new Date().toISOString() };
     }));
   }
 
   function handleExport() {
-    const blob = new Blob([JSON.stringify(myEntries, null, 2)], { type:"application/json" });
-    const url  = URL.createObjectURL(blob);
+    const blob = new Blob([JSON.stringify(myEntries, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
     const a = document.createElement("a"); a.href = url;
-    a.download = `reellog-export-${new Date().toISOString().slice(0,10)}.json`;
+    a.download = `reellog-export-${new Date().toISOString().slice(0, 10)}.json`;
     a.click(); URL.revokeObjectURL(url);
     showT("Catalog exported!");
   }
@@ -3519,14 +3567,14 @@ export default function App() {
   const libraryQuery = search.trim().toLowerCase();
   const filtered = source
     .filter(e => !libraryQuery || [e.title, e.type, e.year, e.status].some(v => String(v || "").toLowerCase().includes(libraryQuery)))
-    .filter(e => filterType   === "All" || e.type   === filterType)
+    .filter(e => filterType === "All" || e.type === filterType)
     .filter(e => filterStatus === "All" || e.status === filterStatus)
     .sort((a, b) => {
-      if (sortBy === "title")  return (a.title || "").localeCompare(b.title || "");
+      if (sortBy === "title") return (a.title || "").localeCompare(b.title || "");
       if (sortBy === "titleDesc") return (b.title || "").localeCompare(a.title || "");
-      if (sortBy === "rating") return (b.rating||0) - (a.rating||0);
-      if (sortBy === "year")   return (b.year||"0").localeCompare(a.year||"0");
-      if (sortBy === "yearAsc") return (a.year||"0").localeCompare(b.year||"0");
+      if (sortBy === "rating") return (b.rating || 0) - (a.rating || 0);
+      if (sortBy === "year") return (b.year || "0").localeCompare(a.year || "0");
+      if (sortBy === "yearAsc") return (a.year || "0").localeCompare(b.year || "0");
       return 0;
     });
 
@@ -3575,25 +3623,25 @@ export default function App() {
     return (
       <>
         {!session && (
-          <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:40 }}>
-            <div style={{ textAlign:"center", maxWidth:430 }}>
-              <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:50, color:"var(--acc)", letterSpacing:3, textShadow:"0 0 36px var(--acc-glow)", marginBottom:8 }}>
-                Reel<span style={{ color:"var(--tx)" }}>log</span>
+          <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 40 }}>
+            <div style={{ textAlign: "center", maxWidth: 430 }}>
+              <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 50, color: "var(--acc)", letterSpacing: 3, textShadow: "0 0 36px var(--acc-glow)", marginBottom: 8 }}>
+                Reel<span style={{ color: "var(--tx)" }}>log</span>
               </div>
-              <div style={{ fontFamily:"'DM Serif Display',serif", fontSize:28, marginBottom:12, lineHeight:1.2 }}>
-                Your list is  <em style={{ color:"var(--acc)", fontStyle:"italic" }}>private</em>
+              <div style={{ fontFamily: "'DM Serif Display',serif", fontSize: 28, marginBottom: 12, lineHeight: 1.2 }}>
+                Your list is  <em style={{ color: "var(--acc)", fontStyle: "italic" }}>private</em>
               </div>
-              <p style={{ fontSize:14, color:"var(--txm)", lineHeight:1.85, marginBottom:30 }}>
+              <p style={{ fontSize: 14, color: "var(--txm)", lineHeight: 1.85, marginBottom: 30 }}>
                 Sign in to build your personal catalog of movies, shows and anime. Rate them, track your status and never lose track of what to watch next.
               </p>
               <button className="btn-acc btn-sm"
-                style={{ padding:"14px 38px", fontSize:14, fontWeight:700, borderRadius:9 }}
+                style={{ padding: "14px 38px", fontSize: 14, fontWeight: 700, borderRadius: 9 }}
                 onClick={() => setShowAuth(true)}>
                 Sign in to view your list -&gt;
               </button>
-              <div style={{ marginTop:16, fontSize:12, color:"var(--txd)" }}>
+              <div style={{ marginTop: 16, fontSize: 12, color: "var(--txd)" }}>
                 No account?&nbsp;
-                <span style={{ color:"var(--acc)", cursor:"pointer" }} onClick={() => setShowAuth(true)}>Join free</span>
+                <span style={{ color: "var(--acc)", cursor: "pointer" }} onClick={() => setShowAuth(true)}>Join free</span>
               </div>
             </div>
           </div>
@@ -3613,12 +3661,12 @@ export default function App() {
             <div className="library-dashboard">
               <div className="dash-stats">
                 {[
-                  { key:"Movie", label:"Movies", value:typeCounts.Movie, icon:<FaFilm />, active:filterType === "Movie", onClick:() => { setFilterType(filterType === "Movie" ? "All" : "Movie"); setFilterStatus("All"); } },
-                  { key:"TV Show", label:"TV Shows", value:typeCounts["TV Show"], icon:<FaTv />, active:filterType === "TV Show", onClick:() => { setFilterType(filterType === "TV Show" ? "All" : "TV Show"); setFilterStatus("All"); } },
-                  { key:"Anime", label:"Anime", value:typeCounts.Anime, icon:<FaDragon />, active:filterType === "Anime", onClick:() => { setFilterType(filterType === "Anime" ? "All" : "Anime"); setFilterStatus("All"); } },
-                  { key:"Watched", label:"Watched", value:counts.Watched, icon:<FaCheck />, active:filterStatus === "Watched", onClick:() => { setFilterStatus(filterStatus === "Watched" ? "All" : "Watched"); setFilterType("All"); } },
-                  { key:"Watching", label:"Watching", value:counts.Watching, icon:<FaPlay />, active:filterStatus === "Watching", onClick:() => { setFilterStatus(filterStatus === "Watching" ? "All" : "Watching"); setFilterType("All"); } },
-                  { key:"Want to Watch", label:"Want to Watch", value:counts["Want to Watch"], icon:<FaList />, active:filterStatus === "Want to Watch", onClick:() => { setFilterStatus(filterStatus === "Want to Watch" ? "All" : "Want to Watch"); setFilterType("All"); } },
+                  { key: "Movie", label: "Movies", value: typeCounts.Movie, icon: <FaFilm />, active: filterType === "Movie", onClick: () => { setFilterType(filterType === "Movie" ? "All" : "Movie"); setFilterStatus("All"); } },
+                  { key: "TV Show", label: "TV Shows", value: typeCounts["TV Show"], icon: <FaTv />, active: filterType === "TV Show", onClick: () => { setFilterType(filterType === "TV Show" ? "All" : "TV Show"); setFilterStatus("All"); } },
+                  { key: "Anime", label: "Anime", value: typeCounts.Anime, icon: <FaDragon />, active: filterType === "Anime", onClick: () => { setFilterType(filterType === "Anime" ? "All" : "Anime"); setFilterStatus("All"); } },
+                  { key: "Watched", label: "Watched", value: counts.Watched, icon: <FaCheck />, active: filterStatus === "Watched", onClick: () => { setFilterStatus(filterStatus === "Watched" ? "All" : "Watched"); setFilterType("All"); } },
+                  { key: "Watching", label: "Watching", value: counts.Watching, icon: <FaPlay />, active: filterStatus === "Watching", onClick: () => { setFilterStatus(filterStatus === "Watching" ? "All" : "Watching"); setFilterType("All"); } },
+                  { key: "Want to Watch", label: "Want to Watch", value: counts["Want to Watch"], icon: <FaList />, active: filterStatus === "Want to Watch", onClick: () => { setFilterStatus(filterStatus === "Want to Watch" ? "All" : "Want to Watch"); setFilterType("All"); } },
                 ].map(stat => (
                   <button key={stat.key} className={`dash-stat${stat.active ? " on" : ""}`} onClick={stat.onClick}>
                     <div className="dash-stat-icon">{stat.icon}</div>
@@ -3639,10 +3687,10 @@ export default function App() {
                       <div key={entry.id} className="library-rail-card" onClick={() => openFromCard(entry)}>
                         <div className="library-rail-poster">
                           {entry.poster
-                            ? <img src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display="none"; }} />
+                            ? <img src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display = "none"; }} />
                             : <div className="no-img-box"><div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div><span>{entry.type}</span></div>}
                           <div className="card-grad" />
-                          <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>
+                          <div className="card-status-tag" style={{ color: SCOLOR[entry.status], borderColor: SCOLOR[entry.status] + "44" }}>
                             {getStatusIcon(entry.status)} {entry.status}
                           </div>
                         </div>
@@ -3667,7 +3715,7 @@ export default function App() {
                       <div key={entry.id} className="library-rail-card" onClick={() => openFromCard(entry)}>
                         <div className="library-rail-poster">
                           {entry.poster
-                            ? <img src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display="none"; }} />
+                            ? <img src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display = "none"; }} />
                             : <div className="no-img-box"><div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div><span>{entry.type}</span></div>}
                           <div className="card-grad" />
                         </div>
@@ -3699,10 +3747,10 @@ export default function App() {
                           <div key={r.id} className="drop-row" onClick={() => selectResult(r)}>
                             {r.poster_path
                               ? <img className="drop-img" src={`${TMDB_IMG}${r.poster_path}`} alt="" />
-                              : <div className="drop-img" style={{ display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>?</div>}
-                            <div style={{ flex:1, minWidth:0 }}>
+                              : <div className="drop-img" style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>?</div>}
+                            <div style={{ flex: 1, minWidth: 0 }}>
                               <div className="drop-ti">{r.title || r.name}</div>
-                              <div className="drop-me">{(r.release_date||r.first_air_date||"").split("-")[0]}</div>
+                              <div className="drop-me">{(r.release_date || r.first_air_date || "").split("-")[0]}</div>
                             </div>
                             <div className="drop-tag">{getType(r)}</div>
                           </div>
@@ -3712,10 +3760,10 @@ export default function App() {
                   </div>
                   <div className="fil-row">
                     {[
-                      { key:"All", label:"All" },
-                      { key:"Movie", label:"Movies" },
-                      { key:"TV Show", label:"TV Shows" },
-                      { key:"Anime", label:"Anime" },
+                      { key: "All", label: "All" },
+                      { key: "Movie", label: "Movies" },
+                      { key: "TV Show", label: "TV Shows" },
+                      { key: "Anime", label: "Anime" },
                     ].map(f => (
                       <button key={f.key} className={`fil-btn${filterType === f.key ? " on" : ""}`} onClick={() => setFilterType(f.key)}>{f.label}</button>
                     ))}
@@ -3739,7 +3787,7 @@ export default function App() {
               <div className="library-grid-wrap">
                 <div className="library-grid-title">Collection</div>
                 {loading ? (
-                  <div className="loader"><div className="ldot"/><div className="ldot"/><div className="ldot"/></div>
+                  <div className="loader"><div className="ldot" /><div className="ldot" /><div className="ldot" /></div>
                 ) : (
                   <div className={`grid${settings.cardSize === "small" ? " small" : settings.cardSize === "large" ? " large" : ""}`}>
                     {filtered.length === 0 && (
@@ -3751,15 +3799,15 @@ export default function App() {
                       </div>
                     )}
                     {filtered.map((entry, i) => (
-                      <div key={entry.id} className="card" style={{ animationDelay:`${Math.min(i*.04,.4)}s` }} onClick={() => openFromCard(entry)}>
+                      <div key={entry.id} className="card" style={{ animationDelay: `${Math.min(i * .04, .4)}s` }} onClick={() => openFromCard(entry)}>
                         <div className="card-img-box">
                           {entry.poster
                             ? <img className="card-img" src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy"
-                                onError={e => { e.currentTarget.style.display="none"; }} />
+                              onError={e => { e.currentTarget.style.display = "none"; }} />
                             : <div className="no-img-box">
-                                <div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div>
-                                <span>{entry.type}</span>
-                              </div>}
+                              <div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div>
+                              <span>{entry.type}</span>
+                            </div>}
                           <div
                             className="type-badge"
                             onClick={e => { e.stopPropagation(); handleTypeNav(entry.type); }}
@@ -3767,7 +3815,7 @@ export default function App() {
                             {entry.type}
                           </div>
                           <div className="card-grad" />
-                          <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>
+                          <div className="card-status-tag" style={{ color: SCOLOR[entry.status], borderColor: SCOLOR[entry.status] + "44" }}>
                             {getStatusIcon(entry.status)} {entry.status}
                           </div>
                           <div className="card-overlay">
@@ -3789,12 +3837,12 @@ export default function App() {
                           </div>
                           {settings.showRatings && entry.rating > 0 && (
                             <div className="card-stars">
-                              {[1,2,3,4,5].map(s => <FaStar key={s} className={`s${entry.rating>=s?" on":""}`} aria-hidden="true" />)}
+                              {[1, 2, 3, 4, 5].map(s => <FaStar key={s} className={`s${entry.rating >= s ? " on" : ""}`} aria-hidden="true" />)}
                             </div>
                           )}
                           {settings.showStreaming && entry.streaming?.length > 0 && (
                             <div className="card-ott-strip">
-                              {entry.streaming.slice(0,3).map(k => OTT[k] && (
+                              {entry.streaming.slice(0, 3).map(k => OTT[k] && (
                                 <span key={k} className="card-ott-label"
                                   style={{ background: OTT[k].color }}>
                                   {OTT[k].short}
@@ -3820,10 +3868,10 @@ export default function App() {
                   </div>
                   <div className="insights-grid">
                     {[
-                      { label:"Total Library Size", value:source.length },
-                      { label:"Most Common Genre", value:mostCommonGenre },
-                      { label:"Average User Rating", value:averageUserRating },
-                      { label:"Most Recent Entry", value:mostRecentEntry },
+                      { label: "Total Library Size", value: source.length },
+                      { label: "Most Common Genre", value: mostCommonGenre },
+                      { label: "Average User Rating", value: averageUserRating },
+                      { label: "Most Recent Entry", value: mostRecentEntry },
                     ].map(item => (
                       <div key={item.label} className="insight-card">
                         <div className="insight-value">{item.value}</div>
@@ -3892,7 +3940,12 @@ export default function App() {
       </nav>
 
       <Routes>
-        <Route path="/detail/:type/:id" element={<DetailPage session={session} onRequireAuth={() => setShowAuth(true)} onSelect={openFromCard} />} />
+        <Route path="/mylist" element={
+          <div className="main-content" style={{ minHeight: "100vh", paddingTop: "80px" }}>
+            {renderLibrary("mylist")}
+          </div>
+        } />
+        <Route path="/detail/:type/:id" element={<DetailPage session={session} myEntries={myEntries} onDirectSave={handleDirectSave} onRequireAuth={() => setShowAuth(true)} onSelect={openFromCard} />} />
         <Route
           path="/profile"
           element={
@@ -3956,72 +4009,72 @@ export default function App() {
           path="/*"
           element={
             <>
-      {/*  HOME PAGE  */}
-      {page === "home" && (
-        <>
-          <HeroCarousel
-            items={heroItems}
-            autoplay={settings.autoplay}
-            onAdd={openFromCard}
-            session={session}
-            setShowAuth={setShowAuth}
-          />
-          <div className="main-content">
-            <TmdbSection
-              title="Trending"
-              tabs={[{ key:"day", label:"Today" }, { key:"week", label:"This Week" }]}
-              activeTab={trendMode}
-              onTabChange={handleTrendTab}
-              items={homeTrending}
-              onSelect={openFromCard}
-              onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"Trending", emoji:"fire", items:homeTrending })}
-            />
-            <div className="divider" />
-            <TmdbSection
-              title="What's Popular"
-              tabs={[
-                { key:"streaming", label:"Streaming" },
-                { key:"tv",        label:"On TV" },
-                { key:"rent",      label:"For Rent" },
-                { key:"theaters",  label:"In Theaters" },
-              ]}
-              activeTab={popularMode}
-              onTabChange={handlePopularTab}
-              items={homePopular}
-              onSelect={openFromCard}
-              onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"What's Popular", emoji:"eye", items:homePopular })}
-            />
-            <div className="divider" />
-            <TmdbSection
-              title="Free To Watch"
-              tabs={[{ key:"movies", label:"Movies" }, { key:"tv", label:"TV" }]}
-              activeTab={freeMode}
-              onTabChange={handleFreeTab}
-              items={homeFree}
-              onSelect={openFromCard}
-              onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"Free To Watch", emoji:"gift", items:homeFree })}
-            />
-            <div className="divider" />
-            <TmdbSection
-              title="Binge-worthy Series"
-              tabs={[]}
-              items={homeSeries}
-              onSelect={openFromCard}
-              onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"Binge-worthy Series", emoji:"play", items:homeSeries })}
-            />
-            <div style={{ height:64 }} />
-          </div>
-        </>
-      )}
+              {/*  HOME PAGE  */}
+              {page === "home" && (
+                <>
+                  <HeroCarousel
+                    items={heroItems}
+                    autoplay={settings.autoplay}
+                    onAdd={openFromCard}
+                    session={session}
+                    setShowAuth={setShowAuth}
+                  />
+                  <div className="main-content">
+                    <TmdbSection
+                      title="Trending"
+                      tabs={[{ key: "day", label: "Today" }, { key: "week", label: "This Week" }]}
+                      activeTab={trendMode}
+                      onTabChange={handleTrendTab}
+                      items={homeTrending}
+                      onSelect={openFromCard}
+                      onTypeNav={handleTypeNav}
+                      onSeeAll={() => setSeeAll({ title: "Trending", emoji: "fire", items: homeTrending })}
+                    />
+                    <div className="divider" />
+                    <TmdbSection
+                      title="What's Popular"
+                      tabs={[
+                        { key: "streaming", label: "Streaming" },
+                        { key: "tv", label: "On TV" },
+                        { key: "rent", label: "For Rent" },
+                        { key: "theaters", label: "In Theaters" },
+                      ]}
+                      activeTab={popularMode}
+                      onTabChange={handlePopularTab}
+                      items={homePopular}
+                      onSelect={openFromCard}
+                      onTypeNav={handleTypeNav}
+                      onSeeAll={() => setSeeAll({ title: "What's Popular", emoji: "eye", items: homePopular })}
+                    />
+                    <div className="divider" />
+                    <TmdbSection
+                      title="Free To Watch"
+                      tabs={[{ key: "movies", label: "Movies" }, { key: "tv", label: "TV" }]}
+                      activeTab={freeMode}
+                      onTabChange={handleFreeTab}
+                      items={homeFree}
+                      onSelect={openFromCard}
+                      onTypeNav={handleTypeNav}
+                      onSeeAll={() => setSeeAll({ title: "Free To Watch", emoji: "gift", items: homeFree })}
+                    />
+                    <div className="divider" />
+                    <TmdbSection
+                      title="Binge-worthy Series"
+                      tabs={[]}
+                      items={homeSeries}
+                      onSelect={openFromCard}
+                      onTypeNav={handleTypeNav}
+                      onSeeAll={() => setSeeAll({ title: "Binge-worthy Series", emoji: "play", items: homeSeries })}
+                    />
+                    <div style={{ height: 64 }} />
+                  </div>
+                </>
+              )}
 
-      {/*  EXPLORE / MY LIST */}
-      {page === "explore" && renderLibrary("explore")}
+              {/*  EXPLORE / MY LIST */}
+              {page === "explore" && renderLibrary("explore")}
 
-      {page === "mylist" && renderLibrary("mylist")}
+              {page === "mylist" && renderLibrary("mylist")}
             </>
           }
         />
@@ -4034,17 +4087,17 @@ export default function App() {
             <div className="modal-head">
               {modalData.poster
                 ? <img className="modal-poster" src={`${TMDB_IMG}${modalData.poster}`} alt=""
-                    onError={e => e.currentTarget.style.display="none"} />
+                  onError={e => e.currentTarget.style.display = "none"} />
                 : modalData.tmdbId
-                  ? <PosterImage item={{ poster:null, tmdbId:modalData.tmdbId, tmdbType:modalData.tmdbType||"movie", type:modalData.type||"Movie" }}
-                      style={{ width:72, height:104, borderRadius:9, flexShrink:0 }} />
-                  : <div className="modal-poster" style={{ display:"flex", alignItems:"center", justifyContent:"center", fontSize:28, color:"var(--txd)" }}></div>}
-              <div style={{ flex:1 }}>
+                  ? <PosterImage item={{ poster: null, tmdbId: modalData.tmdbId, tmdbType: modalData.tmdbType || "movie", type: modalData.type || "Movie" }}
+                    style={{ width: 72, height: 104, borderRadius: 9, flexShrink: 0 }} />
+                  : <div className="modal-poster" style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, color: "var(--txd)" }}></div>}
+              <div style={{ flex: 1 }}>
                 {modalData.manual
-                  ? <input className="finp" placeholder="Enter title..." value={modalData.manualTitle||""} onChange={e=>setModalData(d=>({...d,manualTitle:e.target.value}))} style={{ marginBottom:6 }} />
+                  ? <input className="finp" placeholder="Enter title..." value={modalData.manualTitle || ""} onChange={e => setModalData(d => ({ ...d, manualTitle: e.target.value }))} style={{ marginBottom: 6 }} />
                   : <div className="modal-ti">{modalData.title}</div>}
                 <div className="modal-sub">{modalData.type}{modalData.year ? ` | ${modalData.year}` : ""}</div>
-                {modalData.overview && <div className="modal-ov">"{modalData.overview.slice(0,110)}"</div>}
+                {modalData.overview && <div className="modal-ov">"{modalData.overview.slice(0, 110)}"</div>}
               </div>
             </div>
             <div className="modal-body">
@@ -4065,7 +4118,7 @@ export default function App() {
                             e.currentTarget.nextSibling.style.display = "inline";
                           }}
                         />
-                        <span style={{ display:"none", fontSize:10, fontWeight:700, color:"var(--tx)", letterSpacing:.5 }}>{OTT[k].short}</span>
+                        <span style={{ display: "none", fontSize: 10, fontWeight: 700, color: "var(--tx)", letterSpacing: .5 }}>{OTT[k].short}</span>
                       </a>
                     ))}
                   </div>
@@ -4074,16 +4127,16 @@ export default function App() {
               {session ? (
                 <>
                   {modalData.manual && (
-                    <div className="frow" style={{ marginBottom:14 }}>
+                    <div className="frow" style={{ marginBottom: 14 }}>
                       <div className="field">
                         <label className="flbl">Type</label>
-                        <select className="fsel" value={modalData.type} onChange={e=>setModalData(d=>({...d,type:e.target.value}))}>
-                          {["Movie","Anime","TV Show"].map(t => <option key={t}>{t}</option>)}
+                        <select className="fsel" value={modalData.type} onChange={e => setModalData(d => ({ ...d, type: e.target.value }))}>
+                          {["Movie", "Anime", "TV Show"].map(t => <option key={t}>{t}</option>)}
                         </select>
                       </div>
                       <div className="field">
                         <label className="flbl">Year</label>
-                        <input className="finp" placeholder="2024" value={modalData.year||""} onChange={e=>setModalData(d=>({...d,year:e.target.value}))} />
+                        <input className="finp" placeholder="2024" value={modalData.year || ""} onChange={e => setModalData(d => ({ ...d, year: e.target.value }))} />
                       </div>
                     </div>
                   )}
@@ -4091,9 +4144,9 @@ export default function App() {
                     <label className="flbl">Status</label>
                     <div className="pills">
                       {STATUSES.map(s => (
-                        <button key={s} className={`pill${form.status===s?" on":""}`}
-                          style={form.status===s?{background:SCOLOR[s]+"22",borderColor:SCOLOR[s],color:SCOLOR[s]}:{}}
-                          onClick={() => setForm(f=>({...f,status:s}))}>
+                        <button key={s} className={`pill${form.status === s ? " on" : ""}`}
+                          style={form.status === s ? { background: SCOLOR[s] + "22", borderColor: SCOLOR[s], color: SCOLOR[s] } : {}}
+                          onClick={() => setForm(f => ({ ...f, status: s }))}>
                           {getStatusIcon(s)} {s}
                         </button>
                       ))}
@@ -4102,15 +4155,15 @@ export default function App() {
                   <div className="field">
                     <label className="flbl">Rating</label>
                     <div className="str-row">
-                      {[1,2,3,4,5].map(s => (
-                        <span key={s} className={`str${form.rating>=s?" on":""}`}
-                          onClick={() => setForm(f=>({...f,rating:f.rating===s?null:s}))}><FaStar aria-hidden="true" /></span>
+                      {[1, 2, 3, 4, 5].map(s => (
+                        <span key={s} className={`str${form.rating >= s ? " on" : ""}`}
+                          onClick={() => setForm(f => ({ ...f, rating: f.rating === s ? null : s }))}><FaStar aria-hidden="true" /></span>
                       ))}
                     </div>
                   </div>
                   <div className="field">
                     <label className="flbl">Notes</label>
-                    <textarea className="fta" placeholder="Your thoughts..." value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))} />
+                    <textarea className="fta" placeholder="Your thoughts..." value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} />
                   </div>
                 </>
               ) : (
@@ -4142,7 +4195,7 @@ export default function App() {
         <div className="backdrop" onClick={e => e.target === e.currentTarget && setShowProfileEdit(false)}>
           <div className="modal modal-wide">
             <div className="modal-head">
-              <div style={{ flex:1 }}>
+              <div style={{ flex: 1 }}>
                 <div className="modal-ti">Edit Profile</div>
                 <div className="modal-sub">Customize your ReelLog identity.</div>
               </div>
@@ -4158,15 +4211,15 @@ export default function App() {
               </div>
               <div className="field">
                 <label className="flbl">Username</label>
-                <input className="finp" value={profileDraft.username || ""} onChange={e => setProfileDraft(p => ({ ...p, username:e.target.value }))} />
+                <input className="finp" value={profileDraft.username || ""} onChange={e => setProfileDraft(p => ({ ...p, username: e.target.value }))} />
               </div>
               <div className="field">
                 <label className="flbl">Bio</label>
-                <textarea className="fta" value={profileDraft.bio || ""} onChange={e => setProfileDraft(p => ({ ...p, bio:e.target.value }))} />
+                <textarea className="fta" value={profileDraft.bio || ""} onChange={e => setProfileDraft(p => ({ ...p, bio: e.target.value }))} />
               </div>
               <div className="field">
                 <label className="flbl">Favorite Genres</label>
-                <input className="finp" value={Array.isArray(profileDraft.favoriteGenres) ? profileDraft.favoriteGenres.join(", ") : profileDraft.favoriteGenres || ""} onChange={e => setProfileDraft(p => ({ ...p, favoriteGenres:e.target.value }))} />
+                <input className="finp" value={Array.isArray(profileDraft.favoriteGenres) ? profileDraft.favoriteGenres.join(", ") : profileDraft.favoriteGenres || ""} onChange={e => setProfileDraft(p => ({ ...p, favoriteGenres: e.target.value }))} />
               </div>
             </div>
             <div className="modal-foot">
@@ -4181,7 +4234,7 @@ export default function App() {
         <div className="backdrop" onClick={e => e.target === e.currentTarget && setShowListModal(false)}>
           <div className="modal modal-wide">
             <div className="modal-head">
-              <div style={{ flex:1 }}>
+              <div style={{ flex: 1 }}>
                 <div className="modal-ti">{editingListId ? "Edit List" : "Create List"}</div>
                 <div className="modal-sub">Curate titles into a cinematic collection.</div>
               </div>
@@ -4190,11 +4243,11 @@ export default function App() {
             <div className="modal-body">
               <div className="field">
                 <label className="flbl">Title</label>
-                <input className="finp" placeholder="Best Sci-Fi Movies" value={listDraft.title || ""} onChange={e => setListDraft(p => ({ ...p, title:e.target.value }))} />
+                <input className="finp" placeholder="Best Sci-Fi Movies" value={listDraft.title || ""} onChange={e => setListDraft(p => ({ ...p, title: e.target.value }))} />
               </div>
               <div className="field">
                 <label className="flbl">Description</label>
-                <textarea className="fta" placeholder="Why this list matters..." value={listDraft.description || ""} onChange={e => setListDraft(p => ({ ...p, description:e.target.value }))} />
+                <textarea className="fta" placeholder="Why this list matters..." value={listDraft.description || ""} onChange={e => setListDraft(p => ({ ...p, description: e.target.value }))} />
               </div>
               <div className="form-grid">
                 <div className="field">
@@ -4209,7 +4262,7 @@ export default function App() {
                 </div>
                 <div className="field">
                   <label className="flbl">Visibility</label>
-                  <select className="fsel" value={listDraft.visibility || "public"} onChange={e => setListDraft(p => ({ ...p, visibility:e.target.value }))}>
+                  <select className="fsel" value={listDraft.visibility || "public"} onChange={e => setListDraft(p => ({ ...p, visibility: e.target.value }))}>
                     <option value="public">Public</option>
                     <option value="private">Private</option>
                   </select>
@@ -4228,7 +4281,7 @@ export default function App() {
         <div className="backdrop" onClick={e => e.target === e.currentTarget && setAddToListEntry(null)}>
           <div className="modal">
             <div className="modal-head">
-              <div style={{ flex:1 }}>
+              <div style={{ flex: 1 }}>
                 <div className="modal-ti">Add to Custom List</div>
                 <div className="modal-sub">{addToListEntry.title}</div>
               </div>
@@ -4236,7 +4289,7 @@ export default function App() {
             </div>
             <div className="modal-body">
               {customLists.length === 0 ? (
-                <div className="library-empty" style={{ padding:30 }}>
+                <div className="library-empty" style={{ padding: 30 }}>
                   <div className="library-empty-title">No custom lists yet.</div>
                   <div className="library-empty-sub">Create a list first, then add this title.</div>
                   <button className="premium-btn" onClick={() => { setAddToListEntry(null); openCreateList(); }}>Create List</button>
@@ -4270,7 +4323,7 @@ export default function App() {
       {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ SETTINGS PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
       {showSettings && (
         <>
-          <div className="backdrop" style={{ zIndex:499 }} onClick={() => setShowSettings(false)} />
+          <div className="backdrop" style={{ zIndex: 499 }} onClick={() => setShowSettings(false)} />
           <SettingsPanel
             settings={settings}
             onChange={changeSetting}
@@ -4287,7 +4340,7 @@ export default function App() {
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
 
       {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ TOAST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
-      {toast && <div className="toast"><div className="toast-dot"/>{toast}</div>}
+      {toast && <div className="toast"><div className="toast-dot" />{toast}</div>}
     </div>
   );
 }

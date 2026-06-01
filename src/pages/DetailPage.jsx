@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaStar, FaPlus, FaCheck } from "react-icons/fa";
+import { FaArrowLeft, FaStar, FaPlus, FaCheck, FaChevronDown, FaPlay, FaList, FaPause, FaTimes } from "react-icons/fa";
 import { TMDB_BASE, TMDB_KEY } from "../lib/constants";
 
 const TMDB_IMG = "https://image.tmdb.org/t/p";
@@ -8,9 +8,35 @@ const TMDB_BACKDROP = `${TMDB_IMG}/w1280`;
 const TMDB_POSTER = `${TMDB_IMG}/w300`;
 const TMDB_PROFILE = `${TMDB_IMG}/w185`;
 
-export default function DetailPage({ onSelect, session, onRequireAuth }) {
+const getStatusIcon = (status) => {
+  switch (status) {
+    case "Watching": return <FaPlay size={12} />;
+    case "Want to Watch": return <FaList size={12} />;
+    case "Paused": return <FaPause size={12} />;
+    case "Dropped": return <FaTimes size={12} />;
+    default: return <FaPlus size={12} />;
+  }
+};
+
+export default function DetailPage({ onSelect, session, onRequireAuth, myEntries, onDirectSave }) {
   const { type, id } = useParams();
   const navigate = useNavigate();
+
+  const [showListMenu, setShowListMenu] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const [currentStatus, setCurrentStatus] = useState(null);
+  const [isWatched, setIsWatched] = useState(false);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowListMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const [data, setData] = useState(null);
   const [credits, setCredits] = useState(null);
@@ -216,8 +242,43 @@ export default function DetailPage({ onSelect, session, onRequireAuth }) {
     type === "movie"
       ? formattedRuntime || "N/A"
       : data?.number_of_episodes
-      ? `${data?.number_of_episodes}`
-      : "N/A";
+        ? `${data?.number_of_episodes}`
+        : "N/A";
+
+  const currentEntry = useMemo(() => {
+    if (!myEntries || !id) return null;
+    const expectedType = type === "tv" ? "TV" : "Movie";
+    return myEntries.find(e => String(e.tmdb_id) === String(id) && e.type === expectedType);
+  }, [myEntries, id, type]);
+
+  useEffect(() => {
+    if (currentEntry) {
+      setCurrentStatus(currentEntry.status);
+      setIsWatched(currentEntry.status === "Watched");
+    } else {
+      setCurrentStatus(null);
+      setIsWatched(false);
+    }
+  }, [currentEntry]);
+
+  async function handleStatusSave(status) {
+    if (!session) {
+      onRequireAuth && onRequireAuth();
+      return;
+    }
+
+    // Update local UI state immediately
+    setCurrentStatus(status);
+    setIsWatched(status === "Watched");
+
+    // Close dropdown
+    setShowListMenu(false);
+
+    // Actually save via App's handler to ensure My List updates instantly
+    if (onDirectSave) {
+      await onDirectSave(itemForCallback, status);
+    }
+  }
 
   return (
     <div className="detail-page-cinematic" style={{ paddingTop: "66px" }}>
@@ -422,6 +483,75 @@ export default function DetailPage({ onSelect, session, onRequireAuth }) {
           transform: translateY(-1px);
           background: rgba(255, 255, 255, 0.12);
           border-color: rgba(255, 255, 255, 0.28);
+        }
+        .detail-page-cinematic .dp-dropdown-container {
+          position: relative;
+        }
+        .detail-page-cinematic .dp-dropdown-menu {
+          position: absolute;
+          top: calc(100% + 8px);
+          left: 0;
+          width: 200px;
+          background: rgba(14, 24, 18, 0.85);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(178, 240, 197, 0.22);
+          border-radius: 12px;
+          padding: 8px;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          z-index: 50;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(178, 240, 197, 0.08);
+          animation: dropdownFade 0.2s ease forwards;
+        }
+        @keyframes dropdownFade {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .detail-page-cinematic .dp-dropdown-item {
+          background: transparent;
+          border: none;
+          color: var(--txm);
+          padding: 10px 16px;
+          border-radius: 8px;
+          text-align: left;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .detail-page-cinematic .dp-dropdown-item:hover,
+        .detail-page-cinematic .dp-dropdown-item.active {
+          background: rgba(178, 240, 197, 0.12);
+          color: var(--acc);
+        }
+        .detail-page-cinematic .dp-dropdown-divider {
+          height: 1px;
+          background: rgba(255, 255, 255, 0.1);
+          margin: 4px 0;
+        }
+        .detail-page-cinematic .dp-btn-ghost.watched-active {
+          background: rgba(178, 240, 197, 0.15);
+          border-color: var(--acc);
+          color: var(--acc);
+          box-shadow: 0 0 16px rgba(178, 240, 197, 0.2);
+          animation: popScale 0.3s ease;
+        }
+        @keyframes popScale {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.05); box-shadow: 0 0 24px rgba(178, 240, 197, 0.4); }
+          100% { transform: scale(1); }
+        }
+        .detail-page-cinematic .dp-btn-ghost .check-icon {
+          display: none;
+        }
+        .detail-page-cinematic .dp-btn-ghost.watched-active .check-icon {
+          display: block;
+          animation: checkPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes checkPop {
+          0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+          100% { transform: scale(1) rotate(0); opacity: 1; }
         }
         .detail-page-cinematic .dp-body {
           max-width: 1400px;
@@ -701,30 +831,51 @@ export default function DetailPage({ onSelect, session, onRequireAuth }) {
             </div>
 
             <div className="dp-actions">
+              <div className="dp-dropdown-container" ref={dropdownRef}>
+                <button
+                  className="dp-btn dp-btn-primary"
+                  onClick={() => {
+                    if (!session) {
+                      onRequireAuth && onRequireAuth();
+                      return;
+                    }
+                    setShowListMenu(!showListMenu);
+                  }}
+                  style={{ minWidth: "160px", justifyContent: "space-between" }}
+                >
+                  <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    {currentStatus && currentStatus !== "Watched" ? getStatusIcon(currentStatus) : <FaPlus />}
+                    {currentStatus && currentStatus !== "Watched" ? currentStatus : "Add to List"}
+                  </span>
+                  <FaChevronDown style={{ transform: showListMenu ? "rotate(180deg)" : "none", transition: "transform 0.2s ease" }} />
+                </button>
+
+                {showListMenu && (
+                  <div className="dp-dropdown-menu">
+                    {["Watching", "Want to Watch", "Paused", "Dropped"].map((statusOption) => (
+                      <button
+                        key={statusOption}
+                        className={`dp-dropdown-item ${currentStatus === statusOption ? 'active' : ''}`}
+                        onClick={() => handleStatusSave(statusOption)}
+                        style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                      >
+                        {getStatusIcon(statusOption)}
+                        {statusOption}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <button
-                className="dp-btn dp-btn-primary"
+                className={`dp-btn dp-btn-ghost ${isWatched ? 'watched-active' : ''}`}
                 onClick={() => {
-                  if (!session) {
-                    onRequireAuth && onRequireAuth();
-                    return;
+                  if (!isWatched) {
+                    handleStatusSave("Watched");
                   }
-                  onSelect && onSelect(itemForCallback);
                 }}
               >
-                <FaPlus />
-                Add to List
-              </button>
-              <button
-                className="dp-btn dp-btn-ghost"
-                onClick={() => {
-                  if (!session) {
-                    onRequireAuth && onRequireAuth();
-                    return;
-                  }
-                }}
-              >
-                <FaCheck />
-                Mark as Watched
+                <FaCheck className="check-icon" />
+                {isWatched ? "Watched" : "Mark as Watched"}
               </button>
             </div>
           </div>
