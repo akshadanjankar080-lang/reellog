@@ -979,6 +979,88 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .empty-title{font-size:16px;color:var(--txm);font-weight:500;}
 .empty-sub{font-size:13px;color:var(--txd);}
 
+.library-shell{padding-top:78px;}
+.library-hero{
+  margin:0 52px 22px;padding:32px;border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.025)),var(--c1);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 24px 70px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.05);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+}
+.library-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--txd);margin-bottom:10px;}
+.library-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(46px,6vw,78px);line-height:.9;letter-spacing:2px;text-shadow:0 2px 36px rgba(0,0,0,.45);}
+.library-subtitle{font-size:15px;color:var(--txm);line-height:1.7;margin-top:12px;max-width:520px;}
+.library-total-pill{
+  border-radius:999px;padding:10px 16px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);color:var(--txm);font-size:12px;white-space:nowrap;
+  backdrop-filter:blur(10px);
+}
+.library-dashboard{padding:0 52px 80px;}
+.dash-stats{
+  display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-bottom:28px;
+}
+.dash-stat{
+  text-align:left;border-radius:18px;padding:18px;cursor:pointer;
+  background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.025)),var(--c1);
+  border:1px solid rgba(255,255,255,.09);color:var(--tx);
+  transition:all .2s ease;position:relative;overflow:hidden;
+}
+.dash-stat::after{content:'';position:absolute;inset:auto 16px 0;height:2px;background:var(--acc);opacity:0;transition:opacity .2s;}
+.dash-stat:hover,.dash-stat.on{transform:translateY(-4px);border-color:var(--acc-border);box-shadow:0 16px 42px rgba(0,0,0,.35),0 0 22px var(--acc-glow);}
+.dash-stat.on::after{opacity:1;}
+.dash-stat-icon{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:var(--acc-dim);color:var(--acc);margin-bottom:18px;}
+.dash-stat-num{font-family:'DM Serif Display',serif;font-size:34px;line-height:1;color:var(--tx);}
+.dash-stat-label{font-size:10px;color:var(--txd);letter-spacing:2px;text-transform:uppercase;margin-top:6px;}
+.library-section{margin-top:30px;}
+.library-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:14px;}
+.library-section-title{font-family:'DM Serif Display',serif;font-size:24px;color:var(--tx);}
+.library-section-count{font-size:11px;color:var(--txd);letter-spacing:2px;text-transform:uppercase;}
+.library-rail{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 12px;scroll-behavior:smooth;}
+.library-rail-card{
+  width:170px;flex:0 0 170px;border-radius:18px;overflow:hidden;cursor:pointer;
+  background:var(--c1);border:1px solid rgba(255,255,255,.08);transition:all .2s ease;
+}
+.library-rail-card:hover{transform:translateY(-5px);border-color:var(--acc-border);box-shadow:0 16px 36px rgba(0,0,0,.38);}
+.library-rail-poster{position:relative;aspect-ratio:2/3;background:var(--c2);overflow:hidden;}
+.library-rail-poster img{width:100%;height:100%;object-fit:cover;display:block;}
+.library-rail-body{padding:12px;}
+.library-rail-title{font-size:13px;font-weight:700;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.library-rail-meta{font-size:11px;color:var(--txd);margin-top:5px;display:flex;justify-content:space-between;gap:8px;}
+.library-toolbar{
+  position:sticky;top:66px;z-index:20;margin:26px 0 6px;padding:14px;
+  border-radius:18px;background:rgba(10,17,13,.8);border:1px solid rgba(255,255,255,.09);
+  backdrop-filter:blur(16px);box-shadow:0 18px 44px rgba(0,0,0,.25);
+}
+.library-grid-wrap{padding:18px 0 40px;}
+.library-grid-title{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:14px;color:var(--tx);}
+.card-overlay{
+  position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(to top,rgba(7,16,10,.94),rgba(7,16,10,.35));
+  opacity:0;transition:opacity .2s ease;padding:14px;
+}
+.card:hover .card-overlay{opacity:1;}
+.card-action{
+  width:100%;border:none;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:800;
+  color:var(--bk);background:var(--acc);cursor:pointer;transition:all .15s;
+}
+.card-action.secondary{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:var(--tx);}
+.card-action.danger{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--txm);}
+.card-action:hover{transform:translateY(-1px);}
+.library-empty{
+  grid-column:1/-1;display:flex;flex-direction:column;align-items:center;text-align:center;
+  padding:84px 24px;border-radius:24px;border:1px solid rgba(255,255,255,.09);
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02)),var(--c1);
+}
+.library-empty-icon{width:76px;height:76px;border-radius:24px;display:grid;place-items:center;background:var(--acc-dim);color:var(--acc);font-size:30px;margin-bottom:20px;}
+.library-empty-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--tx);margin-bottom:8px;}
+.library-empty-sub{font-size:14px;color:var(--txm);line-height:1.7;max-width:440px;margin-bottom:22px;}
+.insights-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+.insight-card{
+  border-radius:18px;padding:18px;background:var(--c1);border:1px solid rgba(255,255,255,.08);
+}
+.insight-value{font-family:'DM Serif Display',serif;font-size:28px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.insight-label{font-size:10px;color:var(--txd);letter-spacing:2px;text-transform:uppercase;margin-top:8px;}
+
 /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ LOADER ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
 .loader{display:flex;align-items:center;justify-content:center;padding:80px;gap:10px;}
 .ldot{width:9px;height:9px;border-radius:50%;background:var(--acc);animation:ld 1.3s ease infinite;box-shadow:0 0 12px var(--acc-glow);}
@@ -1058,67 +1140,86 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 
 /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ SETTINGS PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
 .settings-panel{
-  position:fixed;top:0;right:0;bottom:0;width:360px;z-index:500;
-  background:var(--c1);border-left:1px solid var(--grey3);
-  box-shadow:-28px 0 64px rgba(0,0,0,.55);
+  position:fixed;top:0;right:0;bottom:0;width:min(440px,100vw);z-index:500;
+  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025)),rgba(7,16,10,.88);
+  border-left:1px solid rgba(255,255,255,.14);
+  box-shadow:-34px 0 90px rgba(0,0,0,.7);
+  backdrop-filter:blur(22px) saturate(135%);
   animation:slideIn .28s cubic-bezier(.34,1.56,.64,1);
   overflow-y:auto;
+  color:var(--tx);
 }
 @keyframes slideIn{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:none}}
 .settings-head{
-  padding:28px 28px 20px;display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--grey3);position:sticky;top:0;background:var(--c1);z-index:1;
+  padding:26px 28px 22px;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;
+  border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;
+  background:linear-gradient(180deg,rgba(10,17,13,.96),rgba(10,17,13,.78));
+  backdrop-filter:blur(18px);z-index:1;
 }
-.settings-title{font-family:'DM Serif Display',serif;font-size:22px;display:flex;align-items:center;gap:10px;}
-.settings-title-icon{font-size:18px;}
-.settings-close{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--c2);border:1px solid var(--grey3);border-radius:8px;color:var(--txm);font-size:16px;transition:all .15s;}
-.settings-close:hover{border-color:var(--red);color:var(--red);background:var(--red-dim);}
-.settings-body{padding:24px 28px;}
-.sett-section{margin-bottom:32px;}
-.sett-section-title{font-size:10px;letter-spacing:3px;color:var(--txd);text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--grey3);}
-.sett-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+.settings-title{font-family:'DM Serif Display',serif;font-size:26px;line-height:1;display:flex;align-items:center;gap:11px;}
+.settings-title svg{color:var(--acc);}
+.settings-subtitle{font-size:12px;color:var(--txd);margin-top:8px;line-height:1.55;}
+.settings-close{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50%;color:var(--txm);font-size:15px;transition:all .18s;flex-shrink:0;backdrop-filter:blur(10px);}
+.settings-close:hover{border-color:rgba(244,112,112,.45);color:var(--red);background:rgba(244,112,112,.12);transform:translateY(-1px);}
+.settings-body{padding:22px 22px 28px;}
+.sett-section{
+  margin-bottom:16px;padding:18px;border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.025));
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 18px 48px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.sett-section-title{font-size:10px;letter-spacing:3px;color:var(--txd);text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.07);}
+.sett-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.045);}
 .sett-row:last-child{border-bottom:none;}
-.sett-label{font-size:13px;color:var(--tx);font-weight:500;}
-.sett-desc{font-size:11px;color:var(--txd);margin-top:2px;}
+.sett-label{font-size:13px;color:var(--tx);font-weight:700;letter-spacing:.2px;}
+.sett-desc{font-size:11px;color:var(--txd);margin-top:4px;line-height:1.45;max-width:220px;}
+.sett-control{margin-top:14px;}
+.sett-control-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:10px;}
+.sett-control-title{font-size:12px;color:var(--tx);font-weight:700;}
+.sett-control-hint{font-size:10px;color:var(--txd);letter-spacing:1px;text-transform:uppercase;}
 .toggle{
-  width:44px;height:25px;border-radius:13px;border:none;position:relative;cursor:pointer;
-  background:var(--grey3);transition:background .2s;flex-shrink:0;
+  width:48px;height:27px;border-radius:999px;border:1px solid rgba(255,255,255,.12);position:relative;cursor:pointer;
+  background:rgba(255,255,255,.1);transition:all .2s;flex-shrink:0;
 }
-.toggle.on{background:var(--acc);}
+.toggle.on{background:var(--acc);border-color:transparent;box-shadow:0 0 20px var(--acc-glow);}
 .toggle::after{
   content:'';position:absolute;top:3px;left:3px;
   width:19px;height:19px;border-radius:50%;background:#fff;
   transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.3);
 }
-.toggle.on::after{transform:translateX(19px);}
-.color-swatches{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.toggle.on::after{transform:translateX(21px);background:#07100a;}
+.color-swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px;}
 .swatch{
-  width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid transparent;
-  transition:all .2s;flex-shrink:0;
+  width:100%;height:38px;border-radius:12px;cursor:pointer;border:1px solid rgba(255,255,255,.16);
+  transition:all .18s;flex-shrink:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.28);
 }
-.swatch:hover{transform:scale(1.12);}
-.swatch.on{border-color:var(--tx);transform:scale(1.12);box-shadow:0 0 12px rgba(255,255,255,.2);}
-.card-size-btns{display:flex;gap:6px;margin-top:8px;}
-.size-btn{flex:1;padding:8px;font-size:11px;font-weight:600;background:var(--c2);border:1px solid var(--grey3);color:var(--txm);border-radius:7px;letter-spacing:.5px;transition:all .15s;}
-.size-btn.on{background:var(--acc-dim);border-color:var(--acc-border);color:var(--acc);}
-.theme-pills{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-items:center;}
-.theme-pill{padding:8px 10px;font-size:11px;font-weight:700;border-radius:7px;border:1px solid var(--grey3);background:var(--c2);color:var(--txm);cursor:pointer;transition:all .15s;letter-spacing:.4px;}
-.theme-pill.on{background:var(--acc-dim);border-color:var(--acc-border);color:var(--acc);}
-.theme-pill:hover{border-color:var(--acc-border);color:var(--acc);}
+.swatch:hover{transform:translateY(-2px);}
+.swatch.on{border-color:var(--tx);transform:translateY(-2px);box-shadow:0 0 0 3px rgba(255,255,255,.1),0 12px 22px rgba(0,0,0,.32);}
+.card-size-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px;}
+.size-btn{padding:10px 8px;font-size:11px;font-weight:800;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--txm);border-radius:999px;letter-spacing:.5px;transition:all .15s;}
+.size-btn.on{background:var(--acc);border-color:var(--acc);color:#07100a;box-shadow:0 10px 22px var(--acc-glow);}
+.theme-pills{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;align-items:center;}
+.theme-pill{padding:10px 12px;font-size:11px;font-weight:800;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:var(--txm);cursor:pointer;transition:all .15s;letter-spacing:.4px;}
+.theme-pill.on{background:var(--acc);border-color:var(--acc);color:#07100a;box-shadow:0 10px 22px var(--acc-glow);}
+.theme-pill:hover,.size-btn:hover{border-color:var(--acc-border);color:var(--acc);}
+.theme-pill.on:hover,.size-btn.on:hover{color:#07100a;}
 .sett-export-btn{
-  width:100%;padding:11px;font-size:12px;font-weight:600;
-  background:var(--c2);border:1px solid var(--grey3);
-  color:var(--txm);border-radius:8px;cursor:pointer;
+  width:100%;padding:12px 14px;font-size:12px;font-weight:800;
+  background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.12);
+  color:var(--tx);border-radius:999px;cursor:pointer;
   transition:all .15s;letter-spacing:.3px;margin-top:8px;
 }
-.sett-export-btn:hover{border-color:var(--acc-border);color:var(--acc);background:var(--acc-dim);}
+.sett-export-btn:hover{border-color:var(--acc-border);color:#07100a;background:var(--acc);transform:translateY(-1px);box-shadow:0 10px 24px var(--acc-glow);}
 .sett-danger-btn{
-  width:100%;padding:11px;font-size:12px;font-weight:600;
-  background:var(--c2);border:1px solid rgba(244,112,112,.2);
-  color:var(--red);border-radius:8px;cursor:pointer;
+  width:100%;padding:12px 14px;font-size:12px;font-weight:800;
+  background:rgba(244,112,112,.1);border:1px solid rgba(244,112,112,.24);
+  color:var(--red);border-radius:999px;cursor:pointer;
   transition:all .15s;letter-spacing:.3px;margin-top:6px;
 }
-.sett-danger-btn:hover{background:var(--red-dim);}
+.sett-danger-btn:hover{background:var(--red-dim);transform:translateY(-1px);}
+.sett-note{font-size:11px;color:var(--txd);margin-top:14px;line-height:1.65;}
+.sett-about-brand{font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:24px;line-height:1;color:var(--tx);}
+.sett-about-brand span{color:var(--acc);}
 
 /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ TOAST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
 .toast{
@@ -1231,6 +1332,23 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
   .divider{margin:4px 18px;}
   .settings-panel{width:100%;}
   .see-all-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));padding:16px 20px 24px;}
+  .library-shell{padding-top:72px;}
+  .library-hero{margin:0 18px 18px;padding:22px;flex-direction:column;align-items:flex-start;border-radius:20px;}
+  .library-title{font-size:52px;}
+  .library-dashboard{padding:0 18px 64px;}
+  .dash-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .dash-stat{padding:15px;}
+  .library-toolbar{top:58px;margin-top:18px;padding:12px;}
+  .library-toolbar .toolbar{padding:0;}
+  .library-toolbar .search-wrap{max-width:none;flex-basis:100%;}
+  .sort-sel{margin-left:0;width:100%;}
+  .library-rail-card{width:138px;flex-basis:138px;}
+  .insights-grid{grid-template-columns:1fr;}
+}
+
+@media(min-width:769px) and (max-width:1180px){
+  .dash-stats{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .insights-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 `;
 
@@ -1735,20 +1853,28 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
   return (
     <div className="settings-panel">
       <div className="settings-head">
-        <div className="settings-title">
-          <Icon name="settings" size={20} />
-          Settings
+        <div>
+          <div className="settings-title">
+            <Icon name="settings" size={20} />
+            Settings
+          </div>
+          <div className="settings-subtitle">
+            Tune the way ReelLog looks, moves, and surfaces your library.
+          </div>
         </div>
-        <button className="settings-close" onClick={onClose}><FaTimes /></button>
+        <button className="settings-close" onClick={onClose} aria-label="Close settings"><FaTimes /></button>
       </div>
       <div className="settings-body">
 
         <div className="sett-section">
           <div className="sett-section-title">Appearance</div>
-          <div className="sett-row" style={{ paddingTop:0, marginTop:-4 }}>
-            <div>
-              <div className="sett-label">Theme</div>
-              <div className="sett-desc">Black, Light, or Neo (original)</div>
+          <div className="sett-control" style={{ marginTop:0 }}>
+            <div className="sett-control-head">
+              <div>
+                <div className="sett-control-title">Theme</div>
+                <div className="sett-desc">Choose the base atmosphere.</div>
+              </div>
+              <div className="sett-control-hint">{settings.theme || "black"}</div>
             </div>
             <div className="theme-pills">
               {[
@@ -1764,8 +1890,15 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
               ))}
             </div>
           </div>
-          <div style={{ marginTop:10 }}>
-            <div className="flbl" style={{ marginBottom:4 }}>Accent Color</div>
+
+          <div className="sett-control">
+            <div className="sett-control-head">
+              <div>
+                <div className="sett-control-title">Accent Color</div>
+                <div className="sett-desc">Sets buttons, highlights, and focus glow.</div>
+              </div>
+              <div className="sett-control-hint">{settings.accentColor || "green"}</div>
+            </div>
             <div className="color-swatches">
               {SWATCHES.map(s => (
                 <div key={s.key} title={s.label}
@@ -1776,8 +1909,15 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
               ))}
             </div>
           </div>
-          <div style={{ marginTop:16 }}>
-            <div className="flbl" style={{ marginBottom:4 }}>Card Size</div>
+
+          <div className="sett-control">
+            <div className="sett-control-head">
+              <div>
+                <div className="sett-control-title">Card Size</div>
+                <div className="sett-desc">Adjust browsing density.</div>
+              </div>
+              <div className="sett-control-hint">{settings.cardSize || "medium"}</div>
+            </div>
             <div className="card-size-btns">
               {["small","medium","large"].map(s => (
                 <button key={s} className={`size-btn${settings.cardSize === s ? " on" : ""}`}
@@ -1787,7 +1927,8 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
               ))}
             </div>
           </div>
-          <div className="sett-row" style={{ marginTop:14 }}>
+
+          <div className="sett-row" style={{ marginTop:14, paddingBottom:0 }}>
             <div>
               <div className="sett-label">Cinematic Background</div>
               <div className="sett-desc">Film grain & gradient overlay</div>
@@ -1834,7 +1975,7 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
         </div>
 
         <div className="sett-section">
-          <div className="sett-section-title">Language</div>
+          <div className="sett-section-title">Region</div>
           <div className="sett-row">
             <div>
               <div className="sett-label">UI Language</div>
@@ -1854,9 +1995,9 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
 
         <div className="sett-section">
           <div className="sett-section-title">Data</div>
-          <button className="sett-export-btn" onClick={onExport}>Export My Catalog (JSON)</button>
-          <button className="sett-export-btn" onClick={onClearCache} style={{ marginTop:6 }}>Clear Image Cache</button>
-          <div style={{ fontSize:11, color:"var(--txd)", marginTop:14, lineHeight:1.7 }}>
+          <button className="sett-export-btn" onClick={onExport}>Export Catalog JSON</button>
+          <button className="sett-export-btn" onClick={onClearCache}>Clear Image Cache</button>
+          <div className="sett-note">
             Your data is stored in Supabase and is private to your account. Export creates a JSON backup.
           </div>
         </div>
@@ -1864,16 +2005,21 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
         {session && (
           <div className="sett-section">
             <div className="sett-section-title">Account</div>
-            <button className="sett-export-btn" onClick={onSignOut}>Sign out</button>
+            <div className="sett-row" style={{ paddingTop:0 }}>
+              <div>
+                <div className="sett-label">Signed in</div>
+                <div className="sett-desc">{session?.user?.email || "Your ReelLog account"}</div>
+              </div>
+            </div>
+            <button className="sett-danger-btn" onClick={onSignOut}>Sign Out</button>
           </div>
         )}
 
         <div className="sett-section">
           <div className="sett-section-title">About</div>
           <div style={{ fontSize:12, color:"var(--txd)", lineHeight:1.8 }}>
-            <div style={{ marginBottom:6 }}>
-              <span style={{ color:"var(--acc)", fontFamily:"'Bebas Neue',sans-serif", letterSpacing:2, fontSize:17 }}>Reel</span>
-              <span style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:2, fontSize:17 }}>log</span>
+            <div className="sett-about-brand" style={{ marginBottom:8 }}>
+              <span>Reel</span>log
             </div>
             Powered by TMDB | Built with Supabase<br />
             Streaming data for informational use only.<br />
@@ -3038,13 +3184,17 @@ export default function App() {
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ filters ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
   const source = page === "mylist" ? myEntries : allEntries;
+  const libraryQuery = search.trim().toLowerCase();
   const filtered = source
+    .filter(e => !libraryQuery || [e.title, e.type, e.year, e.status].some(v => String(v || "").toLowerCase().includes(libraryQuery)))
     .filter(e => filterType   === "All" || e.type   === filterType)
     .filter(e => filterStatus === "All" || e.status === filterStatus)
     .sort((a, b) => {
-      if (sortBy === "title")  return a.title.localeCompare(b.title);
+      if (sortBy === "title")  return (a.title || "").localeCompare(b.title || "");
+      if (sortBy === "titleDesc") return (b.title || "").localeCompare(a.title || "");
       if (sortBy === "rating") return (b.rating||0) - (a.rating||0);
       if (sortBy === "year")   return (b.year||"0").localeCompare(a.year||"0");
+      if (sortBy === "yearAsc") return (a.year||"0").localeCompare(b.year||"0");
       return 0;
     });
 
@@ -3053,6 +3203,27 @@ export default function App() {
     Watching:        source.filter(e => e.status === "Watching").length,
     "Want to Watch": source.filter(e => e.status === "Want to Watch").length,
   };
+
+  const typeCounts = {
+    Movie: source.filter(e => e.type === "Movie").length,
+    "TV Show": source.filter(e => e.type === "TV Show").length,
+    Anime: source.filter(e => e.type === "Anime").length,
+  };
+  const continueWatching = source.filter(e => e.status === "Watching");
+  const recentlyAdded = source.slice(0, 10);
+  const ratedEntries = source.filter(e => Number(e.rating) > 0);
+  const averageUserRating = ratedEntries.length
+    ? (ratedEntries.reduce((sum, e) => sum + Number(e.rating || 0), 0) / ratedEntries.length).toFixed(1)
+    : "N/A";
+  const genreCounts = source.reduce((acc, e) => {
+    const genres = Array.isArray(e.genres) ? e.genres : Array.isArray(e.categories) ? e.categories : [];
+    genres.forEach(g => {
+      if (g) acc[g] = (acc[g] || 0) + 1;
+    });
+    return acc;
+  }, {});
+  const mostCommonGenre = Object.entries(genreCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "Not tracked";
+  const mostRecentEntry = source[0]?.title || "None yet";
 
   const renderLibrary = (mode) => {
     const isExploreMode = mode === "explore";
@@ -3097,124 +3268,237 @@ export default function App() {
           </div>
         )}
 
-        {session && <>
-          <div className="page-header">
-            <div className="page-eyebrow">{mode === "mylist" ? "Your collection" : "Your catalog"}</div>
-            <div className="page-h1">
-              {mode === "mylist" ? <>My <em>List</em></> : <>My <em>Catalog</em></>}
+        {session && (
+          <div className="library-shell">
+            <div className="library-hero">
+              <div>
+                <div className="library-eyebrow">Personal dashboard</div>
+                <div className="library-title">My Library</div>
+                <div className="library-subtitle">Track every movie, show and anime in one place.</div>
+              </div>
+              <div className="library-total-pill">{source.length} titles saved</div>
             </div>
-            <div className="page-count">{source.length} titles</div>
-          </div>
 
-          <div className="stats-strip">
-            {Object.entries(counts).map(([s, c]) => (
-              <div key={s} className={`stat-chip${filterStatus === s ? " on" : ""}`}
-                onClick={() => setFilterStatus(filterStatus === s ? "All" : s)}>
-                <div className="stat-n" style={{ color:SCOLOR[s] }}>{c}</div>
-                <div className="stat-l">{s}</div>
-              {searching && <span className="spin-ico">?</span>}
-              {showDrop && (
-                <div className="drop">
-                  {results.map(r => (
-                    <div key={r.id} className="drop-row" onClick={() => selectResult(r)}>
-                      {r.poster_path
-                        ? <img className="drop-img" src={`${TMDB_IMG}${r.poster_path}`} alt="" />
-                        : <div className="drop-img" style={{ display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>?</div>}
-                      <div style={{ flex:1, minWidth:0 }}>
-                        <div className="drop-ti">{r.title || r.name}</div>
-                        <div className="drop-me">{(r.release_date||r.first_air_date||"").split("-")[0]}</div>
-                      </div>
-                      <div className="drop-tag">{getType(r)}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            ))}
-            <div className="fil-row">
-              {["All","Movie","TV Show","Anime"].map(f => (
-                <button key={f} className={`fil-btn${filterType === f ? " on" : ""}`} onClick={() => setFilterType(f)}>{f}</button>
-              ))}
-            </div>
-            <select className="sort-sel" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-              <option value="added">Recently Added</option>
-              <option value="title">Title A-Z</option>
-              <option value="rating">Top Rated</option>
-              <option value="year">Newest</option>
-            </select>
-          </div>
-
-          <div className="grid-wrap">
-            {loading ? (
-              <div className="loader"><div className="ldot"/><div className="ldot"/><div className="ldot"/></div>
-            ) : (
-              <div className={`grid${settings.cardSize === "small" ? " small" : settings.cardSize === "large" ? " large" : ""}`}>
-                {filtered.length === 0 && (
-                  <div className="empty-state">
-                    <div className="empty-icon">?</div>
-                    <div className="empty-title">{mode === "mylist" ? "Your list is empty" : "Nothing here yet"}</div>
-                    <div className="empty-sub">{mode === "mylist" ? "Search for a title and add it!" : "Be the first to add something"}</div>
-                    {mode === "mylist" && <button className="btn-sm btn-acc" style={{ marginTop:8 }} onClick={openManual}>+ Add title</button>}
-                  </div>
-                )}
-                {filtered.map((entry, i) => (
-                  <div key={entry.id} className="card" style={{ animationDelay:`${Math.min(i*.04,.4)}s` }}>
-                    <div className="card-img-box">
-                      {entry.poster
-                        ? <img className="card-img" src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy"
-                            onError={e => { e.currentTarget.style.display="none"; }} />
-                        : <div className="no-img-box">
-                            <div className="no-img-icon">{entry.type==="Anime"?"?":entry.type==="Movie"?"?":"?"}</div>
-                            <span>{entry.type}</span>
-                          </div>}
-                      <div
-                        className="type-badge"
-                        onClick={e => { e.stopPropagation(); handleTypeNav(entry.type); }}
-                      >
-                        {entry.type}
-                      </div>
-                      <div className="card-grad" />
-                      <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>
-                        {getStatusIcon(entry.status)} {entry.status}
-                      </div>
-                      {session && entry.user_id === session.user.id && (
-                        <div className="card-btns">
-                          <button className="card-btn" onClick={e => { e.stopPropagation(); openEdit(entry); }}>?</button>
-                          <button className="card-btn" onClick={e => { e.stopPropagation(); handleDelete(entry.id); }}>?</button>
-                        </div>
-                      )}
-                    </div>
-                    <div className="card-body">
-                      <div className="card-title">{entry.title}</div>
-                      <div className="card-meta-row">
-                        <span className="card-type">{entry.type}</span>
-                        <span className="card-year">{entry.year}</span>
-                      </div>
-                      {settings.showRatings && entry.rating > 0 && (
-                        <div className="card-stars">
-                          {[1,2,3,4,5].map(s => <FaStar key={s} className={`s${entry.rating>=s?" on":""}`} aria-hidden="true" />)}
-                        </div>
-                      )}
-                      {settings.showStreaming && entry.streaming?.length > 0 && (
-                        <div className="card-ott-strip">
-                          {entry.streaming.slice(0,3).map(k => OTT[k] && (
-                            <span key={k} className="card-ott-label"
-                              style={{ background: OTT[k].color }}>
-                              {OTT[k].short}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      {settings.showOverviews && entry.notes && (
-                        <div className="card-overview">{entry.notes}</div>
-                      )}
-                    </div>
-                  </div>
+            <div className="library-dashboard">
+              <div className="dash-stats">
+                {[
+                  { key:"Movie", label:"Movies", value:typeCounts.Movie, icon:<FaFilm />, active:filterType === "Movie", onClick:() => { setFilterType(filterType === "Movie" ? "All" : "Movie"); setFilterStatus("All"); } },
+                  { key:"TV Show", label:"TV Shows", value:typeCounts["TV Show"], icon:<FaTv />, active:filterType === "TV Show", onClick:() => { setFilterType(filterType === "TV Show" ? "All" : "TV Show"); setFilterStatus("All"); } },
+                  { key:"Anime", label:"Anime", value:typeCounts.Anime, icon:<FaDragon />, active:filterType === "Anime", onClick:() => { setFilterType(filterType === "Anime" ? "All" : "Anime"); setFilterStatus("All"); } },
+                  { key:"Watched", label:"Watched", value:counts.Watched, icon:<FaCheck />, active:filterStatus === "Watched", onClick:() => { setFilterStatus(filterStatus === "Watched" ? "All" : "Watched"); setFilterType("All"); } },
+                  { key:"Watching", label:"Watching", value:counts.Watching, icon:<FaPlay />, active:filterStatus === "Watching", onClick:() => { setFilterStatus(filterStatus === "Watching" ? "All" : "Watching"); setFilterType("All"); } },
+                  { key:"Want to Watch", label:"Want to Watch", value:counts["Want to Watch"], icon:<FaList />, active:filterStatus === "Want to Watch", onClick:() => { setFilterStatus(filterStatus === "Want to Watch" ? "All" : "Want to Watch"); setFilterType("All"); } },
+                ].map(stat => (
+                  <button key={stat.key} className={`dash-stat${stat.active ? " on" : ""}`} onClick={stat.onClick}>
+                    <div className="dash-stat-icon">{stat.icon}</div>
+                    <div className="dash-stat-num">{stat.value}</div>
+                    <div className="dash-stat-label">{stat.label}</div>
+                  </button>
                 ))}
               </div>
-            )}
+
+              {continueWatching.length > 0 && (
+                <section className="library-section">
+                  <div className="library-section-head">
+                    <div className="library-section-title">Continue Watching</div>
+                    <div className="library-section-count">{continueWatching.length} active</div>
+                  </div>
+                  <div className="library-rail">
+                    {continueWatching.map(entry => (
+                      <div key={entry.id} className="library-rail-card" onClick={() => openFromCard(entry)}>
+                        <div className="library-rail-poster">
+                          {entry.poster
+                            ? <img src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display="none"; }} />
+                            : <div className="no-img-box"><div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div><span>{entry.type}</span></div>}
+                          <div className="card-grad" />
+                          <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>
+                            {getStatusIcon(entry.status)} {entry.status}
+                          </div>
+                        </div>
+                        <div className="library-rail-body">
+                          <div className="library-rail-title">{entry.title}</div>
+                          <div className="library-rail-meta"><span>{entry.year || "N/A"}</span><span>{entry.type}</span></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {recentlyAdded.length > 0 && (
+                <section className="library-section">
+                  <div className="library-section-head">
+                    <div className="library-section-title">Recently Added</div>
+                    <div className="library-section-count">Latest 10</div>
+                  </div>
+                  <div className="library-rail">
+                    {recentlyAdded.map(entry => (
+                      <div key={entry.id} className="library-rail-card" onClick={() => openFromCard(entry)}>
+                        <div className="library-rail-poster">
+                          {entry.poster
+                            ? <img src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display="none"; }} />
+                            : <div className="no-img-box"><div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div><span>{entry.type}</span></div>}
+                          <div className="card-grad" />
+                        </div>
+                        <div className="library-rail-body">
+                          <div className="library-rail-title">{entry.title}</div>
+                          <div className="library-rail-meta"><span>{entry.year || "N/A"}</span><span>{entry.status}</span></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              <div className="library-toolbar">
+                <div className="toolbar">
+                  <div className="search-wrap" ref={searchRef}>
+                    <FaSearch className="search-ico" />
+                    <input
+                      className="search-inp"
+                      value={search}
+                      onChange={e => setSearch(e.target.value)}
+                      onFocus={() => results.length > 0 && setShowDrop(true)}
+                      placeholder="Search your library..."
+                    />
+                    {searching && <span className="spin-ico">?</span>}
+                    {showDrop && (
+                      <div className="drop">
+                        {results.map(r => (
+                          <div key={r.id} className="drop-row" onClick={() => selectResult(r)}>
+                            {r.poster_path
+                              ? <img className="drop-img" src={`${TMDB_IMG}${r.poster_path}`} alt="" />
+                              : <div className="drop-img" style={{ display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>?</div>}
+                            <div style={{ flex:1, minWidth:0 }}>
+                              <div className="drop-ti">{r.title || r.name}</div>
+                              <div className="drop-me">{(r.release_date||r.first_air_date||"").split("-")[0]}</div>
+                            </div>
+                            <div className="drop-tag">{getType(r)}</div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="fil-row">
+                    {[
+                      { key:"All", label:"All" },
+                      { key:"Movie", label:"Movies" },
+                      { key:"TV Show", label:"TV Shows" },
+                      { key:"Anime", label:"Anime" },
+                    ].map(f => (
+                      <button key={f.key} className={`fil-btn${filterType === f.key ? " on" : ""}`} onClick={() => setFilterType(f.key)}>{f.label}</button>
+                    ))}
+                  </div>
+                  <select className="sort-sel" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+                    <option value="added">Recently Added</option>
+                    <option value="title">Title A-Z</option>
+                    <option value="titleDesc">Title Z-A</option>
+                    <option value="rating">Highest Rated</option>
+                    <option value="year">Newest Release</option>
+                    <option value="yearAsc">Oldest Release</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="library-grid-wrap">
+                <div className="library-grid-title">Collection</div>
+                {loading ? (
+                  <div className="loader"><div className="ldot"/><div className="ldot"/><div className="ldot"/></div>
+                ) : (
+                  <div className={`grid${settings.cardSize === "small" ? " small" : settings.cardSize === "large" ? " large" : ""}`}>
+                    {filtered.length === 0 && (
+                      <div className="library-empty">
+                        <div className="library-empty-icon"><FaFilm /></div>
+                        <div className="library-empty-title">Your library is waiting.</div>
+                        <div className="library-empty-sub">Start building your personal collection of movies, shows and anime.</div>
+                        <button className="btn-acc btn-sm" onClick={() => { setPage("explore"); navigate("/explore"); }}>Explore Titles</button>
+                      </div>
+                    )}
+                    {filtered.map((entry, i) => (
+                      <div key={entry.id} className="card" style={{ animationDelay:`${Math.min(i*.04,.4)}s` }} onClick={() => openFromCard(entry)}>
+                        <div className="card-img-box">
+                          {entry.poster
+                            ? <img className="card-img" src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy"
+                                onError={e => { e.currentTarget.style.display="none"; }} />
+                            : <div className="no-img-box">
+                                <div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div>
+                                <span>{entry.type}</span>
+                              </div>}
+                          <div
+                            className="type-badge"
+                            onClick={e => { e.stopPropagation(); handleTypeNav(entry.type); }}
+                          >
+                            {entry.type}
+                          </div>
+                          <div className="card-grad" />
+                          <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>
+                            {getStatusIcon(entry.status)} {entry.status}
+                          </div>
+                          <div className="card-overlay">
+                            <button className="card-action" onClick={e => { e.stopPropagation(); openFromCard(entry); }}>View Details</button>
+                            {session && entry.user_id === session.user.id && (
+                              <>
+                                <button className="card-action secondary" onClick={e => { e.stopPropagation(); openEdit(entry); }}>Edit Entry</button>
+                                <button className="card-action danger" onClick={e => { e.stopPropagation(); handleDelete(entry.id); }}>Remove Entry</button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                        <div className="card-body">
+                          <div className="card-title">{entry.title}</div>
+                          <div className="card-meta-row">
+                            <span className="card-type">{entry.type}</span>
+                            <span className="card-year">{entry.year}</span>
+                          </div>
+                          {settings.showRatings && entry.rating > 0 && (
+                            <div className="card-stars">
+                              {[1,2,3,4,5].map(s => <FaStar key={s} className={`s${entry.rating>=s?" on":""}`} aria-hidden="true" />)}
+                            </div>
+                          )}
+                          {settings.showStreaming && entry.streaming?.length > 0 && (
+                            <div className="card-ott-strip">
+                              {entry.streaming.slice(0,3).map(k => OTT[k] && (
+                                <span key={k} className="card-ott-label"
+                                  style={{ background: OTT[k].color }}>
+                                  {OTT[k].short}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          {settings.showOverviews && entry.notes && (
+                            <div className="card-overview">{entry.notes}</div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {source.length > 0 && (
+                <section className="library-section">
+                  <div className="library-section-head">
+                    <div className="library-section-title">Collection Insights</div>
+                    <div className="library-section-count">At a glance</div>
+                  </div>
+                  <div className="insights-grid">
+                    {[
+                      { label:"Total Library Size", value:source.length },
+                      { label:"Most Common Genre", value:mostCommonGenre },
+                      { label:"Average User Rating", value:averageUserRating },
+                      { label:"Most Recent Entry", value:mostRecentEntry },
+                    ].map(item => (
+                      <div key={item.label} className="insight-card">
+                        <div className="insight-value">{item.value}</div>
+                        <div className="insight-label">{item.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
           </div>
-        </>}
+        )}
       </>
     );
   };
@@ -3385,7 +3669,7 @@ export default function App() {
                 {modalData.manual
                   ? <input className="finp" placeholder="Enter title..." value={modalData.manualTitle||""} onChange={e=>setModalData(d=>({...d,manualTitle:e.target.value}))} style={{ marginBottom:6 }} />
                   : <div className="modal-ti">{modalData.title}</div>}
-                <div className="modal-sub">{modalData.typemodalData.year ? ` | ${modalData.year}` : ""}</div>
+                <div className="modal-sub">{modalData.type}{modalData.year ? ` | ${modalData.year}` : ""}</div>
                 {modalData.overview && <div className="modal-ov">"{modalData.overview.slice(0,110)}"</div>}
               </div>
             </div>
