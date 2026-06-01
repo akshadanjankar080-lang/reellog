@@ -43,6 +43,7 @@ import {
 import BrowseHub from "./components/BrowseHub";
 import BrowseSectionPage from "./pages/BrowseSectionPage";
 import BrowseItemPage from "./pages/BrowseItemPage";
+import DetailPage from "./pages/DetailPage";
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ SUPABASE ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const supabase = createClient(
@@ -1535,8 +1536,8 @@ function HeroCarousel({ items, onAdd, session, setShowAuth, autoplay = true }) {
           bottom: "10px",
           right: "20px",
           zIndex: 2,
-          width: "48px",
-          height: "48px",
+          width: "44px",
+          height: "44px",
           borderRadius: "50%",
           background: "rgba(0,0,0,0.5)",
           border: "1px solid rgba(255,255,255,0.2)",
@@ -2958,17 +2959,16 @@ export default function App() {
   }
 
   function openFromCard(item) {
-    setModalData({
-      title:item.title, type:item.type, year:item.year,
-      poster:item.poster,
-      tmdbId:item.tmdbId || item.tmdb_id,
-      tmdb_id:item.tmdbId || item.tmdb_id,
-      tmdbType:item.tmdbType,
-      overview:item.overview,
-      streaming: item.streaming || [],
-    });
+    const tmdbId = item.tmdbId || item.tmdb_id;
+    const tmdbType = item.tmdbType || (item.type === "Movie" ? "movie" : "tv");
+    if (tmdbId) {
+      navigate(`/detail/${tmdbType}/${tmdbId}`);
+      return;
+    }
+    setModalData({ title:item.title, type:item.type, year:item.year, poster:item.poster, tmdb_id:item.tmdb_id, tmdbId:item.tmdbId, tmdbType:item.tmdbType, overview:item.overview, streaming:item.streaming||[] });
     setForm({ status:"Want to Watch", rating:null, notes:"" });
-    setEditId(null); setShowModal(true);
+    setEditId(null);
+    setShowModal(true);
   }
 
   function openManual() {
@@ -3079,10 +3079,10 @@ export default function App() {
                 Reel<span style={{ color:"var(--tx)" }}>log</span>
               </div>
               <div style={{ fontFamily:"'DM Serif Display',serif", fontSize:28, marginBottom:12, lineHeight:1.2 }}>
-                Your list is <em style={{ color:"var(--acc)", fontStyle:"italic" }}>private</em>
+                Your list is  <em style={{ color:"var(--acc)", fontStyle:"italic" }}>private</em>
               </div>
               <p style={{ fontSize:14, color:"var(--txm)", lineHeight:1.85, marginBottom:30 }}>
-                Sign in to access your personal catalog. Your list is visible only to you - nobody else can see what you've added.
+                Sign in to build your personal catalog of movies, shows and anime. Rate them, track your status and never lose track of what to watch next.
               </p>
               <button className="btn-acc btn-sm"
                 style={{ padding:"14px 38px", fontSize:14, fontWeight:700, borderRadius:9 }}
@@ -3268,6 +3268,7 @@ export default function App() {
       </nav>
 
       <Routes>
+        <Route path="/detail/:type/:id" element={<DetailPage session={session} onRequireAuth={() => setShowAuth(true)} onSelect={openFromCard} />} />
         <Route path="/explore/:section/:item" element={<BrowseItemPage />} />
         <Route path="/explore/:section" element={<BrowseSectionPage />} />
         <Route path="/explore" element={renderLibrary("explore")} />

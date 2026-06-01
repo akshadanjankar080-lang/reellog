@@ -1,0 +1,981 @@
+import { useState, useEffect, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { FaArrowLeft, FaStar, FaPlus, FaCheck } from "react-icons/fa";
+import { TMDB_BASE, TMDB_KEY } from "../lib/constants";
+
+const TMDB_IMG = "https://image.tmdb.org/t/p";
+const TMDB_BACKDROP = `${TMDB_IMG}/w1280`;
+const TMDB_POSTER = `${TMDB_IMG}/w300`;
+const TMDB_PROFILE = `${TMDB_IMG}/w185`;
+
+export default function DetailPage({ onSelect, session, onRequireAuth }) {
+  const { type, id } = useParams();
+  const navigate = useNavigate();
+
+  const [data, setData] = useState(null);
+  const [credits, setCredits] = useState(null);
+  const [externalIds, setExternalIds] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [seasons, setSeasons] = useState([]);
+  const [seasonsLoading, setSeasonsLoading] = useState(false);
+  const [showEpisodeGrid, setShowEpisodeGrid] = useState(false);
+
+  // Fetch all data
+  useEffect(() => {
+    async function fetchDetail() {
+      setLoading(true);
+      setError(null);
+      try {
+        // Main details
+        const detailRes = await fetch(
+          `${TMDB_BASE}/${type}/${id}?api_key=${TMDB_KEY}`
+        );
+        if (!detailRes.ok) throw new Error("Failed to fetch details");
+        const detailData = await detailRes.json();
+        setData(detailData);
+
+        // Credits
+        const creditsRes = await fetch(
+          `${TMDB_BASE}/${type}/${id}/credits?api_key=${TMDB_KEY}`
+        );
+        if (creditsRes.ok) {
+          const creditsData = await creditsRes.json();
+          setCredits(creditsData);
+        }
+
+        // External IDs
+        const externalRes = await fetch(
+          `${TMDB_BASE}/${type}/${id}/external_ids?api_key=${TMDB_KEY}`
+        );
+        if (externalRes.ok) {
+          const externalData = await externalRes.json();
+          setExternalIds(externalData);
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (id && type) fetchDetail();
+  }, [id, type]);
+
+  // Fetch seasons for TV shows
+  useEffect(() => {
+    if (type !== "tv" || !data || !data?.number_of_seasons) return;
+
+    async function fetchSeasons() {
+      setSeasonsLoading(true);
+      try {
+        const seasonPromises = [];
+        for (let i = 1; i <= data?.number_of_seasons; i++) {
+          seasonPromises.push(
+            fetch(`${TMDB_BASE}/tv/${id}/season/${i}?api_key=${TMDB_KEY}`).then(
+              (res) => (res.ok ? res.json() : null)
+            )
+          );
+        }
+        const seasonResults = await Promise.all(seasonPromises);
+        setSeasons(seasonResults.filter((s) => s !== null));
+      } catch (err) {
+        console.error("Failed to fetch seasons:", err);
+      } finally {
+        setSeasonsLoading(false);
+      }
+    }
+
+    fetchSeasons();
+  }, [data, type, id]);
+
+  // Extract directors or creators
+  const director = useMemo(() => {
+    if (!credits) return null;
+    const crew = credits?.crew || [];
+    const directors = crew.filter(
+      (c) => c?.job === "Director" || (type === "tv" && c?.job === "Creator")
+    );
+    return directors.length > 0
+      ? directors.map((d) => d?.name).join(", ")
+      : "N/A";
+  }, [credits, type]);
+
+  // Top 10 cast
+  const topCast = useMemo(() => {
+    if (!credits || !credits?.cast) return [];
+    return credits?.cast?.slice(0, 10);
+  }, [credits]);
+
+  // Format runtime
+  const formattedRuntime = useMemo(() => {
+    if (!data) return "";
+    if (type === "movie" && data?.runtime) {
+      const hours = Math.floor(data?.runtime / 60);
+      const mins = data?.runtime % 60;
+      return `${hours}h ${mins}m`;
+    }
+    return "";
+  }, [data, type]);
+
+  // Get genres list
+  const genresList = useMemo(() => {
+    if (!data || !data?.genres) return [];
+    return data?.genres?.slice(0, 5);
+  }, [data]);
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: "80px",
+        }}
+      >
+        <div className="loader">
+          <div className="ldot"></div>
+          <div className="ldot"></div>
+          <div className="ldot"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: "80px",
+          gap: "24px",
+          color: "var(--tx)",
+        }}
+      >
+        <div style={{ fontSize: "18px", textAlign: "center" }}>
+          Unable to load details. {error}
+        </div>
+        <button
+          className="btn-acc"
+          onClick={() => navigate(-1)}
+          style={{ display: "flex", alignItems: "center", gap: "8px" }}
+        >
+          <FaArrowLeft /> Go Back
+        </button>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="loader">
+        <div className="ldot" />
+        <div className="ldot" />
+        <div className="ldot" />
+      </div>
+    );
+  }
+
+  // Construct item for onSelect callback
+  const itemForCallback = {
+    title: data?.title || data?.name,
+    type: type === "tv" ? "TV" : "Movie",
+    year: (data?.release_date || data?.first_air_date || "").split("-")[0],
+    poster: data?.poster_path,
+    tmdbId: id,
+    tmdbType: type,
+    overview: data?.overview,
+    rating: data?.vote_average,
+    genres: genresList?.map((g) => g?.name),
+  };
+
+  const backdropPath = data?.backdrop_path;
+  const posterPath = data?.poster_path;
+  const title = data?.title || data?.name;
+  const tagline = data?.tagline;
+  const releaseYear = (data?.release_date || data?.first_air_date || "").split(
+    "-"
+  )[0];
+  const rating = data?.vote_average ? data?.vote_average?.toFixed(1) : "N/A";
+  const overview = data?.overview;
+  const originalLanguage = data?.original_language || "Unknown";
+  const status = data?.status || "Unknown";
+  const imdbId = externalIds?.imdb_id;
+
+  // Get first country
+  const country = data?.production_countries
+    ? data?.production_countries?.[0]?.iso_3166_1 || "N/A"
+    : "N/A";
+
+  const runtimeOrEpisodes =
+    type === "movie"
+      ? formattedRuntime || "N/A"
+      : data?.number_of_episodes
+      ? `${data?.number_of_episodes}`
+      : "N/A";
+
+  return (
+    <div className="detail-page-cinematic" style={{ paddingTop: "66px" }}>
+      <style>{`
+        .detail-page-cinematic .dp-hero {
+          position: relative;
+          width: 100vw;
+          margin-left: calc(50% - 50vw);
+          min-height: 520px;
+          height: max(62vh, 520px);
+          overflow: hidden;
+          background: var(--c1);
+        }
+        .detail-page-cinematic .dp-hero-bg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .detail-page-cinematic .dp-hero-overlay {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(to top, var(--bk) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.2) 100%),
+            linear-gradient(to right, var(--bk) 0%, transparent 60%);
+          pointer-events: none;
+        }
+        .detail-page-cinematic .dp-back {
+          position: absolute;
+          top: 24px;
+          left: 24px;
+          z-index: 4;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          background: rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(10px);
+          color: var(--tx);
+          display: grid;
+          place-items: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .detail-page-cinematic .dp-back:hover {
+          transform: translateY(-1px);
+          background: rgba(255, 255, 255, 0.14);
+          border-color: rgba(255, 255, 255, 0.25);
+        }
+        .detail-page-cinematic .dp-hero-content {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 2;
+          display: flex;
+          align-items: flex-end;
+          gap: 32px;
+          padding: 0 52px 48px;
+        }
+        .detail-page-cinematic .dp-poster-frame {
+          width: 180px;
+          flex-shrink: 0;
+          border-radius: 14px;
+          overflow: hidden;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+          background: var(--c2);
+        }
+        .detail-page-cinematic .dp-poster {
+          width: 100%;
+          aspect-ratio: 2 / 3;
+          object-fit: cover;
+          display: block;
+        }
+        .detail-page-cinematic .dp-poster-fallback {
+          width: 100%;
+          aspect-ratio: 2 / 3;
+          display: grid;
+          place-items: center;
+          font-size: 11px;
+          color: var(--txd);
+          letter-spacing: 1px;
+        }
+        .detail-page-cinematic .dp-hero-copy {
+          color: var(--tx);
+          min-width: 0;
+          max-width: 920px;
+        }
+        .detail-page-cinematic .dp-title {
+          margin: 0 0 10px;
+          font-family: "Bebas Neue", sans-serif;
+          font-size: clamp(42px, 6vw, 80px);
+          line-height: 0.9;
+          letter-spacing: 2px;
+          text-shadow: 0 2px 40px rgba(0, 0, 0, 0.5);
+        }
+        .detail-page-cinematic .dp-tagline {
+          margin: 0 0 16px;
+          font-family: "DM Serif Display", serif;
+          font-style: italic;
+          font-size: 16px;
+          color: rgba(255, 255, 255, 0.6);
+        }
+        .detail-page-cinematic .dp-meta {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 16px;
+          font-size: 13px;
+          color: var(--txm);
+        }
+        .detail-page-cinematic .dp-dot {
+          opacity: 0.65;
+        }
+        .detail-page-cinematic .dp-type-badge {
+          background: var(--acc);
+          color: #07100a;
+          padding: 4px 12px;
+          border-radius: 6px;
+          font-weight: 700;
+          font-size: 11px;
+          letter-spacing: 1px;
+        }
+        .detail-page-cinematic .dp-rating {
+          width: fit-content;
+          position: absolute;
+          right: 52px;
+          bottom: 48px;
+          z-index: 3;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          padding: 8px 16px;
+          border-radius: 999px;
+        }
+        .detail-page-cinematic .dp-rating .star {
+          color: #f0d878;
+          font-size: 16px;
+        }
+        .detail-page-cinematic .dp-rating-value {
+          color: var(--tx);
+          font-size: 18px;
+          font-weight: 700;
+        }
+        .detail-page-cinematic .dp-rating-scale {
+          color: var(--txd);
+          font-size: 13px;
+        }
+        .detail-page-cinematic .dp-genres {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 18px;
+        }
+        .detail-page-cinematic .dp-genre {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 999px;
+          padding: 5px 14px;
+          font-size: 12px;
+          color: var(--txm);
+          letter-spacing: 0.5px;
+        }
+        .detail-page-cinematic .dp-actions {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        .detail-page-cinematic .dp-btn {
+          border-radius: 999px;
+          padding: 12px 28px;
+          font-size: 13px;
+          font-weight: 700;
+          border: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .detail-page-cinematic .dp-btn-primary {
+          background: var(--acc);
+          color: #07100a;
+        }
+        .detail-page-cinematic .dp-btn-primary:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 10px 24px rgba(178, 240, 197, 0.28);
+        }
+        .detail-page-cinematic .dp-btn-ghost {
+          background: rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: var(--tx);
+        }
+        .detail-page-cinematic .dp-btn-ghost:hover {
+          transform: translateY(-1px);
+          background: rgba(255, 255, 255, 0.12);
+          border-color: rgba(255, 255, 255, 0.28);
+        }
+        .detail-page-cinematic .dp-body {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 40px 52px 80px;
+          display: grid;
+          grid-template-columns: minmax(0, 65fr) minmax(0, 35fr);
+          gap: 40px;
+        }
+        .detail-page-cinematic .dp-left {
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 34px;
+        }
+        .detail-page-cinematic .dp-right {
+          min-width: 0;
+        }
+        .detail-page-cinematic .dp-label {
+          margin: 0 0 10px;
+          font-size: 10px;
+          letter-spacing: 3px;
+          color: var(--txd);
+          text-transform: uppercase;
+        }
+        .detail-page-cinematic .dp-overview {
+          margin: 0;
+          font-size: 15px;
+          color: var(--txm);
+          line-height: 1.85;
+        }
+        .detail-page-cinematic .dp-episodes-toggle {
+          width: 100%;
+          background: var(--c1);
+          border: 1px solid var(--grey3);
+          border-radius: 16px;
+          padding: 20px 24px;
+          color: var(--tx);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          transition: all 0.2s ease;
+        }
+        .detail-page-cinematic .dp-episodes-toggle:hover {
+          border-color: rgba(255, 255, 255, 0.22);
+          background: rgba(255, 255, 255, 0.04);
+        }
+        .detail-page-cinematic .dp-episodes-left {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          font-family: "DM Serif Display", serif;
+          font-size: 20px;
+        }
+        .detail-page-cinematic .dp-chev {
+          transition: transform 0.2s ease;
+        }
+        .detail-page-cinematic .dp-chev.open {
+          transform: rotate(180deg);
+        }
+        .detail-page-cinematic .dp-episodes-content {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease, margin-top 0.3s ease;
+        }
+        .detail-page-cinematic .dp-episodes-content.open {
+          max-height: 1200px;
+          margin-top: 16px;
+        }
+        .detail-page-cinematic .dp-legend {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 14px;
+          margin-bottom: 16px;
+        }
+        .detail-page-cinematic .dp-legend-item {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 11px;
+          color: var(--txd);
+        }
+        .detail-page-cinematic .dp-legend-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+        }
+        .detail-page-cinematic .dp-cast-row {
+          display: flex;
+          gap: 14px;
+          overflow-x: auto;
+          padding-bottom: 6px;
+        }
+        .detail-page-cinematic .dp-cast-card {
+          width: 90px;
+          flex-shrink: 0;
+          text-align: center;
+        }
+        .detail-page-cinematic .dp-cast-avatar {
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          margin: 0 auto 8px;
+          border: 2px solid var(--grey3);
+          overflow: hidden;
+          background: var(--c2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--txd);
+          font-size: 18px;
+          font-weight: 700;
+        }
+        .detail-page-cinematic .dp-cast-avatar img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+        .detail-page-cinematic .dp-cast-name {
+          margin: 0 0 4px;
+          font-size: 11px;
+          font-weight: 600;
+          color: var(--tx);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .detail-page-cinematic .dp-cast-role {
+          margin: 0;
+          font-size: 10px;
+          color: var(--txd);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .detail-page-cinematic .dp-details-card {
+          background: var(--c1);
+          border: 1px solid var(--grey3);
+          border-radius: 16px;
+          padding: 24px;
+        }
+        .detail-page-cinematic .dp-detail-row {
+          padding: 10px 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .detail-page-cinematic .dp-detail-key {
+          margin: 0 0 6px;
+          color: var(--txd);
+          font-size: 10px;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+        }
+        .detail-page-cinematic .dp-detail-value {
+          margin: 0;
+          font-size: 13px;
+          color: var(--tx);
+          font-weight: 500;
+        }
+        .detail-page-cinematic .dp-imdb {
+          display: block;
+          margin-top: 12px;
+          width: 100%;
+          background: #f5c518;
+          color: #000;
+          border-radius: 999px;
+          padding: 10px;
+          font-weight: 700;
+          font-size: 13px;
+          text-align: center;
+          text-decoration: none;
+          transition: all 0.2s ease;
+        }
+        .detail-page-cinematic .dp-imdb:hover {
+          transform: translateY(-1px);
+          filter: brightness(1.02);
+        }
+        @media (max-width: 980px) {
+          .detail-page-cinematic .dp-hero-content {
+            padding: 0 20px 30px;
+            gap: 18px;
+          }
+          .detail-page-cinematic .dp-poster-frame {
+            width: 132px;
+          }
+          .detail-page-cinematic .dp-body {
+            grid-template-columns: 1fr;
+            gap: 28px;
+            padding: 30px 20px 60px;
+          }
+          .detail-page-cinematic .dp-rating {
+            right: 20px;
+            bottom: 30px;
+          }
+        }
+        @media (max-width: 700px) {
+          .detail-page-cinematic .dp-hero {
+            height: auto;
+            min-height: 520px;
+          }
+          .detail-page-cinematic .dp-hero-content {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          .detail-page-cinematic .dp-rating {
+            position: relative;
+            right: auto;
+            bottom: auto;
+            margin: 0 0 18px 20px;
+          }
+          .detail-page-cinematic .dp-title {
+            font-size: clamp(42px, 14vw, 62px);
+          }
+          .detail-page-cinematic .dp-actions .dp-btn {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+      `}</style>
+
+      <section className="dp-hero">
+        {backdropPath && (
+          <img
+            className="dp-hero-bg"
+            src={`${TMDB_BACKDROP}${backdropPath}`}
+            alt="Backdrop"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        )}
+        <div className="dp-hero-overlay" />
+
+        <button className="dp-back" onClick={() => navigate(-1)} aria-label="Go back">
+          <FaArrowLeft />
+        </button>
+
+        <div className="dp-hero-content">
+          <div className="dp-poster-frame">
+            {posterPath ? (
+              <img
+                className="dp-poster"
+                src={`${TMDB_POSTER}${posterPath}`}
+                alt={title}
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+            ) : (
+              <div className="dp-poster-fallback">NO IMAGE</div>
+            )}
+          </div>
+
+          <div className="dp-hero-copy">
+            <h1 className="dp-title">{title}</h1>
+            {tagline && <p className="dp-tagline">{tagline}</p>}
+
+            <div className="dp-meta">
+              {releaseYear && <span>{releaseYear}</span>}
+              {formattedRuntime && (
+                <>
+                  <span className="dp-dot">&bull;</span>
+                  <span>{formattedRuntime}</span>
+                </>
+              )}
+              <span className="dp-dot">&bull;</span>
+              <span className="dp-type-badge">{type === "tv" ? "TV" : "MOVIE"}</span>
+            </div>
+
+            <div className="dp-genres">
+              {genresList.map((genre) => (
+                <span className="dp-genre" key={genre?.id}>
+                  {genre?.name}
+                </span>
+              ))}
+            </div>
+
+            <div className="dp-actions">
+              <button
+                className="dp-btn dp-btn-primary"
+                onClick={() => {
+                  if (!session) {
+                    onRequireAuth && onRequireAuth();
+                    return;
+                  }
+                  onSelect && onSelect(itemForCallback);
+                }}
+              >
+                <FaPlus />
+                Add to List
+              </button>
+              <button
+                className="dp-btn dp-btn-ghost"
+                onClick={() => {
+                  if (!session) {
+                    onRequireAuth && onRequireAuth();
+                    return;
+                  }
+                }}
+              >
+                <FaCheck />
+                Mark as Watched
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <div className="dp-rating">
+          <FaStar className="star" />
+          <span className="dp-rating-value">{rating}</span>
+          <span className="dp-rating-scale">/10</span>
+        </div>
+      </section>
+
+      <div className="dp-body">
+        <div className="dp-left">
+          {type === "tv" && (
+            <section>
+              <button
+                className="dp-episodes-toggle"
+                onClick={() => setShowEpisodeGrid(!showEpisodeGrid)}
+                aria-expanded={showEpisodeGrid}
+              >
+                <div className="dp-episodes-left">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                    <rect x="2" y="12" width="3" height="6" fill="currentColor" />
+                    <rect x="8.5" y="8" width="3" height="10" fill="currentColor" />
+                    <rect x="15" y="4" width="3" height="14" fill="currentColor" />
+                  </svg>
+                  Episode Ratings
+                </div>
+                <svg
+                  className={`dp-chev ${showEpisodeGrid ? "open" : ""}`}
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <path
+                    d="M6 8L10 12L14 8"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              <div className={`dp-episodes-content ${showEpisodeGrid ? "open" : ""}`}>
+                {seasonsLoading ? (
+                  <div className="loader" style={{ padding: "34px 0" }}>
+                    <div className="ldot"></div>
+                    <div className="ldot"></div>
+                    <div className="ldot"></div>
+                  </div>
+                ) : seasons?.length > 0 ? (
+                  <>
+                    <div className="dp-legend">
+                      {[
+                        { color: "var(--acc)", label: "Awesome" },
+                        { color: "#8BC34A", label: "Great" },
+                        { color: "#FFC107", label: "Good" },
+                        { color: "#FF9800", label: "Regular" },
+                        { color: "#F44336", label: "Bad" },
+                      ].map((item) => (
+                        <div key={item.label} className="dp-legend-item">
+                          <span
+                            className="dp-legend-dot"
+                            style={{ background: item.color }}
+                          />
+                          {item.label}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div style={{ overflowX: "auto", paddingBottom: "8px" }}>
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: `auto repeat(${seasons?.length}, 44px)`,
+                          gap: "6px",
+                          minWidth: "fit-content",
+                        }}
+                      >
+                        <div style={{ gridColumn: "1" }} />
+                        {seasons?.map((season, idx) => (
+                          <div
+                            key={`header-${idx}`}
+                            style={{
+                              fontSize: "11px",
+                              fontWeight: 700,
+                              color: "var(--txd)",
+                              textAlign: "center",
+                              marginBottom: "8px",
+                            }}
+                          >
+                            S{season?.season_number}
+                          </div>
+                        ))}
+
+                        {Array.from({
+                          length: Math.max(
+                            ...seasons?.map((s) =>
+                              s?.episodes ? s?.episodes?.length : 0
+                            ),
+                            0
+                          ),
+                        }).map((_, episodeIdx) => (
+                          <div key={`row-${episodeIdx}`} style={{ display: "contents" }}>
+                            <div
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: 700,
+                                color: "var(--txd)",
+                                textAlign: "right",
+                                paddingRight: "12px",
+                                paddingTop: "4px",
+                              }}
+                            >
+                              E{episodeIdx + 1}
+                            </div>
+
+                            {seasons?.map((season) => {
+                              const episode =
+                                season?.episodes && season?.episodes?.[episodeIdx];
+                              const hasValidRating =
+                                episode &&
+                                episode?.vote_average &&
+                                episode?.vote_count >= 5;
+
+                              let bgColor = "var(--c2)";
+                              let textColor = "var(--txd)";
+                              let ratingText = "?";
+
+                              if (hasValidRating) {
+                                const vote = episode?.vote_average;
+                                if (vote >= 8.5) {
+                                  bgColor = "var(--acc)";
+                                  textColor = "#07100a";
+                                } else if (vote >= 7.5) {
+                                  bgColor = "#8BC34A";
+                                  textColor = "#111";
+                                } else if (vote >= 6.5) {
+                                  bgColor = "#FFC107";
+                                  textColor = "#111";
+                                } else if (vote >= 5.5) {
+                                  bgColor = "#FF9800";
+                                  textColor = "#111";
+                                } else {
+                                  bgColor = "#F44336";
+                                  textColor = "#111";
+                                }
+                                ratingText = vote?.toFixed(1);
+                              }
+
+                              return (
+                                <div
+                                  key={`cell-${season?.season_number}-${episodeIdx}`}
+                                  style={{
+                                    width: "44px",
+                                    height: "32px",
+                                    borderRadius: "6px",
+                                    background: bgColor,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontSize: "12px",
+                                    fontWeight: 700,
+                                    color: textColor,
+                                  }}
+                                >
+                                  {ratingText}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+              </div>
+            </section>
+          )}
+
+          <section>
+            <p className="dp-label">Overview</p>
+            <p className="dp-overview">{overview}</p>
+          </section>
+
+          {topCast?.length > 0 && (
+            <section>
+              <p className="dp-label">Cast</p>
+              <div className="dp-cast-row">
+                {topCast?.map((actor) => (
+                  <div key={actor?.id || actor?.credit_id || actor?.name} className="dp-cast-card">
+                    <div className="dp-cast-avatar">
+                      {actor?.profile_path ? (
+                        <img
+                          src={`${TMDB_PROFILE}${actor?.profile_path}`}
+                          alt={actor?.name}
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
+                      ) : (
+                        (actor?.name || "")
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                      )}
+                    </div>
+                    <p className="dp-cast-name">{actor?.name}</p>
+                    <p className="dp-cast-role">{actor?.character || "Unknown"}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+
+        <aside className="dp-right">
+          <div className="dp-details-card">
+            {[
+              { key: "Director", value: director || "N/A" },
+              { key: "Language", value: originalLanguage.toUpperCase() },
+              { key: "Country", value: country },
+              { key: "Status", value: status },
+              {
+                key: type === "tv" ? "Episodes" : "Runtime",
+                value: runtimeOrEpisodes,
+              },
+            ].map((row) => (
+              <div key={row?.key} className="dp-detail-row">
+                <p className="dp-detail-key">{row?.key}</p>
+                <p className="dp-detail-value">{row?.value}</p>
+              </div>
+            ))}
+          </div>
+
+          {imdbId && (
+            <a
+              className="dp-imdb"
+              href={`https://www.imdb.com/title/${imdbId}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on IMDb
+            </a>
+          )}
+        </aside>
+      </div>
+    </div>
+  );
+}
