@@ -59,9 +59,9 @@ const TMDB_BASE  = "https://api.themoviedb.org/3";
 const TMDB_KEY   = "dfb570e7a09aa4e72df7064fc4a703f0";
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ CONSTANTS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
-const STATUSES = ["Want to Watch", "Watching", "Watched"];
-const SCOLOR   = { Watched: "#b2f0c5", Watching: "#f4e08a", "Want to Watch": "#8ebbf5" };
-const SICON    = { Watched: "\u2713", Watching: "\u25b6", "Want to Watch": "\u25cb" };
+const STATUSES = ["Want to Watch", "Watching", "Watched", "Paused", "Dropped"];
+const SCOLOR   = { Watched: "#b2f0c5", Watching: "#f4e08a", "Want to Watch": "#8ebbf5", Paused: "#b8b8b8", Dropped: "#f47070" };
+const SICON    = { Watched: "\u2713", Watching: "\u25b6", "Want to Watch": "\u25cb", Paused: "II", Dropped: "X" };
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ OTT STREAMING PLATFORMS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const OTT = {
@@ -1060,6 +1060,55 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 }
 .insight-value{font-family:'DM Serif Display',serif;font-size:28px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .insight-label{font-size:10px;color:var(--txd);letter-spacing:2px;text-transform:uppercase;margin-top:8px;}
+.profile-page,.list-page{padding:96px 52px 90px;max-width:1440px;margin:0 auto;}
+.profile-hero,.list-hero{
+  border-radius:28px;padding:34px;background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.025)),var(--c1);
+  border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 70px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.05);
+  display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center;margin-bottom:28px;
+}
+.profile-avatar{width:118px;height:118px;border-radius:28px;object-fit:cover;background:var(--c2);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;color:var(--acc);font-size:42px;overflow:hidden;}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+.profile-name,.list-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(46px,6vw,78px);line-height:.9;letter-spacing:2px;color:var(--tx);}
+.profile-bio,.list-desc{font-size:14px;color:var(--txm);line-height:1.75;max-width:680px;margin-top:10px;}
+.profile-meta,.list-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;color:var(--txd);font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+.profile-actions{display:flex;gap:10px;align-self:end;flex-wrap:wrap;justify-content:flex-end;}
+.premium-btn{border:none;border-radius:999px;padding:11px 18px;background:var(--acc);color:var(--bk);font-weight:800;font-size:12px;transition:all .18s;}
+.premium-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px var(--acc-glow);}
+.premium-btn.ghost{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:var(--tx);}
+.premium-btn.danger{background:var(--red-dim);border:1px solid rgba(244,112,112,.25);color:var(--red);}
+.profile-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;}
+.premium-panel{border-radius:22px;padding:22px;background:var(--c1);border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 52px rgba(0,0,0,.24);}
+.premium-panel-title{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:16px;color:var(--tx);}
+.profile-stat-grid,.list-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+.profile-stat,.list-stat{border-radius:18px;padding:16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);}
+.profile-stat-num,.list-stat-num{font-family:'DM Serif Display',serif;font-size:30px;color:var(--tx);}
+.profile-stat-label,.list-stat-label{font-size:10px;color:var(--txd);letter-spacing:2px;text-transform:uppercase;margin-top:6px;}
+.genre-pill-row{display:flex;gap:8px;flex-wrap:wrap;}
+.genre-pill{border-radius:999px;padding:7px 12px;background:var(--acc-dim);border:1px solid var(--acc-border);color:var(--acc);font-size:11px;font-weight:700;}
+.activity-list{display:flex;flex-direction:column;gap:10px;}
+.activity-item{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--txm);}
+.activity-item strong{color:var(--tx);}
+.custom-list-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+.custom-list-card{border-radius:20px;overflow:hidden;background:var(--c1);border:1px solid rgba(255,255,255,.08);cursor:pointer;transition:all .2s;}
+.custom-list-card:hover{transform:translateY(-4px);border-color:var(--acc-border);box-shadow:0 16px 38px rgba(0,0,0,.32);}
+.custom-list-cover{aspect-ratio:16/9;background:var(--c2);position:relative;overflow:hidden;}
+.custom-list-cover img{width:100%;height:100%;object-fit:cover;display:block;}
+.custom-list-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent);}
+.custom-list-body{padding:14px;}
+.custom-list-title{font-weight:800;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.custom-list-desc{font-size:12px;color:var(--txm);line-height:1.55;margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.visibility-badge{display:inline-flex;border-radius:999px;padding:4px 9px;font-size:9px;letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(255,255,255,.14);color:var(--txm);background:rgba(255,255,255,.06);}
+.visibility-badge.public{color:var(--acc);border-color:var(--acc-border);background:var(--acc-dim);}
+.list-item-tools{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:6px;z-index:4;opacity:0;transition:opacity .18s;}
+.card:hover .list-item-tools{opacity:1;}
+.tiny-tool{flex:1;border:none;border-radius:999px;padding:7px 8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);color:var(--tx);font-size:10px;font-weight:800;}
+.list-controls{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:18px;}
+.list-select{background:var(--bk);border:1px solid var(--grey3);color:var(--tx);border-radius:999px;padding:11px 14px;outline:none;}
+.modal-wide{max-width:620px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.avatar-upload-row{display:flex;gap:14px;align-items:center;margin-bottom:16px;}
+.avatar-preview{width:76px;height:76px;border-radius:20px;background:var(--c2);display:grid;place-items:center;overflow:hidden;border:1px solid var(--grey3);}
+.avatar-preview img{width:100%;height:100%;object-fit:cover;}
 
 /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ LOADER ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
 .loader{display:flex;align-items:center;justify-content:center;padding:80px;gap:10px;}
@@ -1344,6 +1393,14 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
   .sort-sel{margin-left:0;width:100%;}
   .library-rail-card{width:138px;flex-basis:138px;}
   .insights-grid{grid-template-columns:1fr;}
+  .profile-page,.list-page{padding:82px 18px 70px;}
+  .profile-hero,.list-hero{grid-template-columns:1fr;padding:22px;border-radius:22px;}
+  .profile-avatar{width:96px;height:96px;border-radius:22px;}
+  .profile-actions{justify-content:flex-start;}
+  .profile-grid{grid-template-columns:1fr;}
+  .profile-stat-grid,.list-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .custom-list-grid{grid-template-columns:1fr;}
+  .form-grid,.list-controls{grid-template-columns:1fr;}
 }
 
 @media(min-width:769px) and (max-width:1180px){
@@ -1379,6 +1436,8 @@ const getStatusIcon = (status) => {
     "Watched": "\u2713",
     "Watching": "\u25b6",
     "Want to Watch": "\u25cb",
+    "Paused": "II",
+    "Dropped": "X",
   };
   return iconMap[status] || status;
 };
@@ -2033,6 +2092,134 @@ function SettingsPanel({ settings, onChange, onClose, onExport, onClearCache, se
 }
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ AUTH MODAL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+function ProfilePage({ session, profile, entries, customLists, onEditProfile, onCreateList, onEditList, onDeleteList, onOpenList, onRequireAuth }) {
+  if (!session) {
+    return (
+      <div className="profile-page">
+        <div className="library-empty">
+          <div className="library-empty-icon"><FaUserCircle /></div>
+          <div className="library-empty-title">Your profile is waiting.</div>
+          <div className="library-empty-sub">Sign in to build your cinematic profile, lists, and watch history.</div>
+          <button className="premium-btn" onClick={onRequireAuth}>Sign In</button>
+        </div>
+      </div>
+    );
+  }
+
+  const watched = entries.filter(e => e.status === "Watched");
+  const stats = [
+    { label:"Movies Watched", value:watched.filter(e => e.type === "Movie").length },
+    { label:"TV Shows Watched", value:watched.filter(e => e.type === "TV Show").length },
+    { label:"Anime Watched", value:watched.filter(e => e.type === "Anime").length },
+    { label:"Total Entries", value:entries.length },
+  ];
+  const activity = [
+    ...entries.slice(0, 4).map(e => `${e.status === "Watched" ? "Watched" : "Added"} ${e.title}`),
+    ...customLists.slice(0, 3).map(l => `Created list "${l.title}"`),
+  ].slice(0, 6);
+
+  return (
+    <div className="profile-page">
+      <section className="profile-hero">
+        <div className="profile-avatar">{profile.avatarUrl ? <img src={profile.avatarUrl} alt={profile.username} /> : <FaUserCircle />}</div>
+        <div>
+          <div className="library-eyebrow">ReelLog profile</div>
+          <div className="profile-name">{profile.username}</div>
+          <div className="profile-bio">{profile.bio || "A quiet corner for everything worth watching."}</div>
+          <div className="profile-meta"><span>Joined {profile.joinedDate}</span><span>{entries.length} entries</span><span>{customLists.length} lists</span></div>
+        </div>
+        <div className="profile-actions">
+          <button className="premium-btn ghost" onClick={onCreateList}>New List</button>
+          <button className="premium-btn" onClick={onEditProfile}>Edit Profile</button>
+        </div>
+      </section>
+
+      <div className="profile-grid">
+        <div className="premium-panel">
+          <div className="premium-panel-title">Watched Statistics</div>
+          <div className="profile-stat-grid">
+            {stats.map(stat => <div key={stat.label} className="profile-stat"><div className="profile-stat-num">{stat.value}</div><div className="profile-stat-label">{stat.label}</div></div>)}
+          </div>
+        </div>
+        <div className="premium-panel">
+          <div className="premium-panel-title">Favorite Genres</div>
+          <div className="genre-pill-row">
+            {(profile.favoriteGenres?.length ? profile.favoriteGenres : ["Drama", "Sci-Fi", "Anime"]).map(g => <span key={g} className="genre-pill">{g}</span>)}
+          </div>
+        </div>
+      </div>
+
+      <section className="library-section">
+        <div className="library-section-head"><div className="library-section-title">Custom Lists</div><button className="premium-btn ghost" onClick={onCreateList}>Create List</button></div>
+        <div className="custom-list-grid">
+          {customLists.map(list => (
+            <div key={list.id} className="custom-list-card">
+              <div onClick={() => onOpenList(list.id)}>
+                <div className="custom-list-cover">{list.cover ? <img src={list.cover} alt={list.title} /> : null}</div>
+                <div className="custom-list-body">
+                  <span className={`visibility-badge ${list.visibility === "public" ? "public" : ""}`}>{list.visibility}</span>
+                  <div className="custom-list-title" style={{ marginTop:8 }}>{list.title}</div>
+                  <div className="custom-list-desc">{list.description || "No description yet."}</div>
+                  <div className="library-section-count" style={{ marginTop:10 }}>{list.items?.length || 0} titles</div>
+                </div>
+              </div>
+              <div style={{ display:"flex", gap:8, padding:"0 14px 14px" }}>
+                <button className="premium-btn ghost" style={{ flex:1 }} onClick={() => onEditList(list)}>Edit</button>
+                <button className="premium-btn danger" style={{ flex:1 }} onClick={() => onDeleteList(list.id)}>Delete</button>
+              </div>
+            </div>
+          ))}
+          {customLists.length === 0 && <div className="library-empty"><div className="library-empty-icon"><FaList /></div><div className="library-empty-title">No lists yet.</div><div className="library-empty-sub">Create themed collections like Best Sci-Fi Movies, Comfort Anime, or a 2026 Watchlist.</div><button className="premium-btn" onClick={onCreateList}>Create Your First List</button></div>}
+        </div>
+      </section>
+
+      <section className="library-section">
+        <div className="library-section-head"><div className="library-section-title">Recent Activity</div><div className="library-section-count">Latest updates</div></div>
+        <div className="premium-panel"><div className="activity-list">{(activity.length ? activity : ["Started building a ReelLog profile"]).map((item, idx) => <div key={`${item}-${idx}`} className="activity-item"><strong>{item}</strong></div>)}</div></div>
+      </section>
+    </div>
+  );
+}
+
+function ListDetailPage({ session, customLists, entries, onOpenEntry, onEditList, onDeleteList, onAddItem, onRemoveItem, onMoveItem, onRequireAuth }) {
+  const { id } = useParams();
+  const list = customLists.find(l => String(l.id) === String(id));
+  if (!list || (list.visibility !== "public" && (!session || list.ownerId !== session.user.id))) {
+    return <div className="list-page"><div className="library-empty"><div className="library-empty-icon"><FaShieldAlt /></div><div className="library-empty-title">List unavailable.</div><div className="library-empty-sub">This list is private or no longer exists.</div>{!session && <button className="premium-btn" onClick={onRequireAuth}>Sign In</button>}</div></div>;
+  }
+  const listItems = (list.items || []).map(itemId => entries.find(e => String(e.id) === String(itemId))).filter(Boolean);
+  const isOwner = session && list.ownerId === session.user.id;
+  return (
+    <div className="list-page">
+      <section className="list-hero">
+        <div className="custom-list-cover" style={{ width:220, borderRadius:20 }}>{list.cover ? <img src={list.cover} alt={list.title} /> : null}</div>
+        <div>
+          <span className={`visibility-badge ${list.visibility === "public" ? "public" : ""}`}>{list.visibility}</span>
+          <div className="list-title" style={{ marginTop:12 }}>{list.title}</div>
+          <div className="list-desc">{list.description || "A curated ReelLog list."}</div>
+          <div className="list-meta"><span>By {list.ownerName || "ReelLog user"}</span><span>{listItems.length} titles</span></div>
+        </div>
+        {isOwner && <div className="profile-actions"><button className="premium-btn ghost" onClick={() => onEditList(list)}>Edit List</button><button className="premium-btn danger" onClick={() => onDeleteList(list.id)}>Delete</button></div>}
+      </section>
+      {isOwner && <div className="premium-panel" style={{ marginBottom:22 }}><div className="premium-panel-title">Add Titles</div><div className="list-controls"><select className="list-select" onChange={e => e.target.value && onAddItem(list.id, e.target.value)} defaultValue=""><option value="">Choose from your library...</option>{entries.map(entry => <option key={entry.id} value={entry.id}>{entry.title}</option>)}</select><button className="premium-btn ghost" onClick={() => onEditList(list)}>Edit Details</button></div></div>}
+      <div className="grid">
+        {listItems.length === 0 && <div className="library-empty"><div className="library-empty-icon"><FaFilm /></div><div className="library-empty-title">This list is empty.</div><div className="library-empty-sub">Add titles from your library to start shaping the collection.</div></div>}
+        {listItems.map((entry, index) => (
+          <div key={entry.id} className="card" onClick={() => onOpenEntry(entry)}>
+            <div className="card-img-box">
+              {entry.poster ? <img className="card-img" src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display="none"; }} /> : <div className="no-img-box"><div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div><span>{entry.type}</span></div>}
+              <div className="card-grad" />
+              <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>{getStatusIcon(entry.status)} {entry.status}</div>
+              {isOwner && <div className="list-item-tools" onClick={e => e.stopPropagation()}><button className="tiny-tool" onClick={() => onMoveItem(list.id, index, -1)}>Up</button><button className="tiny-tool" onClick={() => onMoveItem(list.id, index, 1)}>Down</button><button className="tiny-tool" onClick={() => onRemoveItem(list.id, entry.id)}>Remove</button></div>}
+            </div>
+            <div className="card-body"><div className="card-title">{entry.title}</div><div className="card-meta-row"><span className="card-type">{entry.type}</span><span className="card-year">{entry.year}</span></div></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function AuthModal({ onClose }) {
   const [tab, setTab]         = useState("signin");
   const [email, setEmail]     = useState("");
@@ -2714,6 +2901,21 @@ export default function App() {
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ auth ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
   const [session, setSession] = useState(null);
   const [showAuth, setShowAuth] = useState(false);
+  const defaultProfile = useCallback((s = session) => ({
+    username: s?.user?.user_metadata?.name || s?.user?.email?.split("@")[0] || "ReelLog User",
+    bio: "Tracking the stories that stay with me.",
+    joinedDate: s?.user?.created_at ? new Date(s.user.created_at).toLocaleDateString() : new Date().toLocaleDateString(),
+    favoriteGenres: ["Drama", "Sci-Fi", "Anime"],
+    avatarUrl: s?.user?.user_metadata?.avatar_url || "",
+  }), [session]);
+  const [profile, setProfile] = useState(defaultProfile());
+  const [profileDraft, setProfileDraft] = useState(defaultProfile());
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
+  const [customLists, setCustomLists] = useState([]);
+  const [listDraft, setListDraft] = useState({ title:"", description:"", cover:"", visibility:"public", items:[] });
+  const [editingListId, setEditingListId] = useState(null);
+  const [showListModal, setShowListModal] = useState(false);
+  const [addToListEntry, setAddToListEntry] = useState(null);
 
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ page ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
   const [page, setPage] = useState("home");
@@ -3027,6 +3229,33 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (!session?.user?.id) {
+      setProfile(defaultProfile(null));
+      setProfileDraft(defaultProfile(null));
+      setCustomLists([]);
+      return;
+    }
+    const profileKey = `reellog-profile-${session.user.id}`;
+    const listsKey = `reellog-lists-${session.user.id}`;
+    const savedProfile = JSON.parse(localStorage.getItem(profileKey) || "null");
+    const savedLists = JSON.parse(localStorage.getItem(listsKey) || "[]");
+    const nextProfile = { ...defaultProfile(session), ...(savedProfile || {}) };
+    setProfile(nextProfile);
+    setProfileDraft(nextProfile);
+    setCustomLists(Array.isArray(savedLists) ? savedLists : []);
+  }, [session, defaultProfile]);
+
+  useEffect(() => {
+    if (!session?.user?.id) return;
+    localStorage.setItem(`reellog-profile-${session.user.id}`, JSON.stringify(profile));
+  }, [profile, session]);
+
+  useEffect(() => {
+    if (!session?.user?.id) return;
+    localStorage.setItem(`reellog-lists-${session.user.id}`, JSON.stringify(customLists));
+  }, [customLists, session]);
+
   // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Load entries (only when signed in) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
   useEffect(() => {
     if (!session) {
@@ -3168,6 +3397,109 @@ export default function App() {
     showT("Removed.");
   }
 
+  function fileToDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleAvatarUpload(file) {
+    if (!file || !session) return;
+    try {
+      const path = `${session.user.id}/${Date.now()}-${file.name}`;
+      const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
+      if (!error) {
+        const { data } = supabase.storage.from("avatars").getPublicUrl(path);
+        setProfileDraft(p => ({ ...p, avatarUrl: data.publicUrl }));
+        return;
+      }
+    } catch {
+      /* Fall back to local preview if Storage is not configured. */
+    }
+    const dataUrl = await fileToDataUrl(file);
+    setProfileDraft(p => ({ ...p, avatarUrl: dataUrl }));
+  }
+
+  function saveProfile() {
+    setProfile({
+      ...profileDraft,
+      favoriteGenres: Array.isArray(profileDraft.favoriteGenres)
+        ? profileDraft.favoriteGenres
+        : String(profileDraft.favoriteGenres || "").split(",").map(g => g.trim()).filter(Boolean),
+    });
+    setShowProfileEdit(false);
+    showT("Profile updated!");
+  }
+
+  function openCreateList() {
+    if (!session) { setShowAuth(true); return; }
+    setEditingListId(null);
+    setListDraft({ title:"", description:"", cover:"", visibility:"public", items:[] });
+    setShowListModal(true);
+  }
+
+  function openEditList(list) {
+    setEditingListId(list.id);
+    setListDraft({ ...list, items:[...(list.items || [])] });
+    setShowListModal(true);
+  }
+
+  function saveCustomList() {
+    if (!session || !listDraft.title.trim()) return;
+    if (editingListId) {
+      setCustomLists(p => p.map(l => l.id === editingListId ? { ...l, ...listDraft, title:listDraft.title.trim(), updatedAt:new Date().toISOString() } : l));
+      showT("List updated!");
+    } else {
+      const list = {
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        title:listDraft.title.trim(),
+        description:listDraft.description,
+        cover:listDraft.cover,
+        visibility:listDraft.visibility || "public",
+        items:listDraft.items || [],
+        ownerId:session.user.id,
+        ownerName:profile.username,
+        createdAt:new Date().toISOString(),
+        updatedAt:new Date().toISOString(),
+      };
+      setCustomLists(p => [list, ...p]);
+      showT(`Created list "${list.title}"`);
+    }
+    setShowListModal(false);
+  }
+
+  function deleteCustomList(id) {
+    setCustomLists(p => p.filter(l => l.id !== id));
+    showT("List deleted.");
+    if (location.pathname === `/list/${id}`) navigate("/profile");
+  }
+
+  function addEntryToList(listId, entryId) {
+    setCustomLists(p => p.map(l => {
+      if (String(l.id) !== String(listId) || l.items?.some(id => String(id) === String(entryId))) return l;
+      return { ...l, items:[...(l.items || []), entryId], updatedAt:new Date().toISOString() };
+    }));
+    showT("Added to list.");
+  }
+
+  function removeEntryFromList(listId, entryId) {
+    setCustomLists(p => p.map(l => String(l.id) === String(listId) ? { ...l, items:(l.items || []).filter(id => String(id) !== String(entryId)), updatedAt:new Date().toISOString() } : l));
+  }
+
+  function moveListItem(listId, index, direction) {
+    setCustomLists(p => p.map(l => {
+      if (String(l.id) !== String(listId)) return l;
+      const items = [...(l.items || [])];
+      const next = index + direction;
+      if (next < 0 || next >= items.length) return l;
+      [items[index], items[next]] = [items[next], items[index]];
+      return { ...l, items, updatedAt:new Date().toISOString() };
+    }));
+  }
+
   function handleExport() {
     const blob = new Blob([JSON.stringify(myEntries, null, 2)], { type:"application/json" });
     const url  = URL.createObjectURL(blob);
@@ -3198,11 +3530,10 @@ export default function App() {
       return 0;
     });
 
-  const counts = {
-    Watched:         source.filter(e => e.status === "Watched").length,
-    Watching:        source.filter(e => e.status === "Watching").length,
-    "Want to Watch": source.filter(e => e.status === "Want to Watch").length,
-  };
+  const counts = STATUSES.reduce((acc, status) => {
+    acc[status] = source.filter(e => e.status === status).length;
+    return acc;
+  }, {});
 
   const typeCounts = {
     Movie: source.filter(e => e.type === "Movie").length,
@@ -3389,6 +3720,11 @@ export default function App() {
                       <button key={f.key} className={`fil-btn${filterType === f.key ? " on" : ""}`} onClick={() => setFilterType(f.key)}>{f.label}</button>
                     ))}
                   </div>
+                  <div className="fil-row">
+                    {["All", ...STATUSES].map(s => (
+                      <button key={s} className={`fil-btn${filterStatus === s ? " on" : ""}`} onClick={() => setFilterStatus(s)}>{s}</button>
+                    ))}
+                  </div>
                   <select className="sort-sel" value={sortBy} onChange={e => setSortBy(e.target.value)}>
                     <option value="added">Recently Added</option>
                     <option value="title">Title A-Z</option>
@@ -3438,6 +3774,7 @@ export default function App() {
                             <button className="card-action" onClick={e => { e.stopPropagation(); openFromCard(entry); }}>View Details</button>
                             {session && entry.user_id === session.user.id && (
                               <>
+                                <button className="card-action secondary" onClick={e => { e.stopPropagation(); setAddToListEntry(entry); }}>Add to List</button>
                                 <button className="card-action secondary" onClick={e => { e.stopPropagation(); openEdit(entry); }}>Edit Entry</button>
                                 <button className="card-action danger" onClick={e => { e.stopPropagation(); handleDelete(entry.id); }}>Remove Entry</button>
                               </>
@@ -3525,7 +3862,7 @@ export default function App() {
           Reel<span>log</span>
         </div>
         <div className="nav-links">
-          <button className={`nav-link${page === "home" ? " active" : ""}`} onClick={() => { setPage("home"); navigate("/"); setNavDropdown(null); }}>
+          <button className={`nav-link${page === "home" && location.pathname === "/" ? " active" : ""}`} onClick={() => { setPage("home"); navigate("/"); setNavDropdown(null); }}>
             Home
           </button>
           <div className="nav-dropdown-wrapper">
@@ -3534,13 +3871,16 @@ export default function App() {
             </button>
 
           </div>
-          <button className={`nav-link${page === "mylist" ? " active" : ""}`} onClick={() => { setPage("mylist"); navigate("/"); setNavDropdown(null); }}>
+          <button className={`nav-link${page === "mylist" && location.pathname === "/" ? " active" : ""}`} onClick={() => { setPage("mylist"); navigate("/"); setNavDropdown(null); }}>
             My List
+          </button>
+          <button className={`nav-link${location.pathname === "/profile" ? " active" : ""}`} onClick={() => { navigate("/profile"); setNavDropdown(null); }}>
+            Profile
           </button>
         </div>
         <div className="nav-right">
           <button className="btn-icon" onClick={() => {
-            if (session) { setPage("mylist"); navigate("/"); setNavDropdown(null); }
+            if (session) { navigate("/profile"); setNavDropdown(null); }
             else setShowAuth(true);
           }} title={session ? "Profile" : "Sign in / Join"}>
             <Icon name="user" size={17} />
@@ -3553,6 +3893,40 @@ export default function App() {
 
       <Routes>
         <Route path="/detail/:type/:id" element={<DetailPage session={session} onRequireAuth={() => setShowAuth(true)} onSelect={openFromCard} />} />
+        <Route
+          path="/profile"
+          element={
+            <ProfilePage
+              session={session}
+              profile={profile}
+              entries={myEntries}
+              customLists={customLists}
+              onEditProfile={() => { setProfileDraft(profile); setShowProfileEdit(true); }}
+              onCreateList={openCreateList}
+              onEditList={openEditList}
+              onDeleteList={deleteCustomList}
+              onOpenList={(listId) => navigate(`/list/${listId}`)}
+              onRequireAuth={() => setShowAuth(true)}
+            />
+          }
+        />
+        <Route
+          path="/list/:id"
+          element={
+            <ListDetailPage
+              session={session}
+              customLists={customLists}
+              entries={myEntries}
+              onOpenEntry={openFromCard}
+              onEditList={openEditList}
+              onDeleteList={deleteCustomList}
+              onAddItem={addEntryToList}
+              onRemoveItem={removeEntryFromList}
+              onMoveItem={moveListItem}
+              onRequireAuth={() => setShowAuth(true)}
+            />
+          }
+        />
         <Route path="/explore/:section/:item" element={<BrowseItemPage />} />
         <Route path="/explore/:section" element={<BrowseSectionPage />} />
         <Route path="/explore" element={renderLibrary("explore")} />
@@ -3759,6 +4133,123 @@ export default function App() {
                 </button>
               )}
               <button className="btn-cxl" onClick={() => setShowModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showProfileEdit && (
+        <div className="backdrop" onClick={e => e.target === e.currentTarget && setShowProfileEdit(false)}>
+          <div className="modal modal-wide">
+            <div className="modal-head">
+              <div style={{ flex:1 }}>
+                <div className="modal-ti">Edit Profile</div>
+                <div className="modal-sub">Customize your ReelLog identity.</div>
+              </div>
+              <button className="settings-close" onClick={() => setShowProfileEdit(false)}><FaTimes /></button>
+            </div>
+            <div className="modal-body">
+              <div className="avatar-upload-row">
+                <div className="avatar-preview">{profileDraft.avatarUrl ? <img src={profileDraft.avatarUrl} alt="Avatar preview" /> : <FaUserCircle />}</div>
+                <div>
+                  <label className="flbl">Avatar Upload</label>
+                  <input className="finp" type="file" accept="image/*" onChange={e => handleAvatarUpload(e.target.files?.[0])} />
+                </div>
+              </div>
+              <div className="field">
+                <label className="flbl">Username</label>
+                <input className="finp" value={profileDraft.username || ""} onChange={e => setProfileDraft(p => ({ ...p, username:e.target.value }))} />
+              </div>
+              <div className="field">
+                <label className="flbl">Bio</label>
+                <textarea className="fta" value={profileDraft.bio || ""} onChange={e => setProfileDraft(p => ({ ...p, bio:e.target.value }))} />
+              </div>
+              <div className="field">
+                <label className="flbl">Favorite Genres</label>
+                <input className="finp" value={Array.isArray(profileDraft.favoriteGenres) ? profileDraft.favoriteGenres.join(", ") : profileDraft.favoriteGenres || ""} onChange={e => setProfileDraft(p => ({ ...p, favoriteGenres:e.target.value }))} />
+              </div>
+            </div>
+            <div className="modal-foot">
+              <button className="btn-add" onClick={saveProfile}>Save Profile</button>
+              <button className="btn-cxl" onClick={() => setShowProfileEdit(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showListModal && (
+        <div className="backdrop" onClick={e => e.target === e.currentTarget && setShowListModal(false)}>
+          <div className="modal modal-wide">
+            <div className="modal-head">
+              <div style={{ flex:1 }}>
+                <div className="modal-ti">{editingListId ? "Edit List" : "Create List"}</div>
+                <div className="modal-sub">Curate titles into a cinematic collection.</div>
+              </div>
+              <button className="settings-close" onClick={() => setShowListModal(false)}><FaTimes /></button>
+            </div>
+            <div className="modal-body">
+              <div className="field">
+                <label className="flbl">Title</label>
+                <input className="finp" placeholder="Best Sci-Fi Movies" value={listDraft.title || ""} onChange={e => setListDraft(p => ({ ...p, title:e.target.value }))} />
+              </div>
+              <div className="field">
+                <label className="flbl">Description</label>
+                <textarea className="fta" placeholder="Why this list matters..." value={listDraft.description || ""} onChange={e => setListDraft(p => ({ ...p, description:e.target.value }))} />
+              </div>
+              <div className="form-grid">
+                <div className="field">
+                  <label className="flbl">Cover Image</label>
+                  <input className="finp" type="file" accept="image/*" onChange={async e => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const cover = await fileToDataUrl(file);
+                      setListDraft(p => ({ ...p, cover }));
+                    }
+                  }} />
+                </div>
+                <div className="field">
+                  <label className="flbl">Visibility</label>
+                  <select className="fsel" value={listDraft.visibility || "public"} onChange={e => setListDraft(p => ({ ...p, visibility:e.target.value }))}>
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="modal-foot">
+              <button className="btn-add" onClick={saveCustomList}>{editingListId ? "Save List" : "Create List"}</button>
+              <button className="btn-cxl" onClick={() => setShowListModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {addToListEntry && (
+        <div className="backdrop" onClick={e => e.target === e.currentTarget && setAddToListEntry(null)}>
+          <div className="modal">
+            <div className="modal-head">
+              <div style={{ flex:1 }}>
+                <div className="modal-ti">Add to Custom List</div>
+                <div className="modal-sub">{addToListEntry.title}</div>
+              </div>
+              <button className="settings-close" onClick={() => setAddToListEntry(null)}><FaTimes /></button>
+            </div>
+            <div className="modal-body">
+              {customLists.length === 0 ? (
+                <div className="library-empty" style={{ padding:30 }}>
+                  <div className="library-empty-title">No custom lists yet.</div>
+                  <div className="library-empty-sub">Create a list first, then add this title.</div>
+                  <button className="premium-btn" onClick={() => { setAddToListEntry(null); openCreateList(); }}>Create List</button>
+                </div>
+              ) : (
+                <div className="activity-list">
+                  {customLists.map(list => (
+                    <button key={list.id} className="sett-export-btn" onClick={() => { addEntryToList(list.id, addToListEntry.id); setAddToListEntry(null); }}>
+                      {list.title} · {list.visibility}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
