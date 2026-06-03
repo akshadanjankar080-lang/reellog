@@ -1,67 +1,62 @@
-import { useMemo, useCallback } from "react";
-
 /**
  * useLibrary Hook
  * Manages library filtering, sorting, searching, and derived state
  * Keeps all library logic in one reusable place
+ * STABILIZED: Removed useMemo and useCallback to prevent hook execution order crashes.
  */
 export function useLibrary(entries = []) {
   /**
    * Get counts by type
    */
-  const typeCounts = useMemo(() => {
-    return {
-      all: entries.length,
-      movie: entries.filter(e => e.type === "Movie").length,
-      tv: entries.filter(e => e.type === "TV Show").length,
-      anime: entries.filter(e => e.type === "Anime").length,
-    };
-  }, [entries]);
+  const typeCounts = {
+    all: entries.length,
+    movie: entries.filter(e => e.type === "Movie").length,
+    tv: entries.filter(e => e.type === "TV Show").length,
+    anime: entries.filter(e => e.type === "Anime").length,
+  };
 
   /**
    * Get counts by status
    */
-  const statusCounts = useMemo(() => {
-    return {
-      all: entries.length,
-      watched: entries.filter(e => e.status === "Watched").length,
-      watching: entries.filter(e => e.status === "Watching").length,
-      wantToWatch: entries.filter(e => e.status === "Want to Watch").length,
-      paused: entries.filter(e => e.status === "Paused").length,
-      dropped: entries.filter(e => e.status === "Dropped").length,
-    };
-  }, [entries]);
+  const statusCounts = {
+    all: entries.length,
+    watched: entries.filter(e => e.status === "Watched").length,
+    watching: entries.filter(e => e.status === "Watching").length,
+    wantToWatch: entries.filter(e => e.status === "Want to Watch").length,
+    paused: entries.filter(e => e.status === "Paused").length,
+    dropped: entries.filter(e => e.status === "Dropped").length,
+  };
 
   /**
    * Get average rating from library
    */
-  const averageRating = useMemo(() => {
+  const averageRating = (() => {
     const rated = entries.filter(e => e.rating);
     if (!rated.length) return 0;
     const sum = rated.reduce((acc, e) => acc + (e.rating || 0), 0);
     return (sum / rated.length).toFixed(1);
-  }, [entries]);
+  })();
 
   /**
    * Filter entries by type
    */
-  const filterByType = useCallback((list, type) => {
+  const filterByType = (list, type) => {
     if (type === "All") return list;
     return list.filter(e => e.type === type);
-  }, []);
+  };
 
   /**
    * Filter entries by status
    */
-  const filterByStatus = useCallback((list, status) => {
+  const filterByStatus = (list, status) => {
     if (status === "All") return list;
     return list.filter(e => e.status === status);
-  }, []);
+  };
 
   /**
    * Sort entries by field
    */
-  const sortEntries = useCallback((list, sortBy) => {
+  const sortEntries = (list, sortBy) => {
     const sorted = [...list];
     switch (sortBy) {
       case "added":
@@ -77,12 +72,12 @@ export function useLibrary(entries = []) {
       default:
         return sorted;
     }
-  }, []);
+  };
 
   /**
    * Search entries by title, overview, or categories
    */
-  const searchEntries = useCallback((list, query) => {
+  const searchEntries = (list, query) => {
     if (!query || query.trim() === "") return list;
     const q = query.toLowerCase();
     return list.filter(e =>
@@ -90,12 +85,12 @@ export function useLibrary(entries = []) {
       (e.overview && e.overview.toLowerCase().includes(q)) ||
       (Array.isArray(e.categories) && e.categories.some(c => c.toLowerCase().includes(q)))
     );
-  }, []);
+  };
 
   /**
    * Apply all filters and sorting
    */
-  const applyFilters = useCallback((
+  const applyFilters = (
     list,
     filterType = "All",
     filterStatus = "All",
@@ -117,7 +112,7 @@ export function useLibrary(entries = []) {
     result = sortEntries(result, sortBy);
 
     return result;
-  }, [filterByType, filterByStatus, searchEntries, sortEntries]);
+  };
 
   return {
     typeCounts,

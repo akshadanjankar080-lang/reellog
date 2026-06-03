@@ -1,5 +1,5 @@
 import { AnimatePresence, motion as Motion } from "framer-motion";
-import { useDeferredValue, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState, useCallback } from "react";
 import {
   FaBolt,
   FaCamera,
@@ -157,11 +157,11 @@ function generateSearchVariations(textQuery, sceneQuery) {
   const queries = new Set();
   const tWords = textQuery ? textQuery.trim().split(" ") : [];
   const sWords = sceneQuery ? sceneQuery.trim().split(" ") : [];
-  
+
   if (tWords.length > 0 && sWords.length > 0) {
     queries.add(`${textQuery} ${sceneQuery}`);
   }
-  
+
   if (tWords.length > 0 && tWords[0].length > 0) {
     queries.add(textQuery);
     if (tWords.length > 1) {
@@ -170,7 +170,7 @@ function generateSearchVariations(textQuery, sceneQuery) {
       queries.add(tWords[0]);
     }
   }
-  
+
   if (sWords.length > 0 && sWords[0].length > 0) {
     queries.add(sceneQuery);
   }
@@ -185,46 +185,46 @@ function rankSmartScanResults(items, textQuery, sceneQuery) {
   const scoredItems = items.map(item => {
     let score = 0;
     const titleLower = normalizeText(item.title);
-    
+
     if (queryLower && titleLower === queryLower) {
       score += 50;
     } else if (queryLower && titleLower.includes(queryLower)) {
       score += 30;
     }
-    
+
     if (queryLower) {
       const words = queryLower.split(" ");
       for (const w of words) {
         if (titleLower.includes(w) || normalizeText(item.overview).includes(w)) {
-           score += 20;
-           break;
+          score += 20;
+          break;
         }
       }
     }
-    
+
     if (sceneLower) {
       const sceneWords = sceneLower.split(" ");
       const categories = (item.categories || []).map(normalizeText).join(" ");
       const overview = normalizeText(item.overview);
-      
+
       for (const sw of sceneWords) {
-         if (categories.includes(sw) || overview.includes(sw)) {
-           score += 15;
-           break;
-         }
+        if (categories.includes(sw) || overview.includes(sw)) {
+          score += 15;
+          break;
+        }
       }
     }
-    
+
     const popularity = Number(item.popularity) || 0;
     if (popularity > 50) score += 10;
-    
+
     const rating = Number(item.rating) || 0;
     if (rating > 7) score += 5;
-    
+
     let confidence = "LOW";
     if (score >= 70) confidence = "HIGH";
     else if (score >= 40) confidence = "MEDIUM";
-    
+
     return { item: { ...item, _score: score, _confidence: confidence }, score };
   });
 
@@ -738,7 +738,7 @@ function ScanHeroCard({ item, onInfo, onAdd, session }) {
 
   return (
     <div className="scan-hero-card" style={{
-      display: "flex", gap: "20px", background: "rgba(255,255,255,0.03)", 
+      display: "flex", gap: "20px", background: "rgba(255,255,255,0.03)",
       border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", padding: "16px",
       alignItems: "center"
     }}>
@@ -746,7 +746,7 @@ function ScanHeroCard({ item, onInfo, onAdd, session }) {
         {imageSrc ? (
           <img src={imageSrc} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
-           <div className="explore-card-fallback">{item.title}</div>
+          <div className="explore-card-fallback">{item.title}</div>
         )}
       </div>
       <div style={{ flex: "1", display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -775,7 +775,7 @@ function ScanHeroCard({ item, onInfo, onAdd, session }) {
             Info
           </button>
           <button type="button" onClick={() => onAdd(item)} style={{
-             background: "rgba(255,255,255,0.1)", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "8px", fontWeight: "600", cursor: "pointer", transition: "all 0.2s"
+            background: "rgba(255,255,255,0.1)", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "8px", fontWeight: "600", cursor: "pointer", transition: "all 0.2s"
           }}>
             Add to List
           </button>
@@ -965,7 +965,7 @@ function ImageScannerModal({
                 {!session && <p>Sign in to save a title to My List.</p>}
               </div>
             )}
-            
+
             {results.length > 0 && (results[0]._confidence === "HIGH" || results[0]._confidence === "MEDIUM") && !session && (
               <div className="scan-results-head">
                 <p style={{ margin: 0, paddingBottom: "12px", opacity: 0.8 }}>Sign in to save a title to My List.</p>
@@ -1053,9 +1053,32 @@ export default function BrowseHub({
   const sentinelRef = useRef(null);
   const scanFileInputRef = useRef(null);
   const scanAbortRef = useRef(null);
-  const handleScannerEscape = useEffectEvent(() => {
-    closeScanner();
-  });
+
+  const resetScanState = useCallback(() => {
+    scanAbortRef.current?.abort();
+    scanAbortRef.current = null;
+    setScanFile(null);
+    setScanPreviewUrl("");
+    setScanDetectedText("");
+    setScanQueryDraft("");
+    setScanSceneDraft("");
+    setScanResults([]);
+    setScanError("");
+    setIsScanDropActive(false);
+    setIsScanningImage(false);
+    setIsSearchingScanResults(false);
+    setHasScanAttempted(false);
+    setHasScanSearchCompleted(false);
+
+    if (scanFileInputRef.current) {
+      scanFileInputRef.current.value = "";
+    }
+  }, []);
+
+  const closeScanner = useCallback(() => {
+    setIsScannerOpen(false);
+    resetScanState();
+  }, [resetScanState]);
 
   const contentPool = useMemo(() => {
     return dedupeMedia(allContent.filter((item) => item?.title && hasVisual(item)));
@@ -1241,13 +1264,13 @@ export default function BrowseHub({
 
     function handleEscape(event) {
       if (event.key === "Escape") {
-        handleScannerEscape();
+        closeScanner();
       }
     }
 
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
-  }, [isScannerOpen, handleScannerEscape]);
+  }, [isScannerOpen, closeScanner]);
 
   useEffect(() => {
     return () => {
@@ -1260,32 +1283,6 @@ export default function BrowseHub({
     window.addEventListener("open-scanner", handleOpenScanner);
     return () => window.removeEventListener("open-scanner", handleOpenScanner);
   }, []);
-
-  function resetScanState() {
-    scanAbortRef.current?.abort();
-    scanAbortRef.current = null;
-    setScanFile(null);
-    setScanPreviewUrl("");
-    setScanDetectedText("");
-    setScanQueryDraft("");
-    setScanSceneDraft("");
-    setScanResults([]);
-    setScanError("");
-    setIsScanDropActive(false);
-    setIsScanningImage(false);
-    setIsSearchingScanResults(false);
-    setHasScanAttempted(false);
-    setHasScanSearchCompleted(false);
-
-    if (scanFileInputRef.current) {
-      scanFileInputRef.current.value = "";
-    }
-  }
-
-  function closeScanner() {
-    setIsScannerOpen(false);
-    resetScanState();
-  }
 
   function handOffFromScanner(action) {
     if (!isScannerOpen) {
@@ -1402,7 +1399,7 @@ export default function BrowseHub({
 
     try {
       const variations = generateSearchVariations(nextTextQuery, nextSceneQuery);
-      
+
       const fetchPromises = variations.map((query) =>
         fetchExploreItems({
           query,
@@ -1412,10 +1409,10 @@ export default function BrowseHub({
           signal: controller.signal,
         })
       );
-      
+
       const resultsArrays = await Promise.all(fetchPromises);
       if (controller.signal.aborted) return;
-      
+
       const aggregatedResults = dedupeMedia(resultsArrays.flat());
       const rankedResults = rankSmartScanResults(aggregatedResults, nextTextQuery || nextSceneQuery);
 
@@ -1460,15 +1457,15 @@ export default function BrowseHub({
         loadTesseractClient(),
         loadMobileNetClient()
       ]);
-      
+
       const [scanResponse, labelPredictions] = await Promise.all([
         Tesseract.recognize(scanFile, "eng").catch(() => null),
         mobilenetModel.classify(imgEl).catch(() => null)
       ]);
-      
+
       const rawText = cleanDetectedText(scanResponse?.data?.text || "");
       const suggestedQuery = pickScanQuery(scanResponse?.data?.text || "");
-      
+
       const topLabels = (labelPredictions || []).slice(0, 2).map((p) => p.className.split(",")[0].toLowerCase());
       const suggestedScene = topLabels.join(" ");
 

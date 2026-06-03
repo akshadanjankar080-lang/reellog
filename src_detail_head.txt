@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+﻿import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaStar, FaPlus, FaCheck, FaChevronDown } from "react-icons/fa";
+import { FaArrowLeft, FaStar, FaPlus, FaCheck, FaChevronDown, FaPlay, FaList, FaPause, FaTimes } from "react-icons/fa";
 import { TMDB_BASE, TMDB_KEY } from "../lib/constants";
 
 const TMDB_IMG = "https://image.tmdb.org/t/p";
@@ -9,14 +9,13 @@ const TMDB_POSTER = `${TMDB_IMG}/w300`;
 const TMDB_PROFILE = `${TMDB_IMG}/w185`;
 
 const getStatusIcon = (status) => {
-  const iconMap = {
-    "Watched": "✓",
-    "Watching": "▶",
-    "Want to Watch": "○",
-    "Paused": "Ⅱ",
-    "Dropped": "✖",
-  };
-  return iconMap[status] || status;
+  switch (status) {
+    case "Watching": return <FaPlay size={12} />;
+    case "Want to Watch": return <FaList size={12} />;
+    case "Paused": return <FaPause size={12} />;
+    case "Dropped": return <FaTimes size={12} />;
+    default: return <FaPlus size={12} />;
+  }
 };
 
 export default function DetailPage({ onSelect, session, onRequireAuth, myEntries, onDirectSave }) {
@@ -48,21 +47,37 @@ export default function DetailPage({ onSelect, session, onRequireAuth, myEntries
   const [seasonsLoading, setSeasonsLoading] = useState(false);
   const [showEpisodeGrid, setShowEpisodeGrid] = useState(false);
 
-  // --- EFFECT: FETCH ALL DATA ---
+  // Fetch all data
   useEffect(() => {
     async function fetchDetail() {
       setLoading(true);
       setError(null);
       try {
-        const detailRes = await fetch(`${TMDB_BASE}/${type}/${id}?api_key=${TMDB_KEY}`);
+        // Main details
+        const detailRes = await fetch(
+          `${TMDB_BASE}/${type}/${id}?api_key=${TMDB_KEY}`
+        );
         if (!detailRes.ok) throw new Error("Failed to fetch details");
-        setData(await detailRes.json());
+        const detailData = await detailRes.json();
+        setData(detailData);
 
-        const creditsRes = await fetch(`${TMDB_BASE}/${type}/${id}/credits?api_key=${TMDB_KEY}`);
-        if (creditsRes.ok) setCredits(await creditsRes.json());
+        // Credits
+        const creditsRes = await fetch(
+          `${TMDB_BASE}/${type}/${id}/credits?api_key=${TMDB_KEY}`
+        );
+        if (creditsRes.ok) {
+          const creditsData = await creditsRes.json();
+          setCredits(creditsData);
+        }
 
-        const externalRes = await fetch(`${TMDB_BASE}/${type}/${id}/external_ids?api_key=${TMDB_KEY}`);
-        if (externalRes.ok) setExternalIds(await externalRes.json());
+        // External IDs
+        const externalRes = await fetch(
+          `${TMDB_BASE}/${type}/${id}/external_ids?api_key=${TMDB_KEY}`
+        );
+        if (externalRes.ok) {
+          const externalData = await externalRes.json();
+          setExternalIds(externalData);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -72,7 +87,7 @@ export default function DetailPage({ onSelect, session, onRequireAuth, myEntries
     if (id && type) fetchDetail();
   }, [id, type]);
 
-  // --- EFFECT: FETCH SEASONS FOR TV SHOWS ---
+  // Fetch seasons for TV shows
   useEffect(() => {
     if (type !== "tv" || !data || !data?.number_of_seasons) return;
 
@@ -80,7 +95,7 @@ export default function DetailPage({ onSelect, session, onRequireAuth, myEntries
       setSeasonsLoading(true);
       try {
         const seasonPromises = [];
-        for (let i = 1; i <= data.number_of_seasons; i++) {
+        for (let i = 1; i <= data?.number_of_seasons; i++) {
           seasonPromises.push(
             fetch(`${TMDB_BASE}/tv/${id}/season/${i}?api_key=${TMDB_KEY}`).then(
               (res) => (res.ok ? res.json() : null)
@@ -95,60 +110,145 @@ export default function DetailPage({ onSelect, session, onRequireAuth, myEntries
         setSeasonsLoading(false);
       }
     }
+
     fetchSeasons();
   }, [data, type, id]);
 
-  // --- MEMOIZED DATA DERIVATIONS (ANCHORED SAFELY ABOVE RETURNS) ---
+  // Extract directors or creators
   const director = useMemo(() => {
     if (!credits) return null;
-    const crew = credits.crew || [];
-    const directors = crew.filter((c) => c?.job === "Director" || (type === "tv" && c?.job === "Creator"));
-    return directors.length > 0 ? directors.map((d) => d?.name).join(", ") : "N/A";
+    const crew = credits?.crew || [];
+    const directors = crew.filter(
+      (c) => c?.job === "Director" || (type === "tv" && c?.job === "Creator")
+    );
+    return directors.length > 0
+      ? directors.map((d) => d?.name).join(", ")
+      : "N/A";
   }, [credits, type]);
 
+  // Top 10 cast
   const topCast = useMemo(() => {
-    return credits?.cast?.slice(0, 10) || [];
+    if (!credits || !credits?.cast) return [];
+    return credits?.cast?.slice(0, 10);
   }, [credits]);
 
+  // Format runtime
   const formattedRuntime = useMemo(() => {
+    if (!data) return "";
     if (type === "movie" && data?.runtime) {
-      const hours = Math.floor(data.runtime / 60);
-      const mins = data.runtime % 60;
+      const hours = Math.floor(data?.runtime / 60);
+      const mins = data?.runtime % 60;
       return `${hours}h ${mins}m`;
     }
     return "";
   }, [data, type]);
 
+  // Get genres list
   const genresList = useMemo(() => {
-    return data?.genres?.slice(0, 5) || [];
+    if (!data || !data?.genres) return [];
+    return data?.genres?.slice(0, 5);
   }, [data]);
 
-  const itemForCallback = useMemo(() => {
-    if (!data) return null;
-    return {
-      title: data.title || data.name,
-      type: type === "tv" ? "TV" : "Movie",
-      year: (data.release_date || data.first_air_date || "").split("-")[0],
-      poster: data.poster_path,
-      tmdbId: id,
-      tmdbType: type,
-      overview: data.overview,
-      rating: data.vote_average,
-      genres: genresList.map((g) => g?.name),
-    };
-  }, [data, type, id, genresList]);
+  if (loading) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: "80px",
+        }}
+      >
+        <div className="loader">
+          <div className="ldot"></div>
+          <div className="ldot"></div>
+          <div className="ldot"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: "80px",
+          gap: "24px",
+          color: "var(--tx)",
+        }}
+      >
+        <div style={{ fontSize: "18px", textAlign: "center" }}>
+          Unable to load details. {error}
+        </div>
+        <button
+          className="btn-acc"
+          onClick={() => navigate(-1)}
+          style={{ display: "flex", alignItems: "center", gap: "8px" }}
+        >
+          <FaArrowLeft /> Go Back
+        </button>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="loader">
+        <div className="ldot" />
+        <div className="ldot" />
+        <div className="ldot" />
+      </div>
+    );
+  }
+
+  // Construct item for onSelect callback
+  const itemForCallback = {
+    title: data?.title || data?.name,
+    type: type === "tv" ? "TV" : "Movie",
+    year: (data?.release_date || data?.first_air_date || "").split("-")[0],
+    poster: data?.poster_path,
+    tmdbId: id,
+    tmdbType: type,
+    overview: data?.overview,
+    rating: data?.vote_average,
+    genres: genresList?.map((g) => g?.name),
+  };
+
+  const backdropPath = data?.backdrop_path;
+  const posterPath = data?.poster_path;
+  const title = data?.title || data?.name;
+  const tagline = data?.tagline;
+  const releaseYear = (data?.release_date || data?.first_air_date || "").split(
+    "-"
+  )[0];
+  const rating = data?.vote_average ? data?.vote_average?.toFixed(1) : "N/A";
+  const overview = data?.overview;
+  const originalLanguage = data?.original_language || "Unknown";
+  const status = data?.status || "Unknown";
+  const imdbId = externalIds?.imdb_id;
+
+  // Get first country
+  const country = data?.production_countries
+    ? data?.production_countries?.[0]?.iso_3166_1 || "N/A"
+    : "N/A";
+
+  const runtimeOrEpisodes =
+    type === "movie"
+      ? formattedRuntime || "N/A"
+      : data?.number_of_episodes
+        ? `${data?.number_of_episodes}`
+        : "N/A";
 
   const currentEntry = useMemo(() => {
     if (!myEntries || !id) return null;
-    return myEntries.find((e) => {
-      const isIdMatch = String(e.tmdb_id) === String(id);
-      if (!isIdMatch) return false;
-      if (type === "tv") {
-        return e.type === "TV Show" || e.type === "Anime";
-      } else {
-        return e.type === "Movie";
-      }
-    });
+    const expectedType = type === "tv" ? "TV" : "Movie";
+    return myEntries.find(e => String(e.tmdb_id) === String(id) && e.type === expectedType);
   }, [myEntries, id, type]);
 
   useEffect(() => {
@@ -179,54 +279,6 @@ export default function DetailPage({ onSelect, session, onRequireAuth, myEntries
       await onDirectSave(itemForCallback, status);
     }
   }
-
-  // --- EARLY CONDITIONAL RETURNS ---
-  if (loading) {
-    return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", paddingTop: "80px" }}>
-        <div className="loader">
-          <div className="ldot"></div>
-          <div className="ldot"></div>
-          <div className="ldot"></div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: "80px", gap: "24px", color: "var(--tx)" }}>
-        <div style={{ fontSize: "18px", textAlign: "center" }}>Unable to load details. {error}</div>
-        <button className="btn-acc" onClick={() => navigate(-1)} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <FaArrowLeft /> Go Back
-        </button>
-      </div>
-    );
-  }
-
-  if (!data) {
-    return (
-      <div className="loader">
-        <div className="ldot" />
-        <div className="ldot" />
-        <div className="ldot" />
-      </div>
-    );
-  }
-
-  // --- STATIC CONSTANTS FOR RENDER ---
-  const backdropPath = data.backdrop_path;
-  const posterPath = data.poster_path;
-  const title = data.title || data.name;
-  const tagline = data.tagline;
-  const releaseYear = (data.release_date || data.first_air_date || "").split("-")[0];
-  const rating = data.vote_average ? data.vote_average.toFixed(1) : "N/A";
-  const overview = data.overview;
-  const originalLanguage = data.original_language || "Unknown";
-  const status = data.status || "Unknown";
-  const imdbId = externalIds?.imdb_id;
-  const country = data.production_countries?.[0]?.iso_3166_1 || "N/A";
-  const runtimeOrEpisodes = type === "movie" ? formattedRuntime || "N/A" : data.number_of_episodes ? `${data.number_of_episodes}` : "N/A";
 
   return (
     <div className="detail-page-cinematic" style={{ paddingTop: "66px" }}>
@@ -440,7 +492,7 @@ export default function DetailPage({ onSelect, session, onRequireAuth, myEntries
           top: calc(100% + 8px);
           left: 0;
           width: 200px;
-          background: rgba(7, 16, 10, 0.95);
+          background: rgba(14, 24, 18, 0.85);
           backdrop-filter: blur(12px);
           border: 1px solid rgba(178, 240, 197, 0.22);
           border-radius: 12px;
@@ -451,14 +503,6 @@ export default function DetailPage({ onSelect, session, onRequireAuth, myEntries
           z-index: 50;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(178, 240, 197, 0.08);
           animation: dropdownFade 0.2s ease forwards;
-        }
-        :root.theme-black .detail-page-cinematic .dp-dropdown-menu {
-          background: rgba(0, 0, 0, 0.95);
-          border-color: rgba(255, 255, 255, 0.15);
-        }
-        :root.theme-light .detail-page-cinematic .dp-dropdown-menu {
-          background: rgba(248, 250, 252, 0.95);
-          border-color: rgba(15, 23, 42, 0.15);
         }
         @keyframes dropdownFade {
           from { opacity: 0; transform: translateY(-10px); }
@@ -811,7 +855,7 @@ export default function DetailPage({ onSelect, session, onRequireAuth, myEntries
                     {["Watching", "Want to Watch", "Paused", "Dropped"].map((statusOption) => (
                       <button
                         key={statusOption}
-                        className={`dp-dropdown-item ${currentStatus === statusOption ? "active" : ""}`}
+                        className={`dp-dropdown-item ${currentStatus === statusOption ? 'active' : ''}`}
                         onClick={() => handleStatusSave(statusOption)}
                         style={{ display: "flex", alignItems: "center", gap: "8px" }}
                       >
@@ -819,31 +863,13 @@ export default function DetailPage({ onSelect, session, onRequireAuth, myEntries
                         {statusOption}
                       </button>
                     ))}
-                    {currentStatus && (
-                      <>
-                        <div className="dp-dropdown-divider" />
-                        <button
-                          className="dp-dropdown-item"
-                          onClick={() => handleStatusSave(null)}
-                          style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--red)" }}
-                        >
-                          ✕ Remove from List
-                        </button>
-                      </>
-                    )}
                   </div>
                 )}
               </div>
               <button
-                className={`dp-btn dp-btn-ghost ${isWatched ? "watched-active" : ""}`}
+                className={`dp-btn dp-btn-ghost ${isWatched ? 'watched-active' : ''}`}
                 onClick={() => {
-                  if (!session) {
-                    onRequireAuth && onRequireAuth();
-                    return;
-                  }
-                  if (isWatched) {
-                    handleStatusSave(null);
-                  } else {
+                  if (!isWatched) {
                     handleStatusSave("Watched");
                   }
                 }}
@@ -853,6 +879,7 @@ export default function DetailPage({ onSelect, session, onRequireAuth, myEntries
               </button>
             </div>
           </div>
+
         </div>
 
         <div className="dp-rating">

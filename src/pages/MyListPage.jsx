@@ -356,7 +356,7 @@ export function MyListPage({
                           <button className="card-action" onClick={(e) => { e.stopPropagation(); onSelectEntry(entry); }}>
                             View Details
                           </button>
-                          {session && entry.user_id === session.user.id && (
+                          {session && entry.user_id === session.user?.id && (
                             <>
                               <button className="card-action secondary" onClick={(e) => { e.stopPropagation(); onAddToList(entry); }}>
                                 Add to List
