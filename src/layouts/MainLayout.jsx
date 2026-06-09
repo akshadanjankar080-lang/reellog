@@ -13,8 +13,7 @@ export default function MainLayout({
   session,
   setShowAuth,
   setShowSettings,
-  Icon,
-  modals
+  Icon
 }) {
   return (
     <div className={accentClass}>
@@ -45,8 +44,6 @@ export default function MainLayout({
       />
 
       {children}
-      
-      {modals}
     </div>
   );
 }

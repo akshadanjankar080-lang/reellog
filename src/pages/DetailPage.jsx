@@ -721,6 +721,7 @@ export default function DetailPage({ onSelect, session, onRequireAuth }) {
                     onRequireAuth && onRequireAuth();
                     return;
                   }
+                  onSelect && onSelect(itemForCallback, "Completed");
                 }}
               >
                 <FaCheck />

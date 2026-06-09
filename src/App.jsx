@@ -45,7 +45,8 @@ import BrowseSectionPage from "./pages/BrowseSectionPage";
 import BrowseItemPage from "./pages/BrowseItemPage";
 import DetailPage from "./pages/DetailPage";
 import HomePage from "./pages/HomePage";
-import Navbar from "./components/layout/Navbar";
+import MainLayout from "./layouts/MainLayout";
+import AppRoutes from "./routes/AppRoutes";
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ SUPABASE ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const supabase = createClient(
@@ -61,9 +62,8 @@ const TMDB_BASE  = "https://api.themoviedb.org/3";
 const TMDB_KEY   = "dfb570e7a09aa4e72df7064fc4a703f0";
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ CONSTANTS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
-const STATUSES = ["Want to Watch", "Watching", "Watched", "Paused", "Dropped"];
-const SCOLOR   = { Watched: "#b2f0c5", Watching: "#f4e08a", "Want to Watch": "#8ebbf5", Paused: "#b8b8b8", Dropped: "#f47070" };
-const SICON    = { Watched: "\u2713", Watching: "\u25b6", "Want to Watch": "\u25cb", Paused: "II", Dropped: "X" };
+import { STATUS_LABELS as STATUSES, SCOLOR, SICON, getStatusIcon, normalizeStatus } from "./lib/watchStatus";
+
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ OTT STREAMING PLATFORMS ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const OTT = {
@@ -1189,7 +1189,7 @@ input,select,textarea{font-family:'DM Sans',sans-serif;}
 .auth-err{font-size:12px;color:var(--red);margin-bottom:10px;padding:10px 14px;background:var(--red-dim);border:1px solid rgba(244,112,112,.2);border-radius:7px;}
 .auth-msg{font-size:12px;color:var(--acc);margin-bottom:10px;padding:10px 14px;background:var(--acc-dim);border:1px solid var(--acc-border);border-radius:7px;text-align:center;}
 
-/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ SETTINGS PANEL ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
+/* ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ SETTINGS PANEL ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ */
 .settings-panel{
   position:fixed;top:0;right:0;bottom:0;width:min(440px,100vw);z-index:500;
   background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025)),rgba(7,16,10,.88);
@@ -1432,17 +1432,6 @@ const Icon = ({ name, size = 16 }) => {
   return icons[name] || null;
 };
 
-// ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ STATUS ICON HELPER ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
-const getStatusIcon = (status) => {
-  const iconMap = {
-    "Watched": "\u2713",
-    "Watching": "\u25b6",
-    "Want to Watch": "\u25cb",
-    "Paused": "II",
-    "Dropped": "X",
-  };
-  return iconMap[status] || status;
-};
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ POSTER IMAGE (fetches from TMDB by ID if hardcoded path fails or is null) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 function PosterImage({ item, className, style, alt }) {
@@ -2211,7 +2200,7 @@ function ListDetailPage({ session, customLists, entries, onOpenEntry, onEditList
             <div className="card-img-box">
               {entry.poster ? <img className="card-img" src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display="none"; }} /> : <div className="no-img-box"><div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div><span>{entry.type}</span></div>}
               <div className="card-grad" />
-              <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>{getStatusIcon(entry.status)} {entry.status}</div>
+              <div className="card-status-tag" style={{ color:SCOLOR[normalizeStatus(entry.status)], borderColor:SCOLOR[normalizeStatus(entry.status)]+"44" }}>{getStatusIcon(normalizeStatus(entry.status))} {normalizeStatus(entry.status)}</div>
               {isOwner && <div className="list-item-tools" onClick={e => e.stopPropagation()}><button className="tiny-tool" onClick={() => onMoveItem(list.id, index, -1)}>Up</button><button className="tiny-tool" onClick={() => onMoveItem(list.id, index, 1)}>Down</button><button className="tiny-tool" onClick={() => onRemoveItem(list.id, entry.id)}>Remove</button></div>}
             </div>
             <div className="card-body"><div className="card-title">{entry.title}</div><div className="card-meta-row"><span className="card-type">{entry.type}</span><span className="card-year">{entry.year}</span></div></div>
@@ -2956,7 +2945,7 @@ export default function App() {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [editId,    setEditId]    = useState(null);
-  const [form,      setForm]      = useState({ status:"Want to Watch", rating:null, notes:"" });
+  const [form,      setForm]      = useState({ status:"Planned", rating:null, notes:"", progress:0 });
   const [saving,    setSaving]    = useState(false);
   const [toast,     setToast]     = useState(null);
 
@@ -3332,7 +3321,7 @@ export default function App() {
       overview:r.overview,
       streaming: streaming || []
     });
-    setForm({ status:"Want to Watch", rating:null, notes:"" });
+    setForm({ status:"Planned", rating:null, notes:"", progress:0 });
     setEditId(null); setShowDrop(false); setSearch(""); setShowModal(true);
   }
 
@@ -3344,7 +3333,22 @@ export default function App() {
       return;
     }
     setModalData({ title:item.title, type:item.type, year:item.year, poster:item.poster, tmdb_id:item.tmdb_id, tmdbId:item.tmdbId, tmdbType:item.tmdbType, overview:item.overview, streaming:item.streaming||[] });
-    setForm({ status:"Want to Watch", rating:null, notes:"" });
+    setForm({ status:"Planned", rating:null, notes:"", progress:0 });
+    setEditId(null);
+    setShowModal(true);
+  }
+
+  function openAddModal(item, defaultStatus = "Planned") {
+    if (!session) { setShowAuth(true); return; }
+    const tmdbId = item.tmdbId || item.tmdb_id;
+    const tmdbType = item.tmdbType || (item.type === "Movie" ? "movie" : "tv");
+    
+    setModalData({ 
+      title:item.title, type:item.type, year:item.year, 
+      poster:item.poster, tmdb_id:tmdbId, tmdbId, tmdbType, 
+      overview:item.overview, streaming:item.streaming||[] 
+    });
+    setForm({ status:defaultStatus, rating:null, notes:"", progress:0 });
     setEditId(null);
     setShowModal(true);
   }
@@ -3352,13 +3356,13 @@ export default function App() {
   function openManual() {
     if (!session) { setShowAuth(true); return; }
     setModalData({ title:"", type:"Movie", year:"", poster:null, manual:true });
-    setForm({ status:"Want to Watch", rating:null, notes:"" });
+    setForm({ status:"Planned", rating:null, notes:"", progress:0 });
     setEditId(null); setShowModal(true);
   }
 
   function openEdit(entry) {
     setModalData({ title:entry.title, type:entry.type, year:entry.year, poster:entry.poster, tmdb_id:entry.tmdb_id });
-    setForm({ status:entry.status, rating:entry.rating, notes:entry.notes||"" });
+    setForm({ status: normalizeStatus(entry.status), rating:entry.rating, notes:entry.notes||"", progress: entry.progress || 0 });
     setEditId(entry.id); setShowModal(true);
   }
 
@@ -3373,13 +3377,22 @@ export default function App() {
         poster:modalData.poster, tmdb_id:modalData.tmdb_id,
         user_id:session.user.id,
         user_name:session.user.user_metadata?.name || session.user.email?.split("@")[0] || "User",
-        ...form
+        updated_at: new Date().toISOString(),
+        ...form,
+        status: normalizeStatus(form.status)
       };
-      if (editId !== null) {
-        const { data } = await supabase.from("entries").update(row).eq("id", editId).select();
+
+      let targetEditId = editId;
+      if (targetEditId === null && modalData.tmdb_id) {
+        const existing = allEntries.find(e => e.tmdb_id === modalData.tmdb_id);
+        if (existing) targetEditId = existing.id;
+      }
+
+      if (targetEditId !== null) {
+        const { data } = await supabase.from("entries").update(row).eq("id", targetEditId).select();
         const updated = data[0];
-        setAllEntries(p => p.map(e => e.id === editId ? updated : e));
-        setMyEntries(p  => p.map(e => e.id === editId ? updated : e));
+        setAllEntries(p => p.map(e => e.id === targetEditId ? updated : e));
+        setMyEntries(p  => p.map(e => e.id === targetEditId ? updated : e));
         showT("Updated!");
       } else {
         const { data } = await supabase.from("entries").insert(row).select();
@@ -3521,9 +3534,9 @@ export default function App() {
   const source = page === "mylist" ? myEntries : allEntries;
   const libraryQuery = search.trim().toLowerCase();
   const filtered = source
-    .filter(e => !libraryQuery || [e.title, e.type, e.year, e.status].some(v => String(v || "").toLowerCase().includes(libraryQuery)))
+    .filter(e => !libraryQuery || [e.title, e.type, e.year, normalizeStatus(e.status)].some(v => String(v || "").toLowerCase().includes(libraryQuery)))
     .filter(e => filterType   === "All" || e.type   === filterType)
-    .filter(e => filterStatus === "All" || e.status === filterStatus)
+    .filter(e => filterStatus === "All" || normalizeStatus(e.status) === filterStatus)
     .sort((a, b) => {
       if (sortBy === "title")  return (a.title || "").localeCompare(b.title || "");
       if (sortBy === "titleDesc") return (b.title || "").localeCompare(a.title || "");
@@ -3533,8 +3546,8 @@ export default function App() {
       return 0;
     });
 
-  const counts = STATUSES.reduce((acc, status) => {
-    acc[status] = source.filter(e => e.status === status).length;
+  const counts = STATUSES.reduce((acc, statusObj) => {
+    acc[statusObj.id] = source.filter(e => normalizeStatus(e.status) === statusObj.id).length;
     return acc;
   }, {});
 
@@ -3543,7 +3556,9 @@ export default function App() {
     "TV Show": source.filter(e => e.type === "TV Show").length,
     Anime: source.filter(e => e.type === "Anime").length,
   };
-  const continueWatching = source.filter(e => e.status === "Watching");
+  const continueWatching = source
+    .filter(e => normalizeStatus(e.status) === "Watching")
+    .sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
   const recentlyAdded = source.slice(0, 10);
   const ratedEntries = source.filter(e => Number(e.rating) > 0);
   const averageUserRating = ratedEntries.length
@@ -3645,13 +3660,14 @@ export default function App() {
                             ? <img src={`${TMDB_IMG}${entry.poster}`} alt={entry.title} loading="lazy" onError={e => { e.currentTarget.style.display="none"; }} />
                             : <div className="no-img-box"><div className="no-img-icon">{entry.type === "Movie" ? "M" : entry.type === "Anime" ? "A" : "TV"}</div><span>{entry.type}</span></div>}
                           <div className="card-grad" />
-                          <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>
-                            {getStatusIcon(entry.status)} {entry.status}
+                          <div className="card-status-tag" style={{ color:SCOLOR[normalizeStatus(entry.status)], borderColor:SCOLOR[normalizeStatus(entry.status)]+"44" }}>
+                            {getStatusIcon(normalizeStatus(entry.status))} {normalizeStatus(entry.status)}
                           </div>
                         </div>
                         <div className="library-rail-body">
                           <div className="library-rail-title">{entry.title}</div>
                           <div className="library-rail-meta"><span>{entry.year || "N/A"}</span><span>{entry.type}</span></div>
+                          {entry.progress > 0 && <div style={{ fontSize:11, color:'var(--acc)', marginTop:4, fontWeight:600 }}>Ep {entry.progress}</div>}
                         </div>
                       </div>
                     ))}
@@ -3676,7 +3692,7 @@ export default function App() {
                         </div>
                         <div className="library-rail-body">
                           <div className="library-rail-title">{entry.title}</div>
-                          <div className="library-rail-meta"><span>{entry.year || "N/A"}</span><span>{entry.status}</span></div>
+                          <div className="library-rail-meta"><span>{entry.year || "N/A"}</span><span>{normalizeStatus(entry.status)}</span></div>
                         </div>
                       </div>
                     ))}
@@ -3724,9 +3740,12 @@ export default function App() {
                     ))}
                   </div>
                   <div className="fil-row">
-                    {["All", ...STATUSES].map(s => (
-                      <button key={s} className={`fil-btn${filterStatus === s ? " on" : ""}`} onClick={() => setFilterStatus(s)}>{s}</button>
-                    ))}
+                    {["Watching", "Completed", "Planned", "Dropped", "Paused", "All"].map(s => {
+                      const label = s === "All" ? "History" : s;
+                      return (
+                        <button key={s} className={`fil-btn${filterStatus === s ? " on" : ""}`} onClick={() => setFilterStatus(s)}>{label}</button>
+                      );
+                    })}
                   </div>
                   <select className="sort-sel" value={sortBy} onChange={e => setSortBy(e.target.value)}>
                     <option value="added">Recently Added</option>
@@ -3770,8 +3789,8 @@ export default function App() {
                             {entry.type}
                           </div>
                           <div className="card-grad" />
-                          <div className="card-status-tag" style={{ color:SCOLOR[entry.status], borderColor:SCOLOR[entry.status]+"44" }}>
-                            {getStatusIcon(entry.status)} {entry.status}
+                          <div className="card-status-tag" style={{ color:SCOLOR[normalizeStatus(entry.status)], borderColor:SCOLOR[normalizeStatus(entry.status)]+"44" }}>
+                            {getStatusIcon(normalizeStatus(entry.status))} {normalizeStatus(entry.status)}
                           </div>
                           <div className="card-overlay">
                             <button className="card-action" onClick={e => { e.stopPropagation(); openFromCard(entry); }}>View Details</button>
@@ -3844,132 +3863,61 @@ export default function App() {
   };
   //RENDER 
   return (
-    <div className={accentClass}>
-      <style>{CSS}</style>
-
-      {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Cinematic grain overlay ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
-      {settings.cinematicBg && (
-        <svg className="grain-svg" aria-hidden="true">
-          <filter id="grain-noise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.68" numOctaves="4" stitchTiles="stitch" />
-            <feColorMatrix type="saturate" values="0" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#grain-noise)" />
-        </svg>
-      )}
-
-      {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ NAV ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
-      <Navbar
-        navScrolled={navScrolled}
-        navDropdownRef={navDropdownRef}
-        setPage={setPage}
-        setNavDropdown={setNavDropdown}
-        page={page}
+    <MainLayout
+      accentClass={accentClass}
+      CSS={CSS}
+      settings={settings}
+      navScrolled={navScrolled}
+      navDropdownRef={navDropdownRef}
+      setPage={setPage}
+      setNavDropdown={setNavDropdown}
+      page={page}
+      session={session}
+      setShowAuth={setShowAuth}
+      setShowSettings={setShowSettings}
+      Icon={Icon}
+    >
+      <AppRoutes
         session={session}
         setShowAuth={setShowAuth}
-        setShowSettings={setShowSettings}
-        Icon={Icon}
+        openFromCard={openFromCard}
+        openAddModal={openAddModal}
+        profile={profile}
+        myEntries={myEntries}
+        customLists={customLists}
+        setProfileDraft={setProfileDraft}
+        setShowProfileEdit={setShowProfileEdit}
+        openCreateList={openCreateList}
+        openEditList={openEditList}
+        deleteCustomList={deleteCustomList}
+        addEntryToList={addEntryToList}
+        removeEntryFromList={removeEntryFromList}
+        moveListItem={moveListItem}
+        renderLibrary={renderLibrary}
+        PosterImage={PosterImage}
+        handleTypeNav={handleTypeNav}
+        allContent={allContent}
+        page={page}
+        heroItems={heroItems}
+        settings={settings}
+        HeroCarousel={HeroCarousel}
+        TmdbSection={TmdbSection}
+        homeTrending={homeTrending}
+        trendMode={trendMode}
+        handleTrendTab={handleTrendTab}
+        homePopular={homePopular}
+        popularMode={popularMode}
+        handlePopularTab={handlePopularTab}
+        homeFree={homeFree}
+        freeMode={freeMode}
+        handleFreeTab={handleFreeTab}
+        homeSeries={homeSeries}
+        setSeeAll={setSeeAll}
+        GenrePage={GenrePage}
+        CategoryPage={CategoryPage}
+        ProfilePage={ProfilePage}
+        ListDetailPage={ListDetailPage}
       />
-
-      <Routes>
-        <Route path="/detail/:type/:id" element={<DetailPage session={session} onRequireAuth={() => setShowAuth(true)} onSelect={openFromCard} />} />
-        <Route
-          path="/profile"
-          element={
-            <ProfilePage
-              session={session}
-              profile={profile}
-              entries={myEntries}
-              customLists={customLists}
-              onEditProfile={() => { setProfileDraft(profile); setShowProfileEdit(true); }}
-              onCreateList={openCreateList}
-              onEditList={openEditList}
-              onDeleteList={deleteCustomList}
-              onOpenList={(listId) => navigate(`/list/${listId}`)}
-              onRequireAuth={() => setShowAuth(true)}
-            />
-          }
-        />
-        <Route
-          path="/list/:id"
-          element={
-            <ListDetailPage
-              session={session}
-              customLists={customLists}
-              entries={myEntries}
-              onOpenEntry={openFromCard}
-              onEditList={openEditList}
-              onDeleteList={deleteCustomList}
-              onAddItem={addEntryToList}
-              onRemoveItem={removeEntryFromList}
-              onMoveItem={moveListItem}
-              onRequireAuth={() => setShowAuth(true)}
-            />
-          }
-        />
-        <Route path="/explore/:section/:item" element={<BrowseItemPage />} />
-        <Route path="/explore/:section" element={<BrowseSectionPage />} />
-        <Route path="/explore" element={renderLibrary("explore")} />
-        <Route
-          path="/genre/:slug"
-          element={
-            <GenrePage
-              onSelect={openFromCard}
-              PosterImageComponent={PosterImage}
-              onTypeNav={handleTypeNav}
-            />
-          }
-        />
-        <Route
-          path="/category/:type"
-          element={
-            <CategoryPage
-              key={location.pathname}
-              allItems={allContent}
-              onSelect={openFromCard}
-              PosterImageComponent={PosterImage}
-              onTypeNav={handleTypeNav}
-            />
-          }
-        />
-        <Route
-          path="/*"
-          element={
-            <>
-      {/*  HOME PAGE  */}
-      {page === "home" && (
-        <HomePage
-          heroItems={heroItems}
-          autoplay={settings.autoplay}
-          onAdd={openFromCard}
-          session={session}
-          setShowAuth={setShowAuth}
-          HeroCarousel={HeroCarousel}
-          TmdbSection={TmdbSection}
-          homeTrending={homeTrending}
-          trendMode={trendMode}
-          onTrendTabChange={handleTrendTab}
-          homePopular={homePopular}
-          popularMode={popularMode}
-          onPopularTabChange={handlePopularTab}
-          homeFree={homeFree}
-          freeMode={freeMode}
-          onFreeTabChange={handleFreeTab}
-          homeSeries={homeSeries}
-          onSelect={openFromCard}
-          onTypeNav={handleTypeNav}
-          onSeeAll={setSeeAll}
-        />
-      )}
-
-      {/*  EXPLORE / MY LIST */}
-      {page === "explore" && renderLibrary("explore")}
-
-      {page === "mylist" && renderLibrary("mylist")}
-            </>
-          }
-        />
-      </Routes>
 
       {/* ADD / EDIT MODAL */}
       {showModal && modalData && (
@@ -4232,7 +4180,7 @@ export default function App() {
 
       {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ TOAST ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
       {toast && <div className="toast"><div className="toast-dot"/>{toast}</div>}
-    </div>
+    </MainLayout>
   );
 }
 

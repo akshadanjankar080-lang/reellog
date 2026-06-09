@@ -8,6 +8,7 @@ export default function AppRoutes({
   session,
   setShowAuth,
   openFromCard,
+  openAddModal,
   profile,
   myEntries,
   customLists,
@@ -49,7 +50,7 @@ export default function AppRoutes({
 
   return (
     <Routes>
-      <Route path="/detail/:type/:id" element={<DetailPage session={session} onRequireAuth={() => setShowAuth(true)} onSelect={openFromCard} />} />
+      <Route path="/detail/:type/:id" element={<DetailPage session={session} onRequireAuth={() => setShowAuth(true)} onSelect={openAddModal} />} />
       <Route
         path="/profile"
         element={
