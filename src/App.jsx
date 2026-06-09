@@ -45,6 +45,7 @@ import BrowseSectionPage from "./pages/BrowseSectionPage";
 import BrowseItemPage from "./pages/BrowseItemPage";
 import DetailPage from "./pages/DetailPage";
 import HomePage from "./pages/HomePage";
+import Navbar from "./components/layout/Navbar";
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ SUPABASE ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const supabase = createClient(
@@ -3120,6 +3121,7 @@ export default function App() {
     }
 
     async function loadHome() {
+
       try {
         const [trendAll, trendAllIN, trendMovies, trendTv, anime] = await Promise.all([
           fetch(`${TMDB_BASE}/trending/all/week?api_key=${TMDB_KEY}&language=${lang}&include_adult=${adult}`, { signal: abort.signal }).then(r => r.json()).catch(() => null),
@@ -3857,40 +3859,17 @@ export default function App() {
       )}
 
       {/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ NAV ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */}
-      <nav className={`nav${navScrolled ? " nav-scrolled" : ""}`} ref={navDropdownRef}>
-        <div className="nav-logo" onClick={() => { setPage("home"); navigate("/"); setNavDropdown(null); }}>
-          <div className="nav-dot" />
-          Reel<span>log</span>
-        </div>
-        <div className="nav-links">
-          <button className={`nav-link${page === "home" && location.pathname === "/" ? " active" : ""}`} onClick={() => { setPage("home"); navigate("/"); setNavDropdown(null); }}>
-            Home
-          </button>
-          <div className="nav-dropdown-wrapper">
-            <button className={`nav-link${page === "explore" ? " active" : ""}`} onClick={() => { setPage("explore"); navigate("/explore"); setNavDropdown(null); }}>
-              Explore
-            </button>
-
-          </div>
-          <button className={`nav-link${page === "mylist" && location.pathname === "/" ? " active" : ""}`} onClick={() => { setPage("mylist"); navigate("/"); setNavDropdown(null); }}>
-            My List
-          </button>
-          <button className={`nav-link${location.pathname === "/profile" ? " active" : ""}`} onClick={() => { navigate("/profile"); setNavDropdown(null); }}>
-            Profile
-          </button>
-        </div>
-        <div className="nav-right">
-          <button className="btn-icon" onClick={() => {
-            if (session) { navigate("/profile"); setNavDropdown(null); }
-            else setShowAuth(true);
-          }} title={session ? "Profile" : "Sign in / Join"}>
-            <Icon name="user" size={17} />
-          </button>
-          <button className="btn-icon" onClick={() => { setShowSettings(s => !s); setNavDropdown(null); }} title="Settings">
-            <Icon name="settings" size={17} />
-          </button>
-        </div>
-      </nav>
+      <Navbar
+        navScrolled={navScrolled}
+        navDropdownRef={navDropdownRef}
+        setPage={setPage}
+        setNavDropdown={setNavDropdown}
+        page={page}
+        session={session}
+        setShowAuth={setShowAuth}
+        setShowSettings={setShowSettings}
+        Icon={Icon}
+      />
 
       <Routes>
         <Route path="/detail/:type/:id" element={<DetailPage session={session} onRequireAuth={() => setShowAuth(true)} onSelect={openFromCard} />} />
