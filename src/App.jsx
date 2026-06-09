@@ -3373,13 +3373,16 @@ export default function App() {
     setSaving(true);
     try {
       const row = {
-        title, type:modalData.type, year:modalData.year,
-        poster:modalData.poster, tmdb_id:modalData.tmdb_id,
-        user_id:session.user.id,
-        user_name:session.user.user_metadata?.name || session.user.email?.split("@")[0] || "User",
-        updated_at: new Date().toISOString(),
-        ...form,
-        status: normalizeStatus(form.status)
+        title: title || "Unknown Title",
+        type: modalData.type || "Movie",
+        year: modalData.year || null,
+        poster: modalData.poster || null,
+        tmdb_id: modalData.tmdb_id || null,
+        user_id: session.user.id,
+        user_name: session.user.user_metadata?.name || session.user.email?.split("@")[0] || "User",
+        rating: form.rating || 0,
+        notes: form.notes || "",
+        status: normalizeStatus(form.status) || "Want to Watch"
       };
 
       let targetEditId = editId;
@@ -3389,20 +3392,29 @@ export default function App() {
       }
 
       if (targetEditId !== null) {
-        const { data } = await supabase.from("entries").update(row).eq("id", targetEditId).select();
-        const updated = data[0];
-        setAllEntries(p => p.map(e => e.id === targetEditId ? updated : e));
-        setMyEntries(p  => p.map(e => e.id === targetEditId ? updated : e));
-        showT("Updated!");
+        const { data, error } = await supabase.from("entries").update(row).eq("id", targetEditId).select();
+        if (error) { console.error("Supabase Update Error:", error); throw error; }
+        if (data && data.length > 0) {
+          const updated = data[0];
+          setAllEntries(p => p.map(e => e.id === targetEditId ? updated : e));
+          setMyEntries(p  => p.map(e => e.id === targetEditId ? updated : e));
+          showT("Updated!");
+        }
       } else {
-        const { data } = await supabase.from("entries").insert(row).select();
-        const newRow = data[0];
-        setAllEntries(p => [newRow, ...p]);
-        setMyEntries(p  => [newRow, ...p]);
-        showT("Added to catalog!");
+        const { data, error } = await supabase.from("entries").insert(row).select();
+        if (error) { console.error("Supabase Insert Error:", error); throw error; }
+        if (data && data.length > 0) {
+          const newRow = data[0];
+          setAllEntries(p => [newRow, ...p]);
+          setMyEntries(p  => [newRow, ...p]);
+          showT("Added to catalog!");
+        }
       }
       setShowModal(false);
-    } catch { showT("Something went wrong."); }
+    } catch (err) {
+      console.error("handleSave failed:", err);
+      showT("Something went wrong.");
+    }
     setSaving(false);
   }
 

@@ -4590,3 +4590,50 @@ textarea {
   }
 }
 
+
+/* My List Status Tabs Redesign */
+.status-tabs-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 999px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.status-tabs-container::-webkit-scrollbar {
+  display: none;
+}
+
+.status-tab-pill {
+  position: relative;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--txm);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.status-tab-pill:hover {
+  color: var(--tx);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.status-tab-pill.active {
+  color: var(--acc);
+  font-weight: 600;
+  background: var(--acc-dim);
+  box-shadow: 0 0 15px var(--acc-glow), inset 0 0 10px var(--acc-glow);
+  border: 1px solid var(--acc-border);
+}
