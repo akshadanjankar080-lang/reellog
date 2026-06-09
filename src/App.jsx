@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Routes, Route, useNavigate, useParams, useLocation } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import {
@@ -44,6 +44,7 @@ import BrowseHub from "./components/BrowseHub";
 import BrowseSectionPage from "./pages/BrowseSectionPage";
 import BrowseItemPage from "./pages/BrowseItemPage";
 import DetailPage from "./pages/DetailPage";
+import HomePage from "./pages/HomePage";
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ SUPABASE ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 const supabase = createClient(
@@ -3958,64 +3959,28 @@ export default function App() {
             <>
       {/*  HOME PAGE  */}
       {page === "home" && (
-        <>
-          <HeroCarousel
-            items={heroItems}
-            autoplay={settings.autoplay}
-            onAdd={openFromCard}
-            session={session}
-            setShowAuth={setShowAuth}
-          />
-          <div className="main-content">
-            <TmdbSection
-              title="Trending"
-              tabs={[{ key:"day", label:"Today" }, { key:"week", label:"This Week" }]}
-              activeTab={trendMode}
-              onTabChange={handleTrendTab}
-              items={homeTrending}
-              onSelect={openFromCard}
-              onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"Trending", emoji:"fire", items:homeTrending })}
-            />
-            <div className="divider" />
-            <TmdbSection
-              title="What's Popular"
-              tabs={[
-                { key:"streaming", label:"Streaming" },
-                { key:"tv",        label:"On TV" },
-                { key:"rent",      label:"For Rent" },
-                { key:"theaters",  label:"In Theaters" },
-              ]}
-              activeTab={popularMode}
-              onTabChange={handlePopularTab}
-              items={homePopular}
-              onSelect={openFromCard}
-              onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"What's Popular", emoji:"eye", items:homePopular })}
-            />
-            <div className="divider" />
-            <TmdbSection
-              title="Free To Watch"
-              tabs={[{ key:"movies", label:"Movies" }, { key:"tv", label:"TV" }]}
-              activeTab={freeMode}
-              onTabChange={handleFreeTab}
-              items={homeFree}
-              onSelect={openFromCard}
-              onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"Free To Watch", emoji:"gift", items:homeFree })}
-            />
-            <div className="divider" />
-            <TmdbSection
-              title="Binge-worthy Series"
-              tabs={[]}
-              items={homeSeries}
-              onSelect={openFromCard}
-              onTypeNav={handleTypeNav}
-              onSeeAll={() => setSeeAll({ title:"Binge-worthy Series", emoji:"play", items:homeSeries })}
-            />
-            <div style={{ height:64 }} />
-          </div>
-        </>
+        <HomePage
+          heroItems={heroItems}
+          autoplay={settings.autoplay}
+          onAdd={openFromCard}
+          session={session}
+          setShowAuth={setShowAuth}
+          HeroCarousel={HeroCarousel}
+          TmdbSection={TmdbSection}
+          homeTrending={homeTrending}
+          trendMode={trendMode}
+          onTrendTabChange={handleTrendTab}
+          homePopular={homePopular}
+          popularMode={popularMode}
+          onPopularTabChange={handlePopularTab}
+          homeFree={homeFree}
+          freeMode={freeMode}
+          onFreeTabChange={handleFreeTab}
+          homeSeries={homeSeries}
+          onSelect={openFromCard}
+          onTypeNav={handleTypeNav}
+          onSeeAll={setSeeAll}
+        />
       )}
 
       {/*  EXPLORE / MY LIST */}
